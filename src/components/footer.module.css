@@ -164,21 +164,67 @@
 
 @media (max-width: 768px) {
   .footer {
-    padding-top: 100px;
+    padding: 80px 5% 40px;
   }
   .footerContent {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+  }
+  .logoTitle {
+    font-size: 2rem;
+  }
+  .footerHeading {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
   }
   .newsletterCol {
-    padding: 30px 20px;
+    padding: 28px 18px;
+    grid-column: span 2;
+  }
+  .emailInput {
+    font-size: 16px;
   }
   .footerBottom {
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
     text-align: center;
+    margin-top: 30px;
   }
   .legalLinks {
     flex-wrap: wrap;
     justify-content: center;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 50px 4% 30px;
+  }
+  .footerContent {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding-bottom: 30px;
+  }
+  .logoTitle {
+    font-size: 1.6rem;
+  }
+  .footerHeading {
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+  }
+  .newsletterCol {
+    grid-column: span 1;
+    padding: 24px 16px;
+  }
+  .footerLink {
+    font-size: 0.88rem;
+  }
+  .legalLinks {
+    gap: 16px;
+  }
+  .footerBottom {
+    font-size: 0.78rem;
   }
 }

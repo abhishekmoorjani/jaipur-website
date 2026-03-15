@@ -31,7 +31,8 @@
 }
 
 .revealSection {
-  /* handled by GSAP */
+  opacity: 1;
+  /* GSAP animates from 0→1, but we keep CSS default at 1 as fallback for no-JS */
 }
 
 /* ============================================
@@ -186,6 +187,8 @@
   background-color: rgba(255, 255, 255, 0.2);
   transition: all 0.5s ease;
   cursor: pointer;
+  padding: 20px 0;
+  background-clip: content-box;
 }
 
 .slideIndicatorActive {
@@ -326,46 +329,48 @@
    4) HIGHLIGHTS — Key selling points
    ============================================ */
 .highlightsSection {
-  padding: 0 8% 100px;
+  padding: 0 5% 100px;
 }
 
 .highlightsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0;
+  gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
-  border-radius: 20px;
-  overflow: hidden;
-  border: 1px solid rgba(197, 151, 44, 0.1);
 }
 
 .highlightCard {
-  padding: 48px 32px;
-  background-color: var(--color-surface);
+  padding: 40px 28px;
+  background: linear-gradient(
+    160deg,
+    rgba(197, 151, 44, 0.08) 0%,
+    rgba(27, 35, 46, 0.9) 40%,
+    var(--color-surface) 100%
+  );
   text-align: center;
   position: relative;
-  transition: background-color 0.4s ease;
-}
-
-.highlightCard:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 20%;
-  height: 60%;
-  width: 1px;
-  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  border: 1px solid rgba(197, 151, 44, 0.12);
+  transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .highlightCard:hover {
-  background-color: rgba(197, 151, 44, 0.04);
+  transform: translateY(-4px);
+  border-color: rgba(197, 151, 44, 0.3);
+  box-shadow: 0 12px 40px rgba(197, 151, 44, 0.08);
 }
 
 .highlightIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: rgba(197, 151, 44, 0.1);
   color: var(--color-accent);
   margin-bottom: 20px;
-  opacity: 0.7;
 }
 
 .highlightNumber {
@@ -374,16 +379,16 @@
   font-weight: 600;
   color: var(--color-heading);
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .highlightLabel {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   color: var(--color-accent);
-  margin-bottom: 18px;
-  font-weight: 500;
+  margin-bottom: 16px;
+  font-weight: 600;
 }
 
 .highlightDesc {
@@ -553,7 +558,7 @@
   border-radius: 10px;
   color: var(--color-heading);
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: max(16px, 0.95rem);
   transition: all 0.3s ease;
 }
 
@@ -575,7 +580,7 @@
   border-radius: 10px;
   color: var(--color-heading);
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: max(16px, 0.95rem);
   transition: all 0.3s ease;
   resize: vertical;
   min-height: 60px;
@@ -594,6 +599,10 @@
 select.inputField {
   appearance: none;
   cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23C5972C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
 }
 
 input[type="date"].inputField,
@@ -862,10 +871,13 @@ select.inputField option {
   .storyImageWrapper {
     max-width: 600px;
     margin: 0 auto;
+    aspect-ratio: 16 / 10;
   }
   .storyContent {
     padding-right: 0;
-    text-align: center;
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto;
   }
   .dishGrid {
     gap: 28px;
@@ -884,7 +896,7 @@ select.inputField option {
     padding: 0 6% 80px;
   }
   .testimonialGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
   }
   .mapContainer {
@@ -896,55 +908,111 @@ select.inputField option {
 }
 
 @media (max-width: 768px) {
+  /* Hero */
   .headline {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
   }
   .eyebrow {
     letter-spacing: 4px;
     font-size: 0.7rem;
   }
   .heroSub {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     margin-bottom: 28px;
   }
   .heroCtas {
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
   }
   .heroBtn {
-    width: 100%;
-    max-width: 280px;
+    padding: 12px 22px;
+    font-size: 0.75rem;
     text-align: center;
   }
   .heroMeta {
     gap: 16px;
   }
   .slideIndicators {
-    gap: 6px;
-    bottom: 24px;
+    gap: 8px;
   }
   .slideIndicator {
-    width: 6px;
-    height: 6px;
+    width: 20px;
+    height: 3px;
+    padding: 14px 0;
+    background-clip: content-box;
   }
   .slideIndicatorActive {
-    width: 20px;
+    width: 28px;
   }
   .scrollIndicator {
     display: none;
   }
+
+  /* Sections */
   .sectionHeader {
-    margin-bottom: 40px;
+    margin-bottom: 36px;
   }
+  .sectionHeader p {
+    font-size: 0.95rem;
+  }
+
+  /* Dishes */
   .dishGrid {
     grid-template-columns: 1fr;
   }
+  .dishInfo {
+    padding: 20px 18px;
+  }
+  .dishName {
+    font-size: 1.3rem;
+  }
+
+  /* Story */
+  .storyImageWrapper {
+    aspect-ratio: 16 / 9;
+  }
+  .storyContent p {
+    font-size: 0.95rem;
+  }
+
+  /* Highlights */
+  .highlightsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .highlightCard::after {
+    display: none !important;
+  }
+  .highlightsSection {
+    padding: 0 5% 60px;
+  }
+  .highlightCard {
+    padding: 28px 20px;
+  }
+  .highlightNumber {
+    font-size: 2.2rem;
+  }
+  .highlightDesc {
+    max-width: none;
+  }
+
+  /* Testimonials */
+  .testimonialGrid {
+    grid-template-columns: 1fr;
+  }
+  .testimonialCard {
+    padding: 28px 22px;
+  }
+  .reviewText {
+    font-size: 0.95rem;
+  }
+
+  /* Reservation */
   .resInfo {
-    text-align: center;
+    text-align: left;
   }
   .resDetailItem {
-    justify-content: center;
+    justify-content: flex-start;
   }
   .resForm {
     padding: 28px 20px;
@@ -955,72 +1023,150 @@ select.inputField option {
   .formGrid {
     grid-template-columns: 1fr;
   }
-  .highlightsGrid {
-    grid-template-columns: 1fr;
+  .formBtn {
+    padding: 14px 24px;
+    font-size: 0.82rem;
   }
-  .highlightCard::after {
-    display: none !important;
+  .phoneNumber {
+    font-size: 1.2rem;
   }
-  .highlightsSection {
-    padding: 0 5% 60px;
-  }
-  .highlightCard {
-    padding: 28px 24px;
-  }
-  .highlightNumber {
-    font-size: 2.4rem;
-  }
+
+  /* Map */
   .mapContainer {
     gap: 30px;
   }
   .mapWrapper {
     height: 280px;
   }
+  .mapWrapper iframe {
+    filter: brightness(0.85) saturate(0.7);
+  }
+
+  /* Gallery */
+  .gallerySection {
+    padding-top: 70px;
+  }
   .galleryGrid {
     grid-template-columns: 1fr 1fr;
-    grid-auto-rows: 40vw;
+    grid-auto-rows: 45vw;
   }
   .galleryItem:nth-child(1) { grid-column: span 2; grid-row: span 1; }
   .galleryItem:nth-child(4) { grid-column: span 2; }
   .galleryItem:nth-child(5) { grid-column: span 1; grid-row: span 1; }
   .galleryItem:nth-child(7) { grid-column: span 2; }
+
+  /* FAQ */
+  .faqQuestion {
+    font-size: 1.1rem;
+  }
+  .faqHeader {
+    padding: 22px 0;
+  }
+  .faqBody {
+    font-size: 0.92rem;
+  }
+
+  /* Full-bleed sections */
   .reservationSection, .faqSection {
     border-radius: 0;
     margin-left: 0;
     margin-right: 0;
+  }
+
+  /* To-go */
+  .togoStrip {
+    margin-top: 50px;
+    padding: 40px 5%;
+  }
+  .togoPhone {
+    display: inline-block;
+    padding: 8px 4px;
   }
 }
 
 /* Extra small phones */
 @media (max-width: 480px) {
   .headline {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
   .heroSub {
-    font-size: 0.88rem;
+    font-size: 0.82rem;
+    margin-bottom: 24px;
+  }
+  .eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+  }
+  .heroCtas {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
   }
   .heroBtn {
-    padding: 13px 28px;
-    font-size: 0.78rem;
+    padding: 11px 24px;
+    font-size: 0.72rem;
+    width: auto;
   }
   .dishCard {
     border-radius: 12px;
   }
+  .dishInfo {
+    padding: 16px 14px;
+  }
+  .dishName {
+    font-size: 1.15rem;
+  }
+  .storyImageWrapper {
+    aspect-ratio: 3 / 2;
+  }
+  .highlightsGrid {
+    grid-template-columns: 1fr;
+  }
   .highlightCard {
-    padding: 24px 20px;
+    padding: 22px 18px;
   }
   .highlightNumber {
     font-size: 2rem;
   }
   .highlightDesc {
     font-size: 0.82rem;
+    max-width: none;
+  }
+  .testimonialCard {
+    padding: 22px 16px;
+  }
+  .reviewText {
+    font-size: 0.88rem;
   }
   .mapWrapper {
-    height: 240px;
+    height: 260px;
   }
-  .togoInner {
-    flex-direction: column;
-    text-align: center;
-    gap: 8px;
+  .gallerySection {
+    padding-top: 50px;
+  }
+  .galleryGrid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 55vw;
+  }
+  .galleryItem:nth-child(1),
+  .galleryItem:nth-child(4),
+  .galleryItem:nth-child(5),
+  .galleryItem:nth-child(7) {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  .faqQuestion {
+    font-size: 1rem;
+  }
+  .faqHeader {
+    padding: 18px 0;
+  }
+  .togoStrip {
+    margin-top: 30px;
+    padding: 30px 4%;
+  }
+  .togoTitle {
+    font-size: 1.1rem;
   }
 }

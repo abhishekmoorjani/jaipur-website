@@ -10,6 +10,7 @@
   align-items: center;
   justify-content: center;
   animation: fadeIn 0.3s ease forwards;
+  padding: 20px;
 }
 
 @keyframes fadeIn {
@@ -330,44 +331,62 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .overlay {
+    padding: 0;
+  }
+
   .popup {
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
     max-height: none;
     border-radius: 0;
   }
 
   .popupHeader {
-    padding: 20px 16px 0;
+    padding: 16px 16px 0;
   }
 
   .popupTitle {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+  }
+
+  .popupSubtitle {
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+  }
+
+  .closeBtn {
+    width: 44px;
+    height: 44px;
+    position: relative;
+    z-index: 10;
   }
 
   .filterBar {
-    padding: 14px 16px 0;
+    padding: 12px 16px 0;
     gap: 5px;
   }
 
   .filterBtn {
-    padding: 10px 14px;
-    font-size: 0.68rem;
-    min-height: 40px;
+    padding: 8px 12px;
+    font-size: 0.65rem;
+    min-height: 44px;
   }
 
   .legend {
-    padding: 12px 16px;
-    gap: 10px;
-    font-size: 0.65rem;
+    padding: 10px 16px;
+    gap: 8px;
+    font-size: 0.6rem;
   }
 
   .menuList {
     padding: 8px 16px 20px;
+    -webkit-overflow-scrolling: touch;
   }
 
   .dishRow {
-    padding: 10px 8px;
+    padding: 8px 8px;
     margin: 0 -8px;
   }
 
@@ -381,36 +400,79 @@
 
   .dishPrice {
     margin-left: auto;
+    font-size: 0.82rem;
   }
 
   .dishName {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    white-space: normal;
+  }
+
+  .dishDesc {
+    font-size: 0.75rem;
+  }
+
+  .dishNum {
+    font-size: 0.7rem;
+    width: 22px;
   }
 
   .categoryTitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+  }
+
+  .categorySubtitle {
+    font-size: 0.72rem;
+  }
+
+  .categoryBlock {
+    margin-bottom: 24px;
   }
 
   .cateringBlock {
-    padding: 20px 16px;
+    padding: 18px 14px;
+  }
+
+  .cateringTitle {
+    font-size: 1.1rem;
+  }
+
+  .cateringDesc {
+    font-size: 0.78rem;
   }
 }
 
 @media (max-width: 480px) {
   .popupHeader {
-    padding: 16px 14px 0;
+    padding: 14px 12px 0;
   }
 
   .popupTitle {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
+  }
+
+  .popupSubtitle {
+    font-size: 0.55rem;
+    letter-spacing: 1.5px;
   }
 
   .filterBtn {
-    padding: 9px 12px;
-    font-size: 0.65rem;
+    padding: 8px 10px;
+    font-size: 0.62rem;
+    min-height: 40px;
   }
 
   .menuList {
-    padding: 6px 14px 16px;
+    padding: 6px 12px 16px;
+  }
+
+  .dishName {
+    font-size: 0.84rem;
+    white-space: normal;
+  }
+
+  .categoryTitle {
+    font-size: 0.9rem;
   }
 }

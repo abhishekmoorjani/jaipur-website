@@ -10,14 +10,16 @@ import MenuPopup from "@/components/MenuPopup";
 import { useLanguage } from "@/context/LanguageContext";
 import { useGSAP } from "@gsap/react";
 
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 const heroImages = [
-  "/images/food/hero-1.jpg",
-  "/images/food/hero-2.jpg",
-  "/images/food/hero-3.jpg",
-  "/images/food/hero-4.jpg",
-  "/images/food/hero-5.jpg",
-  "/images/food/hero-6.jpg",
-  "/images/food/hero-7.jpg",
+  `${BASE}/images/food/hero-1.jpg`,
+  `${BASE}/images/food/hero-2.jpg`,
+  `${BASE}/images/food/hero-3.jpg`,
+  `${BASE}/images/food/hero-4.jpg`,
+  `${BASE}/images/food/hero-5.jpg`,
+  `${BASE}/images/food/hero-6.jpg`,
+  `${BASE}/images/food/hero-7.jpg`,
 ];
 
 export default function Home() {
@@ -231,10 +233,10 @@ export default function Home() {
         </div>
         <div className={styles.dishGrid}>
           {[
-            { name: "Jaipur Thali", desc: t("Eine feine Auswahl traditioneller nordindischer Spezialitäten", "A fine selection of traditional North Indian specialties"), img: "/images/food/dish-1.jpg" },
-            { name: "Tandoori Mixed Grill", desc: t("Spezialitäten aus dem original Lehmofen", "Specialties from the original clay oven"), img: "/images/food/dish-4.jpg" },
-            { name: "Chicken Tikka Masala", desc: t("Zartes Huhn in cremiger Tomaten-Curry-Soße", "Tender chicken in creamy tomato curry sauce"), img: "/images/food/dish-2.jpg" },
-            { name: "Lamb Biryani", desc: t("Basmatireis mit Lammfleisch, Mandeln und Rosinen", "Basmati rice with lamb, almonds and raisins"), img: "/images/food/dish-3.jpg" },
+            { name: "Jaipur Thali", desc: t("Eine feine Auswahl traditioneller nordindischer Spezialitäten", "A fine selection of traditional North Indian specialties"), img: `${BASE}/images/food/dish-1.jpg` },
+            { name: "Tandoori Mixed Grill", desc: t("Spezialitäten aus dem original Lehmofen", "Specialties from the original clay oven"), img: `${BASE}/images/food/dish-4.jpg` },
+            { name: "Chicken Tikka Masala", desc: t("Zartes Huhn in cremiger Tomaten-Curry-Soße", "Tender chicken in creamy tomato curry sauce"), img: `${BASE}/images/food/dish-2.jpg` },
+            { name: "Lamb Biryani", desc: t("Basmatireis mit Lammfleisch, Mandeln und Rosinen", "Basmati rice with lamb, almonds and raisins"), img: `${BASE}/images/food/dish-3.jpg` },
           ].map((dish, i) => (
             <div key={i} className={styles.dishCard}>
               <div className={styles.dishImgWrapper}>
@@ -260,7 +262,7 @@ export default function Home() {
       <section id="about" className={`${styles.storySection} ${styles.revealSection} section-padding`}>
         <div className={styles.storyContainer}>
           <div className={styles.storyImageWrapper}>
-            <Image src="/images/food/dish-5.jpg" alt={t("Jaipur Restaurant Impressionen", "Jaipur restaurant impressions")} fill className={styles.storyImg} />
+            <Image src={`${BASE}/images/food/dish-5.jpg`} alt={t("Jaipur Restaurant Impressionen", "Jaipur restaurant impressions")} fill className={styles.storyImg} />
           </div>
           <div className={styles.storyContent}>
             <span className={styles.sectionEyebrow}>{t("Unsere Geschichte", "Our Story")}</span>
@@ -483,13 +485,13 @@ export default function Home() {
         </div>
         <div className={styles.galleryGrid}>
           {[
-            "/images/food/dish-5.jpg",
-            "/images/food/dish-6.jpg",
-            "/images/food/dish-7.jpg",
-            "/images/food/dish-1.jpg",
-            "/images/food/dish-2.jpg",
-            "/images/food/dish-3.jpg",
-            "/images/food/dish-4.jpg",
+            `${BASE}/images/food/dish-5.jpg`,
+            `${BASE}/images/food/dish-6.jpg`,
+            `${BASE}/images/food/dish-7.jpg`,
+            `${BASE}/images/food/dish-1.jpg`,
+            `${BASE}/images/food/dish-2.jpg`,
+            `${BASE}/images/food/dish-3.jpg`,
+            `${BASE}/images/food/dish-4.jpg`,
           ].map((img, i) => (
             <div key={i} className={styles.galleryItem}>
               <Image src={img} alt={`${t("Galerie", "Gallery")} ${i + 1}`} fill className={styles.galleryImg} sizes="(max-width: 768px) 50vw, 25vw" />

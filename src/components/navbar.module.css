@@ -132,6 +132,10 @@
 .mobileMenuBtn {
   display: none;
   color: var(--color-heading);
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Mobile overlay */
@@ -162,6 +166,7 @@
   color: var(--color-heading);
   transition: color 0.3s ease;
   letter-spacing: 1px;
+  padding: 8px 0;
 }
 
 .mobileLink:hover {
@@ -198,10 +203,10 @@
   display: inline-block;
   background-color: var(--color-accent);
   color: var(--color-primary);
-  padding: 16px 40px;
+  padding: 14px 32px;
   border-radius: 8px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.85rem;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   transition: all 0.3s ease;
@@ -245,7 +250,7 @@
     display: none;
   }
   .mobileMenuBtn {
-    display: block;
+    display: flex;
   }
 }
 
@@ -260,7 +265,8 @@
     font-size: 1.2rem;
   }
   .logoSubtitle {
-    display: none;
+    font-size: 0.55rem;
+    letter-spacing: 2px;
   }
   .navBtn {
     display: none;
@@ -280,6 +286,10 @@
   }
   .logoTitle {
     font-size: 1.05rem;
+    letter-spacing: 1.5px;
+  }
+  .logoSubtitle {
+    font-size: 0.5rem;
     letter-spacing: 1.5px;
   }
   .mobileLink {

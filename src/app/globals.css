@@ -114,9 +114,26 @@ ul, ol {
 
 @media (max-width: 768px) {
   .section-padding {
-    padding: 80px 5%;
+    padding: 70px 5%;
   }
   h2 {
-    font-size: 2.4rem;
+    font-size: 2rem;
+  }
+  .btn-primary, .btn-outline {
+    padding: 13px 28px;
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-padding {
+    padding: 50px 4%;
+  }
+  h2 {
+    font-size: 1.7rem;
+  }
+  .btn-primary, .btn-outline {
+    padding: 11px 22px;
+    font-size: 0.72rem;
   }
 }
