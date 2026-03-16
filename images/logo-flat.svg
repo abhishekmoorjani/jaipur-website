@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 330" fill="none">
+  <defs>
+    <!-- Arch stroke — warm dark olive-gold -->
+    <linearGradient id="archFlat" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#8B7020"/>
+      <stop offset="100%" stop-color="#7A5C10"/>
+    </linearGradient>
+    <!-- Jaipur text — light warm gold/cream -->
+    <linearGradient id="textFlat" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#D8C080"/>
+      <stop offset="50%" stop-color="#C8A550"/>
+      <stop offset="100%" stop-color="#B89040"/>
+    </linearGradient>
+    <!-- Horizontal line — fades at edges -->
+    <linearGradient id="hLineFlat" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8B6914" stop-opacity="0"/>
+      <stop offset="10%" stop-color="#8B6914"/>
+      <stop offset="90%" stop-color="#8B6914"/>
+      <stop offset="100%" stop-color="#8B6914" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <g>
+    <!-- ═══ OUTER ARCH — Trefoil ogee (central peak + two side cusps) ═══ -->
+    <path d="
+      M 138,240
+      C 136,186 146,130 182,92
+      C 200,70 218,58 234,56
+      C 256,54 272,68 290,82
+      C 308,96 322,72 338,46
+      C 344,34 348,22 350,14
+      C 352,22 356,34 362,46
+      C 378,72 392,96 410,82
+      C 428,68 444,54 466,56
+      C 482,58 500,70 518,92
+      C 554,130 564,186 562,240
+    " stroke="url(#archFlat)" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+    <!-- ═══ INNER ARCH — parallel thinner border ═══ -->
+    <path d="
+      M 155,238
+      C 153,188 162,136 194,100
+      C 210,82 226,72 240,70
+      C 258,68 272,78 290,90
+      C 306,100 320,82 336,58
+      C 344,44 348,32 350,26
+      C 352,32 356,44 364,58
+      C 380,82 394,100 410,90
+      C 428,78 442,68 460,70
+      C 474,72 490,82 506,100
+      C 538,136 547,188 545,238
+    " stroke="url(#archFlat)" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- ═══ BASE BRACKETS — small verticals connecting arch to line ═══ -->
+    <line x1="138" y1="240" x2="138" y2="248" stroke="url(#archFlat)" stroke-width="6" stroke-linecap="round"/>
+    <line x1="155" y1="238" x2="155" y2="248" stroke="url(#archFlat)" stroke-width="3" stroke-linecap="round"/>
+    <line x1="562" y1="240" x2="562" y2="248" stroke="url(#archFlat)" stroke-width="6" stroke-linecap="round"/>
+    <line x1="545" y1="238" x2="545" y2="248" stroke="url(#archFlat)" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- ═══ HORIZONTAL BASELINE ═══ -->
+    <line x1="30" y1="248" x2="650" y2="248"
+      stroke="url(#hLineFlat)" stroke-width="1.5"/>
+
+    <!-- ═══ "Jaipur" — warm cream-gold gradient ═══ -->
+    <text x="350" y="220" text-anchor="middle"
+      font-family="'Playfair Display', 'Georgia', 'Times New Roman', serif"
+      font-size="96" font-weight="400"
+      fill="url(#textFlat)" letter-spacing="1">
+      Jaipur
+    </text>
+
+    <!-- ═══ "Indian Heritage" — medium dark gold ═══ -->
+    <text x="350" y="290" text-anchor="middle"
+      font-family="'Playfair Display', 'Georgia', 'Times New Roman', serif"
+      font-size="30" font-weight="400"
+      fill="#8B6914" letter-spacing="8">
+      Indian Heritage
+    </text>
+  </g>
+</svg>

@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 290" fill="none">
+  <defs>
+    <!-- Arch stroke — warm dark gold (matches original) -->
+    <linearGradient id="arch" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#A67C1A"/>
+      <stop offset="100%" stop-color="#7A5C10"/>
+    </linearGradient>
+    <!-- "Jaipur" text — light cream-gold gradient (embossed look) -->
+    <linearGradient id="textMain" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ECD890"/>
+      <stop offset="45%" stop-color="#D4B868"/>
+      <stop offset="100%" stop-color="#B89840"/>
+    </linearGradient>
+    <!-- Horizontal line — fades at edges -->
+    <linearGradient id="hLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8B6914" stop-opacity="0"/>
+      <stop offset="12%" stop-color="#8B6914"/>
+      <stop offset="88%" stop-color="#8B6914"/>
+      <stop offset="100%" stop-color="#8B6914" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <g>
+    <!-- ═══════════════════════════════════════════
+         OUTER ARCH — Trefoil ogee
+         Central peak + two side cusps
+         ═══════════════════════════════════════════ -->
+    <path d="
+      M 148,215
+      C 146,162 155,108 190,74
+      C 208,52 225,44 238,46
+      C 255,50 268,64 282,74
+      C 298,86 316,66 335,40
+      C 344,26 350,16 350,12
+      C 350,16 356,26 365,40
+      C 384,66 402,86 418,74
+      C 432,64 445,50 462,46
+      C 475,44 492,52 510,74
+      C 545,108 554,162 552,215
+    " stroke="url(#arch)" stroke-width="4" fill="none"/>
+
+    <!-- ═══ INNER ARCH — parallel border ═══ -->
+    <path d="
+      M 162,213
+      C 160,164 168,114 200,82
+      C 216,62 230,56 242,58
+      C 256,62 268,72 282,82
+      C 296,92 314,74 332,50
+      C 342,34 350,26 350,22
+      C 350,26 358,34 368,50
+      C 386,74 404,92 418,82
+      C 432,72 444,62 458,58
+      C 470,56 484,62 500,82
+      C 532,114 540,164 538,213
+    " stroke="url(#arch)" stroke-width="2.5" fill="none"/>
+
+    <!-- ═══ BASE BRACKETS — connect arch to line ═══ -->
+    <!-- Left -->
+    <line x1="148" y1="215" x2="148" y2="222" stroke="url(#arch)" stroke-width="4"/>
+    <line x1="162" y1="213" x2="162" y2="222" stroke="url(#arch)" stroke-width="2.5"/>
+    <!-- Right -->
+    <line x1="552" y1="215" x2="552" y2="222" stroke="url(#arch)" stroke-width="4"/>
+    <line x1="538" y1="213" x2="538" y2="222" stroke="url(#arch)" stroke-width="2.5"/>
+
+    <!-- ═══ HORIZONTAL BASELINE ═══ -->
+    <line x1="35" y1="222" x2="665" y2="222"
+      stroke="url(#hLine)" stroke-width="1.5"/>
+
+    <!-- ═══ "Jaipur" — light cream-gold ═══ -->
+    <text x="350" y="196" text-anchor="middle"
+      font-family="'Playfair Display', 'Georgia', 'Times New Roman', serif"
+      font-size="82" font-weight="500"
+      fill="url(#textMain)" letter-spacing="2">
+      Jaipur
+    </text>
+
+    <!-- ═══ "Indian Heritage" — darker gold ═══ -->
+    <text x="350" y="258" text-anchor="middle"
+      font-family="'Playfair Display', 'Georgia', 'Times New Roman', serif"
+      font-size="24" font-weight="400"
+      fill="#8B6914" letter-spacing="8">
+      Indian Heritage
+    </text>
+  </g>
+</svg>
