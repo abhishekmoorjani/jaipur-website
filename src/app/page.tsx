@@ -327,10 +327,10 @@ export default function Home() {
         </div>
         <div className={styles.dishGrid}>
           {[
-            { name: "Jaipur Thali", desc: t("Eine feine Auswahl traditioneller nordindischer Spezialitäten", "A fine selection of traditional North Indian specialties", "Une fine sélection de spécialités traditionnelles du nord de l'Inde"), img: `${BASE}/images/food/dish-7.jpg` },
-            { name: "Tandoori Mixed Grill", desc: t("Spezialitäten aus dem original Lehmofen", "Specialties from the original clay oven", "Spécialités du four tandoor traditionnel"), img: `${BASE}/images/food/dish-1.jpg` },
-            { name: "Chicken Tikka Masala", desc: t("Zartes Huhn in cremiger Tomaten-Curry-Soße", "Tender chicken in creamy tomato curry sauce", "Poulet tendre dans une sauce crémeuse au curry et tomates"), img: `${BASE}/images/paneer-curry-copper.webp` },
-            { name: "Lamb Biryani", desc: t("Basmatireis mit Lammfleisch, Mandeln und Rosinen", "Basmati rice with lamb, almonds and raisins", "Riz basmati avec agneau, amandes et raisins secs"), img: `${BASE}/images/tandoori-sizzler.webp` },
+            { name: "Jaipur Thali", desc: t("Eine feine Auswahl traditioneller nordindischer Spezialitäten", "A fine selection of traditional North Indian specialties", "Une fine sélection de spécialités traditionnelles du nord de l'Inde"), img: `${BASE}/images/food/jaipur-thali.jpg` },
+            { name: "Tandoori Mixed Grill", desc: t("Spezialitäten aus dem original Lehmofen", "Specialties from the original clay oven", "Spécialités du four tandoor traditionnel"), img: `${BASE}/images/food/tandoori-mixed-grill.jpg` },
+            { name: "Chicken Tikka Masala", desc: t("Zartes Huhn in cremiger Tomaten-Curry-Soße", "Tender chicken in creamy tomato curry sauce", "Poulet tendre dans une sauce crémeuse au curry et tomates"), img: `${BASE}/images/food/chicken-tikka-masala.jpg` },
+            { name: "Lamb Biryani", desc: t("Basmatireis mit Lammfleisch, Mandeln und Rosinen", "Basmati rice with lamb, almonds and raisins", "Riz basmati avec agneau, amandes et raisins secs"), img: `${BASE}/images/food/lamb-biryani.jpg` },
           ].map((dish, i) => (
             <div key={i} className={styles.dishCard}>
               <div className={styles.dishImgWrapper}>
