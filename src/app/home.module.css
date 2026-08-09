@@ -1057,7 +1057,7 @@ select.inputField option {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.openingHours h4 {
+.openingHours h3 {
   font-size: 1rem;
   margin-bottom: 8px;
   color: var(--color-accent);

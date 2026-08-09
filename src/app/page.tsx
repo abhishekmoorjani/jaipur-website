@@ -501,7 +501,7 @@ export default function Home() {
               <a href="tel:0761272082" className={styles.contactPhoneLink}>0761 / 27 20 82</a>
             </div>
             <div className={styles.openingHours}>
-              <h4>{t("Öffnungszeiten", "Opening Hours", "Horaires d'ouverture")}</h4>
+              <h3>{t("Öffnungszeiten", "Opening Hours", "Horaires d'ouverture")}</h3>
               <p>{t("Montag – Sonntag", "Monday – Sunday", "Lundi – Dimanche")}</p>
               <p>12:00 – 14:30 &nbsp;|&nbsp; 18:00 – 22:00</p>
               <p className={styles.noClosingDay}>{t("Kein Ruhetag", "No closing day", "Ouvert tous les jours")}</p>
