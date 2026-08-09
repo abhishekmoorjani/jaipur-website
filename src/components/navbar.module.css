@@ -5,14 +5,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 30px 5%;
+  padding: 22px 5%;
   z-index: 1000;
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   background-color: transparent;
 }
 
 .navScrolled {
-  padding: 20px 5%;
+  padding: 14px 5%;
   background-color: rgba(13, 17, 23, 0.85); /* Deep charcoal glassmorphism */
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -23,10 +23,21 @@
 .logoContainer {
   display: flex;
   align-items: center;
-  gap: 15px;
   cursor: pointer;
 }
 
+.logoImage {
+  height: 72px;
+  width: auto;
+  object-fit: contain;
+  transition: height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.navScrolled .logoImage {
+  height: 56px;
+}
+
+/* Keep text logo classes for fallback */
 .logoText {
   display: flex;
   flex-direction: column;
@@ -153,6 +164,9 @@
   gap: 28px;
   padding-top: 80px;
   animation: mobileSlideIn 0.3s ease forwards;
+  overscroll-behavior: contain;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 @keyframes mobileSlideIn {
@@ -256,10 +270,16 @@
 
 @media (max-width: 768px) {
   .navHeader {
-    padding: 16px 4%;
+    padding: 14px 4%;
   }
   .navScrolled {
-    padding: 14px 4%;
+    padding: 10px 4%;
+  }
+  .logoImage {
+    height: 60px;
+  }
+  .navScrolled .logoImage {
+    height: 50px;
   }
   .logoTitle {
     font-size: 1.2rem;
@@ -282,7 +302,13 @@
 
 @media (max-width: 480px) {
   .navHeader {
-    padding: 14px 4%;
+    padding: 12px 4%;
+  }
+  .logoImage {
+    height: 52px;
+  }
+  .navScrolled .logoImage {
+    height: 44px;
   }
   .logoTitle {
     font-size: 1.05rem;

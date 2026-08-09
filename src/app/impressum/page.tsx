@@ -20,8 +20,7 @@ export default function ImpressumPage() {
 
       <h2 style={{ fontSize: "1.5rem", marginBottom: "12px", marginTop: "30px" }}>Kontakt</h2>
       <p>
-        Telefon: 0761 / 27 20 82<br />
-        E-Mail: info@jaipur-freiburg.de
+        Telefon: 0761 / 27 20 82
       </p>
 
       <h2 style={{ fontSize: "1.5rem", marginBottom: "12px", marginTop: "30px" }}>Umsatzsteuer-ID</h2>

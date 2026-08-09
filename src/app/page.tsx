@@ -1,14 +1,16 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import styles from "./home.module.css";
 import Image from "next/image";
-import { Star, ChevronDown, ArrowRight, MapPin, Phone, Users, Calendar, Award } from "lucide-react";
+import { Star, ChevronDown, ArrowRight, MapPin, Phone, X, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import MenuPopup from "@/components/MenuPopup";
 import { useLanguage } from "@/context/LanguageContext";
 import { useGSAP } from "@gsap/react";
+import reviewsData from "@/data/reviews.json";
+import carouselData from "@/data/carousel-reviews.json";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
@@ -26,9 +28,18 @@ export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
 
-  // Hero slideshow — cycle every 5 seconds
+  // Force scroll to top on initial load — prevents mobile browsers
+  // from restoring scroll to random positions on refresh
+  useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Hero slideshow cycle every 5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length);
@@ -62,18 +73,18 @@ export default function Home() {
       ease: "power1.inOut",
     });
 
-    // Section reveals — fade up on scroll
+    // Section reveals — subtle fade up on scroll (gentle, not overwhelming)
     const sections = gsap.utils.toArray(`.${styles.revealSection}`) as HTMLElement[];
     sections.forEach((sec) => {
       gsap.fromTo(
         sec,
-        { opacity: 0, y: 60 },
+        { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
-          duration: 1,
+          duration: 1.2,
           ease: "power2.out",
-          scrollTrigger: { trigger: sec, start: "top 82%", toggleActions: "play none none reverse" },
+          scrollTrigger: { trigger: sec, start: "top 70%", toggleActions: "play none none none" },
         }
       );
     });
@@ -88,33 +99,104 @@ export default function Home() {
       }
     );
 
-    // Highlight cards stagger
+    // Editorial hero number — count up animation
+    const heroNumEl = document.querySelector(`.${styles.editorialHeroNumber}`) as HTMLElement;
+    if (heroNumEl) {
+      const target = parseInt(heroNumEl.dataset.target || "0", 10);
+      const suffix = heroNumEl.dataset.suffix || "";
+      const counter = { val: 0 };
+      gsap.to(counter, {
+        val: target,
+        duration: 2.2,
+        ease: "power2.out",
+        snap: { val: 1 },
+        scrollTrigger: { trigger: `.${styles.highlightsSection}`, start: "top 80%" },
+        onUpdate: () => { heroNumEl.textContent = Math.round(counter.val) + suffix; },
+      });
+    }
+
+    // Editorial hero — label + line entrance
     gsap.fromTo(
-      `.${styles.highlightCard}`,
+      `.${styles.editorialHeroLabel}`,
+      { opacity: 0, y: 15 },
+      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 1.0,
+        scrollTrigger: { trigger: `.${styles.highlightsSection}`, start: "top 80%" },
+      }
+    );
+    gsap.fromTo(
+      `.${styles.editorialHeroLine}`,
+      { scaleX: 0 },
+      { scaleX: 1, duration: 0.6, ease: "power2.out", delay: 0.8,
+        scrollTrigger: { trigger: `.${styles.highlightsSection}`, start: "top 80%" },
+      }
+    );
+    gsap.fromTo(
+      `.${styles.editorialHeroTagline}`,
+      { opacity: 0 },
+      { opacity: 0.6, duration: 0.8, ease: "power2.out", delay: 1.3,
+        scrollTrigger: { trigger: `.${styles.highlightsSection}`, start: "top 80%" },
+      }
+    );
+
+    // Editorial sub-stats — count up + staggered entrance (supports decimals like 4.6)
+    const subStatEls = gsap.utils.toArray(`.${styles.editorialNumber}`) as HTMLElement[];
+    subStatEls.forEach((el, i) => {
+      const target = parseFloat(el.dataset.target || "0");
+      const suffix = el.dataset.suffix || "";
+      const isDecimal = target % 1 !== 0;
+      const counter = { val: 0 };
+      gsap.to(counter, {
+        val: target,
+        duration: 1.8,
+        ease: "power2.out",
+        snap: isDecimal ? { val: 0.1 } : { val: 1 },
+        delay: 0.8 + i * 0.2,
+        scrollTrigger: { trigger: `.${styles.editorialRow}`, start: "top 88%" },
+        onUpdate: () => {
+          el.textContent = (isDecimal ? counter.val.toFixed(1) : Math.round(counter.val).toString()) + suffix;
+        },
+      });
+    });
+
+    // Sub-stat cards entrance
+    gsap.fromTo(
+      `.${styles.editorialStat}`,
       { y: 40, opacity: 0 },
       {
-        y: 0, opacity: 1, duration: 0.7, stagger: 0.1, ease: "power2.out",
-        scrollTrigger: { trigger: `.${styles.highlightsGrid}`, start: "top 85%" },
+        y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "power2.out",
+        scrollTrigger: { trigger: `.${styles.editorialRow}`, start: "top 88%" },
+        delay: 0.6,
       }
     );
 
-    // Testimonial cards stagger
+    // Sub-stat decoration lines scale in
     gsap.fromTo(
-      `.${styles.testimonialCard}`,
-      { y: 40, opacity: 0, scale: 0.96 },
+      `.${styles.editorialDeco}`,
+      { scaleX: 0 },
       {
-        y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.15, ease: "power2.out",
-        scrollTrigger: { trigger: `.${styles.testimonialGrid}`, start: "top 85%" },
+        scaleX: 1, duration: 0.5, stagger: 0.1, ease: "power2.out",
+        scrollTrigger: { trigger: `.${styles.editorialRow}`, start: "top 88%" },
+        delay: 1.2,
       }
     );
 
-    // Gallery items stagger
+    // Testimonial section header reveal — gentle, delayed entrance
     gsap.fromTo(
-      `.${styles.galleryItem}`,
-      { opacity: 0, scale: 0.9 },
+      `.${styles.testimonialsSection} .${styles.sectionHeader}`,
+      { opacity: 0, y: 20 },
       {
-        opacity: 1, scale: 1, duration: 0.6, stagger: 0.08, ease: "power2.out",
-        scrollTrigger: { trigger: `.${styles.galleryGrid}`, start: "top 85%" },
+        opacity: 1, y: 0, duration: 1.2, ease: "power2.out",
+        scrollTrigger: { trigger: `.${styles.testimonialsSection}`, start: "top 55%" },
+      }
+    );
+
+    // Gallery preview items stagger reveal
+    gsap.fromTo(
+      `.${styles.galleryPreviewHero}, .${styles.galleryPreviewTop}, .${styles.galleryPreviewBottom}`,
+      { opacity: 0, scale: 0.95, y: 20 },
+      {
+        opacity: 1, scale: 1, y: 0, duration: 0.7, stagger: 0.12, ease: "power2.out",
+        scrollTrigger: { trigger: `.${styles.galleryPreview}`, start: "top 85%" },
       }
     );
 
@@ -170,25 +252,37 @@ export default function Home() {
         <div className={styles.heroOverlay} />
 
         <div className={styles.heroInner}>
-          <span className={styles.eyebrow}>{t("Seit 1995 · Freiburg", "Since 1995 · Freiburg")}</span>
-          <h1 className={styles.headline}>
-            {t("Freiburgs ältestes indisches Restaurant", "Freiburg's oldest Indian restaurant")}
+          <span className={styles.eyebrow}>{t("Seit 1995 · Freiburg", "Since 1995 · Freiburg", "Depuis 1995 · Fribourg")}</span>
+          <h1 className={styles.headline} style={lang === "FR" ? { fontSize: "clamp(2.4rem, 4.2vw, 4.2rem)" } : undefined}>
+            {t("Freiburgs ältestes indisches Restaurant", "Freiburg's oldest Indian restaurant", "Le plus ancien restaurant indien de Fribourg")}
           </h1>
           <p className={styles.heroSub}>
             {t(
-              "Authentische indische Küche im Herzen der Altstadt — warm, elegant und seit drei Jahrzehnten familiengeführt.",
-              "Authentic Indian cuisine in the heart of the old town — warm, elegant, and family-run for three decades."
+              "Authentische indische Küche im Herzen der Altstadt. Warm, elegant und seit drei Jahrzehnten familiengeführt.",
+              "Authentic Indian cuisine in the heart of the old town. Warm, elegant, and family-run for three decades.",
+              "Cuisine indienne authentique au cœur de la vieille ville. Chaleureuse, élégante et familiale depuis trois décennies."
             )}
           </p>
           <div className={styles.heroCtas}>
-            <a href="#reservations" className={`${styles.heroBtn} btn-primary`}>
-              {t("Tisch reservieren", "Book a table")}
+            <a
+              href="#reservations"
+              className={`${styles.heroBtn} btn-primary`}
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById("reservations");
+                if (el) {
+                  const y = el.getBoundingClientRect().top + window.scrollY - 90;
+                  window.scrollTo({ top: y, behavior: "smooth" });
+                }
+              }}
+            >
+              {t("Tisch reservieren", "Book a table", "Réserver une table")}
             </a>
             <button
               className={`${styles.heroBtn} btn-outline`}
               onClick={() => setIsMenuOpen(true)}
             >
-              {t("Speisekarte", "View menu")}
+              {t("Speisekarte", "View menu", "Voir la carte")}
             </button>
           </div>
           <div className={styles.heroMeta}>
@@ -196,7 +290,7 @@ export default function Home() {
               {[...Array(5)].map((_, i) => (
                 <Star key={i} size={14} fill="var(--color-accent)" color="var(--color-accent)" />
               ))}
-              <span>4.5 · 585+ Google</span>
+              <span>{reviewsData.rating} {t("Sterne auf Google", "Stars on Google", "étoiles sur Google")}</span>
             </div>
             <span className={styles.heroAddress}>
               <MapPin size={13} /> Gerberau 5
@@ -217,7 +311,7 @@ export default function Home() {
         </div>
 
         <div className={styles.scrollIndicator}>
-          <span>{t("Entdecken", "Explore")}</span>
+          <span>{t("Entdecken", "Explore", "Découvrir")}</span>
           <ChevronDown size={18} />
         </div>
       </section>
@@ -227,16 +321,16 @@ export default function Home() {
          ═══════════════════════════════════════ */}
       <section id="speisekarte" className={`${styles.signatureSection} ${styles.revealSection} section-padding`}>
         <div className={styles.sectionHeader}>
-          <span className={styles.sectionEyebrow}>{t("Unsere Küche", "Our Kitchen")}</span>
-          <h2>{t("Empfehlungen des Hauses", "Chef's Recommendations")}</h2>
-          <p>{t("Entdecken Sie die Vielfalt unserer authentischen indischen Küche.", "Discover the diversity of our authentic Indian cuisine.")}</p>
+          <span className={styles.sectionEyebrow}>{t("Unsere Küche", "Our Kitchen", "Notre cuisine")}</span>
+          <h2>{t("Empfehlungen des Hauses", "Chef's Recommendations", "Recommandations du chef")}</h2>
+          <p>{t("Entdecken Sie die Vielfalt unserer authentischen indischen Küche.", "Discover the diversity of our authentic Indian cuisine.", "Découvrez la diversité de notre cuisine indienne authentique.")}</p>
         </div>
         <div className={styles.dishGrid}>
           {[
-            { name: "Jaipur Thali", desc: t("Eine feine Auswahl traditioneller nordindischer Spezialitäten", "A fine selection of traditional North Indian specialties"), img: `${BASE}/images/food/dish-1.jpg` },
-            { name: "Tandoori Mixed Grill", desc: t("Spezialitäten aus dem original Lehmofen", "Specialties from the original clay oven"), img: `${BASE}/images/food/dish-4.jpg` },
-            { name: "Chicken Tikka Masala", desc: t("Zartes Huhn in cremiger Tomaten-Curry-Soße", "Tender chicken in creamy tomato curry sauce"), img: `${BASE}/images/food/dish-2.jpg` },
-            { name: "Lamb Biryani", desc: t("Basmatireis mit Lammfleisch, Mandeln und Rosinen", "Basmati rice with lamb, almonds and raisins"), img: `${BASE}/images/food/dish-3.jpg` },
+            { name: "Jaipur Thali", desc: t("Eine feine Auswahl traditioneller nordindischer Spezialitäten", "A fine selection of traditional North Indian specialties", "Une fine sélection de spécialités traditionnelles du nord de l'Inde"), img: `${BASE}/images/food/dish-7.jpg` },
+            { name: "Tandoori Mixed Grill", desc: t("Spezialitäten aus dem original Lehmofen", "Specialties from the original clay oven", "Spécialités du four tandoor traditionnel"), img: `${BASE}/images/food/dish-1.jpg` },
+            { name: "Chicken Tikka Masala", desc: t("Zartes Huhn in cremiger Tomaten-Curry-Soße", "Tender chicken in creamy tomato curry sauce", "Poulet tendre dans une sauce crémeuse au curry et tomates"), img: `${BASE}/images/paneer-curry-copper.webp` },
+            { name: "Lamb Biryani", desc: t("Basmatireis mit Lammfleisch, Mandeln und Rosinen", "Basmati rice with lamb, almonds and raisins", "Riz basmati avec agneau, amandes et raisins secs"), img: `${BASE}/images/tandoori-sizzler.webp` },
           ].map((dish, i) => (
             <div key={i} className={styles.dishCard}>
               <div className={styles.dishImgWrapper}>
@@ -250,8 +344,8 @@ export default function Home() {
           ))}
         </div>
         <div className={styles.menuCta}>
-          <button onClick={() => setIsMenuOpen(true)} className="btn-outline">
-            {t("Gesamte Speisekarte ansehen", "View full menu")} <ArrowRight size={18} style={{ marginLeft: 8, verticalAlign: "middle" }} />
+          <button onClick={() => setIsMenuOpen(true)} className={`${styles.menuCtaBtn} btn-outline`}>
+            {t("Gesamte Speisekarte ansehen", "View full menu", "Voir la carte complète")} <ArrowRight size={18} style={{ marginLeft: 8, verticalAlign: "middle" }} />
           </button>
         </div>
       </section>
@@ -262,17 +356,18 @@ export default function Home() {
       <section id="about" className={`${styles.storySection} ${styles.revealSection} section-padding`}>
         <div className={styles.storyContainer}>
           <div className={styles.storyImageWrapper}>
-            <Image src={`${BASE}/images/food/dish-5.jpg`} alt={t("Jaipur Restaurant Impressionen", "Jaipur restaurant impressions")} fill className={styles.storyImg} />
+            <Image src={`${BASE}/images/terrace-evening.webp`} alt={t("Jaipur Restaurant Terrasse", "Jaipur restaurant terrace", "Terrasse du restaurant Jaipur")} fill className={styles.storyImg} />
           </div>
           <div className={styles.storyContent}>
-            <span className={styles.sectionEyebrow}>{t("Unsere Geschichte", "Our Story")}</span>
+            <span className={styles.sectionEyebrow}>{t("Unsere Geschichte", "Our Story", "Notre histoire")}</span>
             <h2 className={styles.storyTitle}>
-              {t("Seit über 30 Jahren ein Teil von Freiburg", "Part of Freiburg for over 30 years")}
+              {t("Seit über 30 Jahren ein Teil von Freiburg", "Part of Freiburg for over 30 years", "Partie intégrante de Fribourg depuis plus de 30 ans")}
             </h2>
             <p>
               {t(
                 "Im Jahr 1995 öffneten wir unsere Türen in der malerischen Gerberau. Seitdem haben wir es uns zur Aufgabe gemacht, die uralten Traditionen und die vielfältigen Aromen Indiens in unsere geliebte Stadt zu bringen. Mit Originalrezepten, die von Generation zu Generation in unserer Familie weitergegeben wurden, laden wir Sie ein, ein Stück echter indischer Kultur und Gastlichkeit zu erleben.",
-                "In 1995, we opened our doors in the picturesque Gerberau. Since then, we have made it our mission to bring the ancient traditions and diverse flavours of India to our beloved city. With original recipes passed down through generations in our family, we invite you to experience a piece of genuine Indian culture and hospitality."
+                "In 1995, we opened our doors in the picturesque Gerberau. Since then, we have made it our mission to bring the ancient traditions and diverse flavours of India to our beloved city. With original recipes passed down through generations in our family, we invite you to experience a piece of genuine Indian culture and hospitality.",
+                "En 1995, nous avons ouvert nos portes dans la pittoresque Gerberau. Depuis, notre mission est d'apporter les traditions ancestrales et les saveurs variées de l'Inde dans notre ville bien-aimée. Avec des recettes originales transmises de génération en génération dans notre famille, nous vous invitons à découvrir un morceau de culture et d'hospitalité indiennes authentiques."
               )}
             </p>
           </div>
@@ -280,23 +375,52 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════════════════════════
-          3b) HIGHLIGHTS — Key selling points
+          3b) HIGHLIGHTS — Staggered Editorial Spread
          ═══════════════════════════════════════ */}
-      <section className={`${styles.highlightsSection} ${styles.revealSection}`}>
-        <div className={styles.highlightsGrid}>
-          {[
-            { number: "30+", label: t("Jahre", "Years"), desc: t("Freiburgs ältestes indisches Restaurant — seit 1995 ein fester Teil der Altstadt.", "Freiburg's oldest Indian restaurant — a fixture of the old town since 1995."), icon: <Calendar size={24} /> },
-            { number: "3", label: t("Generationen", "Generations"), desc: t("Originalrezepte, weitergegeben von Generation zu Generation in unserer Familie.", "Original recipes passed down from generation to generation in our family."), icon: <Award size={24} /> },
-            { number: "585+", label: t("Bewertungen", "Reviews"), desc: t("4.5 Sterne auf Google — unsere Gäste lieben die Authentizität und den Service.", "4.5 stars on Google — our guests love the authenticity and service."), icon: <Star size={24} /> },
-            { number: "7", label: t("Tage", "Days"), desc: t("Kein Ruhetag — jeden Tag der Woche für Sie geöffnet, mittags und abends.", "No closing day — open every day of the week for you, lunch and dinner."), icon: <Users size={24} /> },
-          ].map((item, i) => (
-            <div key={i} className={styles.highlightCard}>
-              <div className={styles.highlightIcon}>{item.icon}</div>
-              <div className={styles.highlightNumber}>{item.number}</div>
-              <div className={styles.highlightLabel}>{item.label}</div>
-              <p className={styles.highlightDesc}>{item.desc}</p>
+      <section className={`${styles.highlightsSection} ${styles.revealSection} section-padding`}>
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionEyebrow}>{t("Warum Jaipur", "Why Jaipur", "Pourquoi Jaipur")}</span>
+          <h2>{t("Tradition trifft Leidenschaft", "Tradition meets passion", "La tradition rencontre la passion")}</h2>
+        </div>
+
+        {/* Hero stat — massive centered */}
+        <div className={styles.editorialHero}>
+          <div className={styles.editorialHeroNumber} data-target="30" data-suffix="+">0</div>
+          <div className={styles.editorialHeroLabel}>{t("Jahre Tradition", "Years of tradition", "Ans de tradition")}</div>
+          <div className={styles.editorialHeroLine} />
+          <div className={styles.editorialHeroTagline}>
+            {t("Freiburgs ältestes indisches Restaurant seit 1995", "Freiburg's oldest Indian restaurant since 1995", "Le plus ancien restaurant indien de Fribourg depuis 1995")}
+          </div>
+        </div>
+
+        {/* Sub-stats row — staggered */}
+        <div className={styles.editorialRow}>
+          <div className={styles.editorialStat}>
+            <div className={styles.editorialStatBg}>
+              <div className={styles.editorialNumber} data-target="3" data-suffix="">0</div>
+              <div className={styles.editorialDeco} />
+              <div className={styles.editorialLabel}>{t("Familien-Generationen", "Family generations", "Générations familiales")}</div>
             </div>
-          ))}
+          </div>
+          <div className={styles.editorialStat}>
+            <div className={styles.editorialStatBg}>
+              <div className={styles.editorialNumber} data-target="4.6" data-suffix="">0</div>
+              <div className={styles.editorialDeco} />
+              <div className={styles.editorialLabel}>{t("Google Bewertung", "Google Rating", "Note Google")}</div>
+              <div className={styles.editorialStars}>
+                {[...Array(5)].map((_, j) => (
+                  <Star key={j} size={12} fill="var(--color-accent)" color="var(--color-accent)" />
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className={styles.editorialStat}>
+            <div className={styles.editorialStatBg}>
+              <div className={styles.editorialNumber} data-target="7" data-suffix="/7">0</div>
+              <div className={styles.editorialDeco} />
+              <div className={styles.editorialLabel}>{t("Tage geöffnet", "Days open", "Jours d'ouverture")}</div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -304,29 +428,9 @@ export default function Home() {
       <MenuPopup isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 
       {/* ═══════════════════════════════════════
-          5) TESTIMONIALS
+          5) TESTIMONIALS — Horizontal auto-scroll carousel
          ═══════════════════════════════════════ */}
-      <section className={`${styles.testimonialsSection} ${styles.revealSection} section-padding`}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionEyebrow}>{t("Stimmen unserer Gäste", "Guest Voices")}</span>
-          <h2>{t("Was unsere Gäste sagen", "What our guests say")}</h2>
-        </div>
-        <div className={styles.testimonialGrid}>
-          {[
-            { name: "Anna S.", text: t("Das beste indische Restaurant in Freiburg! Das Chicken Tikka ist ein Traum.", "The best Indian restaurant in Freiburg! The Chicken Tikka is a dream."), stars: 5 },
-            { name: "Michael R.", text: t("Authentische Atmosphäre und fantastisches Essen. Wir kommen immer wieder gerne hierher.", "Authentic atmosphere and fantastic food. We always love coming back here."), stars: 5 },
-            { name: "Julia M.", text: t("Sehr freundlicher Service und extrem leckeres Naan Brot. Absolut empfehlenswert!", "Very friendly service and extremely delicious naan bread. Absolutely recommended!"), stars: 5 },
-          ].map((review, i) => (
-            <div key={i} className={styles.testimonialCard}>
-              <div className={styles.stars}>
-                {[...Array(review.stars)].map((_, j) => <Star key={j} size={16} fill="var(--color-accent)" color="var(--color-accent)" />)}
-              </div>
-              <p className={styles.reviewText}>&ldquo;{review.text}&rdquo;</p>
-              <span className={styles.reviewerName}>{review.name}</span>
-            </div>
-          ))}
-        </div>
-      </section>
+      <TestimonialCarousel carouselReviews={carouselData.reviews} lang={lang} t={t} />
 
       {/* ═══════════════════════════════════════
           6) RESERVATION FORM
@@ -334,9 +438,9 @@ export default function Home() {
       <section className={`${styles.reservationSection} ${styles.revealSection} section-padding`} id="reservations">
         <div className={styles.resContainer}>
           <div className={styles.resInfo}>
-            <span className={styles.sectionEyebrow}>{t("Reservierung", "Reservation")}</span>
-            <h2>{t("Reservieren Sie Ihren Tisch", "Reserve your table")}</h2>
-            <p>{t("Freuen Sie sich auf einen unvergesslichen Abend bei Jaipur.", "Look forward to an unforgettable evening at Jaipur.")}</p>
+            <span className={styles.sectionEyebrow}>{t("Reservierung", "Reservation", "Réservation")}</span>
+            <h2>{t("Reservieren Sie Ihren Tisch", "Reserve your table", "Réservez votre table")}</h2>
+            <p>{t("Freuen Sie sich auf einen unvergesslichen Abend bei Jaipur.", "Look forward to an unforgettable evening at Jaipur.", "Attendez-vous à une soirée inoubliable au Jaipur.")}</p>
             <div className={styles.resDetails}>
               <div className={styles.resDetailItem}>
                 <MapPin size={18} className={styles.resDetailIcon} />
@@ -345,89 +449,31 @@ export default function Home() {
                   <span>79098 Freiburg im Breisgau</span>
                 </div>
               </div>
-              <div className={styles.resDetailItem}>
-                <Phone size={18} className={styles.resDetailIcon} />
-                <div>
-                  <span>{t("Telefonisch reservieren", "Reserve by phone")}</span>
-                  <a href="tel:0761272082" className={styles.phoneNumber}>0761 / 27 20 82</a>
-                </div>
+            </div>
+          </div>
+          <div className={styles.resPhoneCard}>
+            <div className={styles.resPhoneCardInner}>
+              <Phone size={32} className={styles.resPhoneCardIcon} />
+              <h3 className={styles.resPhoneCardTitle}>
+                {t("Rufen Sie uns an", "Give us a call", "Appelez-nous")}
+              </h3>
+              <a href="tel:0761272082" className={styles.resPhoneCardNumber}>
+                0761 / 27 20 82
+              </a>
+              <p className={styles.resPhoneCardSub}>
+                {t(
+                  "Wir freuen uns auf Ihre Reservierung! Täglich von 12:00 bis 14:30 Uhr und 18:00 bis 22:00 Uhr erreichbar.",
+                  "We look forward to your reservation! Available daily from 12:00 to 14:30 and 18:00 to 22:00.",
+                  "Nous nous réjouissons de votre réservation ! Joignable tous les jours de 12h00 à 14h30 et de 18h00 à 22h00."
+                )}
+              </p>
+              <div className={styles.resPhoneCardHours}>
+                <Clock size={16} />
+                <span>{t("Montag – Sonntag", "Monday – Sunday", "Lundi – Dimanche")}</span>
+                <span>12:00 – 14:30 &nbsp;|&nbsp; 18:00 – 22:00</span>
               </div>
             </div>
           </div>
-          <form className={styles.resForm} onSubmit={(e) => e.preventDefault()}>
-            <div className={styles.formGrid}>
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>{t("Name", "Name")}</label>
-                <input type="text" placeholder={t("Ihr Name", "Your name")} required className={styles.inputField} />
-              </div>
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>{t("E-Mail", "Email")}</label>
-                <input type="email" placeholder={t("Ihre E-Mail", "Your email")} required className={styles.inputField} />
-              </div>
-            </div>
-            <div className={styles.formGrid}>
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>{t("Telefon", "Phone")}</label>
-                <input type="tel" placeholder={t("Ihre Telefonnummer", "Your phone")} className={styles.inputField} />
-              </div>
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>{t("Anzahl Personen", "Guests")}</label>
-                <select className={styles.inputField} required defaultValue="">
-                  <option value="" disabled>{t("Bitte wählen", "Please select")}</option>
-                  {[1,2,3,4,5,6,7,8].map(n => (
-                    <option key={n} value={n}>{n} {n === 1 ? t("Person", "Guest") : t("Personen", "Guests")}</option>
-                  ))}
-                  <option value="9+">{t("9+ Personen", "9+ Guests")}</option>
-                </select>
-              </div>
-            </div>
-            <div className={styles.formGrid}>
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>{t("Datum", "Date")}</label>
-                <input
-                  type="date"
-                  required
-                  className={styles.inputField}
-                  min={new Date().toISOString().split("T")[0]}
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>{t("Uhrzeit", "Time")}</label>
-                <select className={styles.inputField} required defaultValue="">
-                  <option value="" disabled>{t("Uhrzeit wählen", "Select time")}</option>
-                  <option value="11:30">11:30</option>
-                  <option value="12:00">12:00</option>
-                  <option value="12:30">12:30</option>
-                  <option value="13:00">13:00</option>
-                  <option value="13:30">13:30</option>
-                  <option value="14:00">14:00</option>
-                  <option value="17:30">17:30</option>
-                  <option value="18:00">18:00</option>
-                  <option value="18:30">18:30</option>
-                  <option value="19:00">19:00</option>
-                  <option value="19:30">19:30</option>
-                  <option value="20:00">20:00</option>
-                  <option value="20:30">20:30</option>
-                  <option value="21:00">21:00</option>
-                  <option value="21:30">21:30</option>
-                  <option value="22:00">22:00</option>
-                  <option value="22:30">22:30</option>
-                  <option value="23:00">23:00</option>
-                </select>
-              </div>
-            </div>
-            <div className={styles.formGroup}>
-              <label className={styles.formLabel}>{t("Anmerkungen", "Notes")}</label>
-              <textarea
-                placeholder={t("Allergien, besondere Wünsche...", "Allergies, special requests...")}
-                className={styles.textareaField}
-                rows={2}
-              />
-            </div>
-            <button type="submit" className={`${styles.formBtn} btn-primary`}>
-              {t("Tisch anfragen", "Request table")}
-            </button>
-          </form>
         </div>
       </section>
 
@@ -437,8 +483,8 @@ export default function Home() {
       <section id="contact" className={`${styles.mapSection} ${styles.revealSection} section-padding`}>
         <div className={styles.mapContainer}>
           <div className={styles.mapInfo}>
-            <span className={styles.sectionEyebrow}>{t("Standort", "Location")}</span>
-            <h2>{t("Besuchen Sie uns", "Visit us")}</h2>
+            <span className={styles.sectionEyebrow}>{t("Standort", "Location", "Emplacement")}</span>
+            <h2>{t("Besuchen Sie uns", "Visit us", "Venez nous voir")}</h2>
             <p style={{ marginTop: "20px", marginBottom: "20px" }}>
               Gerberau 5<br />
               79098 Freiburg im Breisgau
@@ -446,7 +492,8 @@ export default function Home() {
             <p>
               {t(
                 "Gelegen im Herzen der malerischen Altstadt, direkt an den historischen Bächle.",
-                "Located in the heart of the picturesque old town, right by the historic Bächle."
+                "Located in the heart of the picturesque old town, right by the historic Bächle.",
+                "Situé au cœur de la pittoresque vieille ville, juste à côté des historiques Bächle."
               )}
             </p>
             <div className={styles.contactPhone}>
@@ -454,71 +501,51 @@ export default function Home() {
               <a href="tel:0761272082" className={styles.contactPhoneLink}>0761 / 27 20 82</a>
             </div>
             <div className={styles.openingHours}>
-              <h4>{t("Öffnungszeiten", "Opening Hours")}</h4>
-              <p>{t("Montag – Sonntag", "Monday – Sunday")}</p>
-              <p>11:30 – 14:30 &nbsp;|&nbsp; 17:30 – 23:30</p>
-              <p className={styles.noClosingDay}>{t("Kein Ruhetag", "No closing day")}</p>
+              <h4>{t("Öffnungszeiten", "Opening Hours", "Horaires d'ouverture")}</h4>
+              <p>{t("Montag – Sonntag", "Monday – Sunday", "Lundi – Dimanche")}</p>
+              <p>12:00 – 14:30 &nbsp;|&nbsp; 18:00 – 22:00</p>
+              <p className={styles.noClosingDay}>{t("Kein Ruhetag", "No closing day", "Ouvert tous les jours")}</p>
             </div>
           </div>
           <div className={styles.mapWrapper}>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2669.5!2d7.8488!3d47.9927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47911b26e7d5a38f%3A0x4a3510c31f1d1a0!2sGerberau+5%2C+79098+Freiburg+im+Breisgau%2C+Germany!5e0!3m2!1sen!2sde!4v1700000000000!5m2!1sen!2sde"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2670.0424710179814!2d7.847128576420615!3d47.99356636117597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47911c98d5014727%3A0x24e7e1a3b6d1dba3!2sJaipur!5e0!3m2!1sen!2sde!4v1773580189972!5m2!1sen!2sde"
               width="100%"
               height="100%"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title={t("Jaipur Standort Karte", "Jaipur location map")}
+              title={t("Jaipur Standort Karte", "Jaipur location map", "Carte de localisation Jaipur")}
             />
           </div>
         </div>
       </section>
 
       {/* ═══════════════════════════════════════
-          8) GALLERY
+          8) GALLERY — Staggered Trio + Lightbox
          ═══════════════════════════════════════ */}
-      <section id="gallery" className={`${styles.gallerySection} ${styles.revealSection}`}>
-        <div className={styles.sectionHeader} style={{ padding: "0 5% 50px" }}>
-          <span className={styles.sectionEyebrow}>{t("Impressionen", "Impressions")}</span>
-          <h2>{t("Ein Abend im Jaipur", "An evening at Jaipur")}</h2>
-        </div>
-        <div className={styles.galleryGrid}>
-          {[
-            `${BASE}/images/food/dish-5.jpg`,
-            `${BASE}/images/food/dish-6.jpg`,
-            `${BASE}/images/food/dish-7.jpg`,
-            `${BASE}/images/food/dish-1.jpg`,
-            `${BASE}/images/food/dish-2.jpg`,
-            `${BASE}/images/food/dish-3.jpg`,
-            `${BASE}/images/food/dish-4.jpg`,
-          ].map((img, i) => (
-            <div key={i} className={styles.galleryItem}>
-              <Image src={img} alt={`${t("Galerie", "Gallery")} ${i + 1}`} fill className={styles.galleryImg} sizes="(max-width: 768px) 50vw, 25vw" />
-            </div>
-          ))}
-        </div>
-      </section>
+      <GallerySection t={t} />
 
       {/* ═══════════════════════════════════════
           9) FAQ
          ═══════════════════════════════════════ */}
       <section className={`${styles.faqSection} ${styles.revealSection} section-padding`}>
         <div className={styles.sectionHeader}>
-          <h2>{t("Häufig gestellte Fragen", "Frequently asked questions")}</h2>
+          <h2>{t("Häufig gestellte Fragen", "Frequently asked questions", "Questions fréquemment posées")}</h2>
         </div>
         <div className={styles.faqList}>
           <FAQItem
-            question={t("Bieten Sie auch vegane und glutenfreie Gerichte an?", "Do you offer vegan and gluten-free dishes?")}
-            answer={t("Ja, wir haben eine große Auswahl an veganen und glutenfreien Variationen. Bitte sprechen Sie unser Service-Personal darauf an.", "Yes, we have a large selection of vegan and gluten-free options. Please ask our service staff.")}
+            question={t("Bieten Sie auch vegane und glutenfreie Gerichte an?", "Do you offer vegan and gluten-free dishes?", "Proposez-vous des plats végétaliens et sans gluten ?")}
+            answer={t("Ja, wir haben eine große Auswahl an veganen und glutenfreien Variationen. Bitte sprechen Sie unser Service-Personal darauf an.", "Yes, we have a large selection of vegan and gluten-free options. Please ask our service staff.", "Oui, nous avons un large choix de plats végétaliens et sans gluten. N'hésitez pas à en parler à notre personnel de service.")}
           />
           <FAQItem
-            question={t("Sind Hunde im Restaurant erlaubt?", "Are dogs allowed in the restaurant?")}
-            answer={t("Ja, gut erzogene kleine Hunde sind bei uns willkommen. Wir bitten jedoch darum, dies bei der Reservierung anzugeben.", "Yes, well-behaved small dogs are welcome. However, we ask that you mention this when making a reservation.")}
+            question={t("Sind Hunde im Restaurant erlaubt?", "Are dogs allowed in the restaurant?", "Les chiens sont-ils autorisés au restaurant ?")}
+            answer={t("Ja, gut erzogene kleine Hunde sind bei uns willkommen. Wir bitten jedoch darum, dies bei der Reservierung anzugeben.", "Yes, well-behaved small dogs are welcome. However, we ask that you mention this when making a reservation.", "Oui, les petits chiens bien élevés sont les bienvenus. Nous vous demandons toutefois de le mentionner lors de la réservation.")}
           />
           <FAQItem
-            question={t("Bieten Sie Catering für Veranstaltungen an?", "Do you offer catering for events?")}
-            answer={t("Selbstverständlich. Wir bieten maßgeschneiderte Catering-Lösungen für private Feiern und Firmen-Events in Freiburg und Umgebung.", "Of course. We offer tailored catering solutions for private celebrations and corporate events in Freiburg and the surrounding area.")}
+            question={t("Bieten Sie Catering für Veranstaltungen an?", "Do you offer catering for events?", "Proposez-vous un service traiteur pour les événements ?")}
+            answer={t("Selbstverständlich. Wir bieten maßgeschneiderte Catering-Lösungen für private Feiern und Firmen-Events in Freiburg und Umgebung.", "Of course. We offer tailored catering solutions for private celebrations and corporate events in Freiburg and the surrounding area.", "Bien sûr. Nous proposons des solutions de traiteur sur mesure pour les célébrations privées et les événements d'entreprise à Fribourg et dans les environs.")}
           />
         </div>
       </section>
@@ -530,7 +557,7 @@ export default function Home() {
         <div className={styles.togoInner}>
           <span className={styles.togoTitle}>JAIPUR TO GO</span>
           <p>
-            {t("Einfach vorbestellen & abholen!", "Simply pre-order & pick up!")}
+            {t("Einfach vorbestellen & abholen!", "Simply pre-order & pick up!", "Commandez et passez chercher !")}
             {" "}
             <a href="tel:0761272082" className={styles.togoPhone}>0761 / 27 20 82</a>
           </p>
@@ -545,7 +572,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={styles.faqItem} onClick={() => setIsOpen(!isOpen)}>
+    <div className={styles.faqItem} onClick={() => setIsOpen(!isOpen)} role="button" aria-expanded={isOpen} tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setIsOpen(!isOpen); } }}>
       <div className={styles.faqHeader}>
         <h3 className={styles.faqQuestion}>{question}</h3>
         <ChevronDown
@@ -559,5 +586,513 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
         </div>
       )}
     </div>
+  );
+}
+
+/* ═══════════════════════════════════════
+   TESTIMONIAL CAROUSEL
+   ═══════════════════════════════════════ */
+interface CarouselReview {
+  author: string;
+  rating: number;
+  profilePhoto: string | null;
+  text_de: string;
+  text_en: string;
+  text_fr: string;
+  time_de: string;
+  time_en: string;
+  time_fr: string;
+}
+
+// Helper to get text/time in the current language
+function getReviewText(r: CarouselReview, lang: string) {
+  if (lang === "FR") return r.text_fr;
+  if (lang === "EN") return r.text_en;
+  return r.text_de;
+}
+function getReviewTime(r: CarouselReview, lang: string) {
+  if (lang === "FR") return r.time_fr;
+  if (lang === "EN") return r.time_en;
+  return r.time_de;
+}
+
+function TestimonialCarousel({ carouselReviews, lang, t }: { carouselReviews: CarouselReview[]; lang: string; t: (de: string, en: string, fr?: string) => string }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
+  const isPausedRef = useRef(false);
+  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [expandedReview, setExpandedReview] = useState<CarouselReview | null>(null);
+
+  // Pre-translated reviews — already filtered & curated, just triple for infinite loop
+  // 50 × 3 = 150 DOM nodes — buttery smooth on mobile
+  const limitedReviews = carouselReviews;
+  const loopedReviews = [...limitedReviews, ...limitedReviews, ...limitedReviews];
+
+  // Auto-scroll using transform:translateX — works on ALL devices including mobile
+  const offsetRef = useRef(0);
+  const oneSetWidthRef = useRef(0);
+  const touchLastXRef = useRef(0);
+  const isDraggingRef = useRef(false);
+  const velocityRef = useRef(0);       // px/frame momentum
+  const lastMoveTimeRef = useRef(0);   // timestamp of last move event
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    let cancelled = false;
+
+    // Measure one set width after first paint
+    requestAnimationFrame(() => {
+      if (cancelled || !track) return;
+
+      // Calculate width of one set of reviews (1/3 of total items)
+      const items = Array.from(track.children) as HTMLElement[];
+      const oneSetCount = Math.floor(items.length / 3);
+      const gap = parseFloat(getComputedStyle(track).gap) || 24;
+      let oneSetWidth = 0;
+      for (let i = 0; i < oneSetCount && i < items.length; i++) {
+        oneSetWidth += items[i].offsetWidth + gap;
+      }
+
+      if (oneSetWidth <= 0) return;
+      oneSetWidthRef.current = oneSetWidth;
+
+      // Start scrolled to the middle set
+      offsetRef.current = oneSetWidth;
+      track.style.transform = `translateX(-${offsetRef.current}px)`;
+
+      // Continuous scroll loop — SINGLE point of DOM mutation for smooth 60fps
+      const animate = () => {
+        if (cancelled) return;
+
+        // Apply momentum decay when not dragging and momentum exists
+        if (!isDraggingRef.current && Math.abs(velocityRef.current) > 0.3) {
+          offsetRef.current += velocityRef.current;
+          velocityRef.current *= 0.95; // exponential decay — feels like native scroll
+        } else if (!isDraggingRef.current && Math.abs(velocityRef.current) <= 0.3) {
+          velocityRef.current = 0;
+          // Auto-scroll only when momentum is done and not paused
+          if (!isPausedRef.current) {
+            offsetRef.current += 0.8;
+          }
+        }
+
+        // Seamless infinite loop: wrap around
+        const setW = oneSetWidthRef.current;
+        if (setW > 0) {
+          if (offsetRef.current >= setW * 2) offsetRef.current -= setW;
+          if (offsetRef.current < 0) offsetRef.current += setW;
+        }
+
+        // Always apply transform — single DOM write per frame
+        track.style.transform = `translateX(-${offsetRef.current}px)`;
+
+        rafRef.current = requestAnimationFrame(animate);
+      };
+
+      rafRef.current = requestAnimationFrame(animate);
+    });
+
+    // Pause/resume helpers
+    const pause = () => {
+      isPausedRef.current = true;
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    };
+    const resume = (delay = 800) => {
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = setTimeout(() => {
+        isPausedRef.current = false;
+      }, delay);
+    };
+
+    // Desktop: pause on hover, resume on leave
+    const handleMouseEnter = () => { velocityRef.current = 0; pause(); };
+    const handleMouseLeave = () => { if (!isDraggingRef.current) resume(500); };
+
+    // Touch swipe with velocity tracking for momentum
+    const handleTouchStart = (e: TouchEvent) => {
+      isDraggingRef.current = true;
+      isPausedRef.current = true;
+      velocityRef.current = 0; // kill any existing momentum
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+      touchLastXRef.current = e.touches[0].clientX;
+      lastMoveTimeRef.current = performance.now();
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!isDraggingRef.current) return;
+      const now = performance.now();
+      const currentX = e.touches[0].clientX;
+      const delta = touchLastXRef.current - currentX; // positive = swiping left
+      const dt = now - lastMoveTimeRef.current;
+
+      // Track velocity (px per 16ms frame)
+      if (dt > 0) {
+        velocityRef.current = (delta / dt) * 16;
+      }
+
+      touchLastXRef.current = currentX;
+      lastMoveTimeRef.current = now;
+      offsetRef.current += delta;
+    };
+
+    const handleTouchEnd = () => {
+      isDraggingRef.current = false;
+      // Clamp velocity to prevent insane speeds
+      velocityRef.current = Math.max(-30, Math.min(30, velocityRef.current));
+      // Resume auto-scroll after momentum decays (momentum handles the glide)
+      resume(2000);
+    };
+
+    // Mouse drag with velocity tracking
+    const handleMouseDown = (e: MouseEvent) => {
+      isDraggingRef.current = true;
+      isPausedRef.current = true;
+      velocityRef.current = 0;
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+      touchLastXRef.current = e.clientX;
+      lastMoveTimeRef.current = performance.now();
+      track.style.cursor = "grabbing";
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDraggingRef.current) return;
+      const now = performance.now();
+      const delta = touchLastXRef.current - e.clientX;
+      const dt = now - lastMoveTimeRef.current;
+
+      if (dt > 0) {
+        velocityRef.current = (delta / dt) * 16;
+      }
+
+      touchLastXRef.current = e.clientX;
+      lastMoveTimeRef.current = now;
+      offsetRef.current += delta;
+    };
+
+    const handleMouseUp = () => {
+      if (!isDraggingRef.current) return;
+      isDraggingRef.current = false;
+      track.style.cursor = "";
+      velocityRef.current = Math.max(-30, Math.min(30, velocityRef.current));
+      resume(1500);
+    };
+
+    track.addEventListener("mouseenter", handleMouseEnter);
+    track.addEventListener("mouseleave", handleMouseLeave);
+    track.addEventListener("touchstart", handleTouchStart, { passive: true });
+    track.addEventListener("touchmove", handleTouchMove, { passive: true });
+    track.addEventListener("touchend", handleTouchEnd, { passive: true });
+    track.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      cancelled = true;
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+      track.removeEventListener("mouseenter", handleMouseEnter);
+      track.removeEventListener("mouseleave", handleMouseLeave);
+      track.removeEventListener("touchstart", handleTouchStart);
+      track.removeEventListener("touchmove", handleTouchMove);
+      track.removeEventListener("touchend", handleTouchEnd);
+      track.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
+
+  // Pause auto-scroll when modal is open
+  useEffect(() => {
+    if (expandedReview) {
+      isPausedRef.current = true;
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    } else {
+      // Resume quickly after modal closes
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = setTimeout(() => {
+        isPausedRef.current = false;
+      }, 500);
+    }
+  }, [expandedReview]);
+
+  // Close modal on Escape key
+  useEffect(() => {
+    if (!expandedReview) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setExpandedReview(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [expandedReview]);
+
+  const getInitials = (name: string) => {
+    return name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+  };
+
+  return (
+    <section className={`${styles.testimonialsSection} ${styles.revealSection}`}>
+      <div className={styles.sectionHeader}>
+        <span className={styles.sectionEyebrow}>{t("Stimmen unserer Gäste", "Guest Voices", "Avis de nos clients")}</span>
+        <h2>{t("Was unsere Gäste sagen", "What our guests say", "Ce que disent nos clients")}</h2>
+        <p>
+          {t(
+            `${reviewsData.rating} Sterne auf Google`,
+            `Rated ${reviewsData.rating} stars on Google`,
+            `${reviewsData.rating} étoiles sur Google`
+          )}
+        </p>
+      </div>
+
+      <div className={styles.carouselWrapper} role="region" aria-label={t("Bewertungen Karussell", "Reviews carousel", "Carrousel d'avis")}>
+        <div className={styles.carouselFadeLeft} />
+        <div className={styles.carouselFadeRight} />
+
+        <div ref={trackRef} className={styles.carouselTrack}>
+          {loopedReviews.map((review, i) => (
+            <div
+              key={i}
+              className={styles.reviewCard}
+              onClick={() => setExpandedReview(review)}
+              role="button"
+              tabIndex={0}
+            >
+              <div className={styles.reviewStars}>
+                {[...Array(5)].map((_, j) => (
+                  <Star key={j} size={14} fill="var(--color-accent)" color="var(--color-accent)" />
+                ))}
+              </div>
+              <p className={styles.reviewCardText}>&ldquo;{getReviewText(review, lang)}&rdquo;</p>
+              {getReviewText(review, lang).length > 80 && (
+                <span className={styles.readMoreHint}>{t("Weiterlesen", "Read more", "Lire la suite")}</span>
+              )}
+              <div className={styles.reviewerInfo}>
+                <div className={styles.reviewerAvatar}>
+                  {review.profilePhoto ? (
+                    <Image src={review.profilePhoto} alt={review.author} width={40} height={40} className={styles.reviewerAvatarImg} loading="lazy" />
+                  ) : (
+                    <span>{getInitials(review.author)}</span>
+                  )}
+                </div>
+                <div className={styles.reviewerMeta}>
+                  <span className={styles.reviewerCardName}>{review.author}</span>
+                  <span className={styles.reviewerTime}>{getReviewTime(review, lang)}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Expand modal */}
+      {expandedReview && (
+        <div className={styles.reviewModalOverlay} onClick={() => setExpandedReview(null)}>
+          <div className={styles.reviewModal} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.reviewModalClose} onClick={() => setExpandedReview(null)}>
+              <X size={18} />
+            </button>
+            <div className={styles.reviewModalStars}>
+              {[...Array(5)].map((_, j) => (
+                <Star key={j} size={16} fill="var(--color-accent)" color="var(--color-accent)" />
+              ))}
+            </div>
+            <p className={styles.reviewModalText}>&ldquo;{getReviewText(expandedReview, lang)}&rdquo;</p>
+            {getReviewText(expandedReview, lang).length >= 178 && (
+              <a
+                href="https://www.google.com/maps/place/Jaipur/@47.9935628,7.8497035,17z/data=!4m8!3m7!1s0x47911c98d5014727:0x24e7e1a3b6d1dba3!8m2!3d47.9935628!4d7.8497035!9m1!1b1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.viewOnGoogle}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {t("Vollständige Bewertung auf Google lesen →", "Read full review on Google →", "Lire l'avis complet sur Google →")}
+              </a>
+            )}
+            <div className={styles.reviewModalAuthor}>
+              <div className={styles.reviewerAvatar}>
+                {expandedReview.profilePhoto ? (
+                  <Image src={expandedReview.profilePhoto} alt={expandedReview.author} width={40} height={40} className={styles.reviewerAvatarImg} />
+                ) : (
+                  <span>{getInitials(expandedReview.author)}</span>
+                )}
+              </div>
+              <div className={styles.reviewerMeta}>
+                <span className={styles.reviewerCardName}>{expandedReview.author}</span>
+                <span className={styles.reviewerTime}>{getReviewTime(expandedReview, lang)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════
+   GALLERY — Staggered Trio + Lightbox
+   ═══════════════════════════════════════ */
+const galleryImages = [
+  // — AMBIANCE & PEOPLE —
+  `${BASE}/images/terrace-evening.webp`,           // Terrace full of guests, evening glow, elephant murals
+  `${BASE}/images/interior-chandeliers.webp`,       // Gorgeous interior, chandeliers, Indian ceiling art
+  `${BASE}/images/friends-cheers.webp`,             // Young friends cheers-ing — fun & lively
+  `${BASE}/images/group-dinner-terrace.webp`,       // Large group dinner on terrace
+  `${BASE}/images/terrace-umbrella-evening.webp`,   // Evening terrace with umbrella, atmospheric
+  `${BASE}/images/jaipur-sign-night.webp`,          // "JAIPUR" signage at night, warm glow
+  `${BASE}/images/entrance-elephants-day.webp`,     // Entrance with elephant murals, daytime
+  `${BASE}/images/interior-red-wall.webp`,          // Interior with red accent wall, set tables
+  `${BASE}/images/sculpture-corner.webp`,           // Intimate corner with Indian sculpture + candle
+  `${BASE}/images/spice-bowls-ganesha.webp`,        // Spice bowls with Ganesha statue
+  `${BASE}/images/indian-shrine-decor.webp`,        // Beautiful shrine/decor piece
+  // — FOOD —
+  `${BASE}/images/platter-professional.png`,        // Stunning professional platter (prawns, tikka, kebab)
+  `${BASE}/images/tandoori-sizzler.webp`,           // Steaming tandoori chicken sizzler with red flower
+  `${BASE}/images/curry-spread-overhead.webp`,      // Multiple curry bowls with rice, overhead
+  `${BASE}/images/chicken-cocktails-psd.webp`,      // Prawn/chicken cocktails in shot glasses
+  `${BASE}/images/thali-naan-spread.webp`,          // Thali with naan, chutneys, full spread
+  `${BASE}/images/paneer-curry-copper.webp`,        // Paneer curry in hammered copper pot
+  `${BASE}/images/shrimp-curry-rice.webp`,          // Shrimp curry with vegetables and rice
+  `${BASE}/images/tandoori-shrimp-salad.webp`,      // Tandoori shrimp with fresh salad
+  `${BASE}/images/thali-naan-coke.webp`,            // Thali spread with garlic naan
+  `${BASE}/images/dessert-chocolate-orange.webp`,   // Dessert with chocolate drizzle & orange
+];
+
+function GallerySection({ t }: { t: (de: string, en: string, fr?: string) => string }) {
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const touchStartX = useRef(0);
+  const touchDeltaX = useRef(0);
+
+  const openLightbox = (index: number) => {
+    setLightboxIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => setLightboxOpen(false);
+
+  const goNext = () => setLightboxIndex((prev) => (prev + 1) % galleryImages.length);
+  const goPrev = () => setLightboxIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length);
+
+  // Lock body scroll when lightbox is open
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const scrollY = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      window.scrollTo(0, scrollY);
+    };
+  }, [lightboxOpen]);
+
+  // Keyboard: Escape, Left, Right
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowRight") goNext();
+      if (e.key === "ArrowLeft") goPrev();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [lightboxOpen]);
+
+  // Touch swipe handlers for mobile lightbox
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchDeltaX.current = 0;
+  };
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchDeltaX.current = e.touches[0].clientX - touchStartX.current;
+  };
+  const handleTouchEnd = () => {
+    if (touchDeltaX.current > 60) goPrev();
+    else if (touchDeltaX.current < -60) goNext();
+    touchDeltaX.current = 0;
+  };
+
+  // Preview: first 2 images shown, 3rd has overlay
+  const previewImages = galleryImages.slice(0, 3);
+  const remainingCount = galleryImages.length - 2;
+
+  return (
+    <>
+      <section id="gallery" className={`${styles.gallerySection} ${styles.revealSection}`}>
+        <div className={styles.sectionHeader} style={{ padding: "0 5% 16px" }}>
+          <span className={styles.sectionEyebrow}>{t("Impressionen", "Impressions", "Impressions")}</span>
+          <h2>{t("Ein Abend im Jaipur", "An evening at Jaipur", "Une soirée au Jaipur")}</h2>
+        </div>
+
+        <div className={styles.galleryPreview}>
+          {/* Left — tall hero image */}
+          <div className={styles.galleryPreviewHero} onClick={() => openLightbox(0)}>
+            <Image src={previewImages[0]} alt={`${t("Galerie", "Gallery", "Galerie")} 1`} fill className={styles.galleryImg} sizes="(max-width: 768px) 100vw, 55vw" />
+          </div>
+
+          {/* Right column — two staggered images */}
+          <div className={styles.galleryPreviewStack}>
+            <div className={styles.galleryPreviewTop} onClick={() => openLightbox(1)}>
+              <Image src={previewImages[1]} alt={`${t("Galerie", "Gallery", "Galerie")} 2`} fill className={styles.galleryImg} sizes="(max-width: 768px) 50vw, 28vw" />
+            </div>
+            <div className={styles.galleryPreviewBottom} onClick={() => openLightbox(2)}>
+              <Image src={previewImages[2]} alt={`${t("Galerie", "Gallery", "Galerie")} 3`} fill className={styles.galleryImg} sizes="(max-width: 768px) 50vw, 28vw" />
+              {/* "See more" overlay */}
+              <div className={styles.galleryOverlay}>
+                <div className={styles.galleryOverlayPlus}>+</div>
+                <span className={styles.galleryOverlayLabel}>
+                  +{remainingCount} {t("Fotos", "Photos", "Photos")}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Full-screen lightbox */}
+      {lightboxOpen && (
+        <div
+          className={styles.lightboxOverlay}
+          onClick={closeLightbox}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
+            <button className={styles.lightboxClose} onClick={closeLightbox}>
+              <X size={22} />
+            </button>
+
+            <button className={styles.lightboxPrev} onClick={goPrev}>
+              <ChevronLeft size={28} />
+            </button>
+
+            <div className={styles.lightboxImageWrapper}>
+              <Image
+                src={galleryImages[lightboxIndex]}
+                alt={`${t("Galerie", "Gallery", "Galerie")} ${lightboxIndex + 1}`}
+                fill
+                className={styles.lightboxImage}
+                sizes="90vw"
+                quality={90}
+              />
+            </div>
+
+            <button className={styles.lightboxNext} onClick={goNext}>
+              <ChevronRight size={28} />
+            </button>
+
+            <div className={styles.lightboxCounter}>
+              {lightboxIndex + 1} / {galleryImages.length}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

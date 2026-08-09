@@ -43,8 +43,7 @@ export default function DatenschutzPage() {
         Jaipur — Indian Heritage<br />
         Gerberau 5<br />
         79098 Freiburg im Breisgau<br />
-        Telefon: 0761 / 27 20 82<br />
-        E-Mail: info@jaipur-freiburg.de
+        Telefon: 0761 / 27 20 82
       </p>
 
       <h2 style={{ fontSize: "1.5rem", marginBottom: "12px", marginTop: "30px" }}>4. Datenerfassung auf dieser Website</h2>

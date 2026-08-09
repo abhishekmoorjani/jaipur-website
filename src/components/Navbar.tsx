@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import styles from "./navbar.module.css";
 import { Menu, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -14,6 +16,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const { lang, setLang, t } = useLanguage();
+  const skipScrollRestoreRef = useRef(false);
 
   // Combined: navbar background + scroll spy
   useEffect(() => {
@@ -46,45 +49,83 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll when mobile menu is open (iOS-compatible)
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    if (!mobileOpen) return;
+    const scrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
+    document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      if (!skipScrollRestoreRef.current) {
+        window.scrollTo(0, scrollY);
+      }
+      skipScrollRestoreRef.current = false;
     };
   }, [mobileOpen]);
 
   const scrollToSection = useCallback(
     (targetId: string) => {
-      setMobileOpen(false);
+      if (mobileOpen) {
+        // Capture current scroll position before closing menu
+        const savedScrollY = parseInt(document.body.style.top || "0", 10) * -1;
+        skipScrollRestoreRef.current = true;
+        setMobileOpen(false);
+        // Manually unlock body scroll immediately (don't wait for React re-render)
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        document.body.style.overflow = "";
+        window.scrollTo(0, savedScrollY);
+      }
+
       if (pathname !== "/") {
-        // Navigate to home page with the hash — browser will handle scroll
         router.push(`/${targetId}`);
         return;
       }
-      // Sanitize targetId to only allow # followed by alphanumeric/hyphens
-      const sanitized = targetId.replace(/[^a-zA-Z0-9#-]/g, "");
-      const element = document.getElementById(sanitized.replace("#", ""));
-      if (element) {
-        const y = element.getBoundingClientRect().top + window.scrollY - 90;
-        window.scrollTo({ top: y, behavior: "smooth" });
-      }
+
+      // Scroll to the target after a frame
+      requestAnimationFrame(() => {
+        const sanitized = targetId.replace(/[^a-zA-Z0-9#-]/g, "");
+        const element = document.getElementById(sanitized.replace("#", ""));
+        if (element) {
+          const y = element.getBoundingClientRect().top + window.scrollY - 90;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      });
     },
-    [pathname, router]
+    [pathname, router, mobileOpen]
   );
 
   const handleMenuOpen = useCallback(() => {
+    // Unlock body first, then open menu popup
+    const savedScrollY = document.body.style.position === "fixed"
+      ? parseInt(document.body.style.top || "0", 10) * -1
+      : window.scrollY;
+    skipScrollRestoreRef.current = true;
     setMobileOpen(false);
-    window.dispatchEvent(new CustomEvent("openMenu"));
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.width = "";
+    document.body.style.overflow = "";
+    window.scrollTo(0, savedScrollY);
+    requestAnimationFrame(() => {
+      window.dispatchEvent(new CustomEvent("openMenu"));
+    });
   }, []);
 
   const navLinks = [
     { href: "/", label: "Home", isPage: true },
-    { href: "#speisekarte", label: t("Speisekarte", "Menu"), opensMenu: true },
-    { href: "#about", label: t("Über uns", "About") },
-    { href: "#reservations", label: t("Reservierung", "Reservations") },
-    { href: "#contact", label: t("Kontakt", "Contact") },
-    { href: "#gallery", label: t("Galerie", "Gallery") },
+    { href: "#speisekarte", label: t("Speisekarte", "Menu", "Carte"), opensMenu: true },
+    { href: "#about", label: t("Über uns", "About", "À propos") },
+    { href: "#reservations", label: t("Reservierung", "Reservations", "Réservation") },
+    { href: "#contact", label: t("Kontakt", "Contact", "Contact") },
+    { href: "#gallery", label: t("Galerie", "Gallery", "Galerie") },
   ];
 
   const isLinkActive = (link: typeof navLinks[0]) => {
@@ -95,11 +136,22 @@ export default function Navbar() {
   return (
     <>
       <nav className={`${styles.navHeader} ${scrolled ? styles.navScrolled : ""}`}>
-        <Link href="/" className={styles.logoContainer}>
-          <div className={styles.logoText}>
-            <span className={styles.logoTitle}>JAIPUR</span>
-            <span className={styles.logoSubtitle}>Indian Heritage</span>
-          </div>
+        <Link
+          href="/"
+          className={styles.logoContainer}
+          onClick={(e) => {
+            e.preventDefault();
+            setMobileOpen(false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        >
+          <img
+            src={`${BASE}/images/logo-navbar.png`}
+            alt="Jaipur Indian Heritage"
+            className={styles.logoImage}
+            width={230}
+            height={150}
+          />
         </Link>
 
         <ul className={styles.navLinks}>
@@ -165,6 +217,13 @@ export default function Navbar() {
             </button>
             <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
             <button
+              className={`${styles.langBtn} ${lang === "FR" ? styles.langActive : ""}`}
+              onClick={() => setLang("FR")}
+            >
+              FR
+            </button>
+            <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+            <button
               className={`${styles.langBtn} ${lang === "EN" ? styles.langActive : ""}`}
               onClick={() => setLang("EN")}
             >
@@ -179,7 +238,7 @@ export default function Navbar() {
             }}
             className={`${styles.navBtn} btn-primary`}
           >
-            {t("Tisch reservieren", "Book a table")}
+            {t("Tisch reservieren", "Book a table", "Réserver une table")}
           </a>
           <button
             className={styles.mobileMenuBtn}
@@ -203,10 +262,19 @@ export default function Navbar() {
                   className={styles.mobileLink}
                   onClick={(e) => {
                     e.preventDefault();
+                    const savedScrollY = document.body.style.position === "fixed"
+                      ? parseInt(document.body.style.top || "0", 10) * -1
+                      : window.scrollY;
+                    skipScrollRestoreRef.current = true;
                     setMobileOpen(false);
+                    document.body.style.position = "";
+                    document.body.style.top = "";
+                    document.body.style.width = "";
+                    document.body.style.overflow = "";
                     if (pathname === "/") {
                       window.scrollTo({ top: 0, behavior: "smooth" });
                     } else {
+                      window.scrollTo(0, savedScrollY);
                       router.push("/");
                     }
                   }}
@@ -248,22 +316,18 @@ export default function Navbar() {
               Deutsch
             </button>
             <button
+              className={`${styles.mobileLangBtn} ${lang === "FR" ? styles.mobileLangActive : ""}`}
+              onClick={() => setLang("FR")}
+            >
+              Français
+            </button>
+            <button
               className={`${styles.mobileLangBtn} ${lang === "EN" ? styles.mobileLangActive : ""}`}
               onClick={() => setLang("EN")}
             >
               English
             </button>
           </div>
-          <a
-            href="#reservations"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToSection("#reservations");
-            }}
-            className={styles.mobileCta}
-          >
-            {t("Tisch reservieren", "Book a table")}
-          </a>
         </div>
       )}
     </>

@@ -1,27 +1,50 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
 
-type Language = "DE" | "EN";
+type Language = "DE" | "EN" | "FR";
 
 interface LanguageContextType {
   lang: Language;
   setLang: (lang: Language) => void;
   toggle: () => void;
-  t: (de: string, en: string) => string;
+  t: (de: string, en: string, fr?: string) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Language>("DE");
+  const [lang, setLangState] = useState<Language>("DE");
+
+  // Hydrate from localStorage after mount (avoids SSR mismatch)
+  useEffect(() => {
+    const saved = localStorage.getItem("jaipur-lang");
+    if (saved === "EN" || saved === "DE" || saved === "FR") {
+      setLangState(saved);
+    }
+  }, []);
+
+  // Persist to localStorage on every change
+  const setLang = useCallback((newLang: Language) => {
+    setLangState(newLang);
+    try { localStorage.setItem("jaipur-lang", newLang); } catch {}
+  }, []);
 
   const toggle = useCallback(() => {
-    setLang((prev) => (prev === "DE" ? "EN" : "DE"));
+    setLangState((prev) => {
+      const order: Language[] = ["DE", "EN", "FR"];
+      const next = order[(order.indexOf(prev) + 1) % order.length];
+      try { localStorage.setItem("jaipur-lang", next); } catch {}
+      return next;
+    });
   }, []);
 
   const t = useCallback(
-    (de: string, en: string) => (lang === "DE" ? de : en),
+    (de: string, en: string, fr?: string) => {
+      if (lang === "FR") return fr || en; // Fallback to English if French not provided
+      if (lang === "EN") return en;
+      return de;
+    },
     [lang]
   );
 

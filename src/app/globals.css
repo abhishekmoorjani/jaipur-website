@@ -114,7 +114,7 @@ ul, ol {
 
 @media (max-width: 768px) {
   .section-padding {
-    padding: 70px 5%;
+    padding: 80px 5%;
   }
   h2 {
     font-size: 2rem;
@@ -127,7 +127,7 @@ ul, ol {
 
 @media (max-width: 480px) {
   .section-padding {
-    padding: 50px 4%;
+    padding: 60px 4%;
   }
   h2 {
     font-size: 1.7rem;

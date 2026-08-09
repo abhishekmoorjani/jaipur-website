@@ -9,7 +9,7 @@
   max-width: 1400px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
+  grid-template-columns: 1.5fr 1fr 1fr;
   gap: 60px;
   padding-bottom: 80px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -26,6 +26,15 @@
   color: var(--color-heading);
   margin-bottom: 20px;
   line-height: 1;
+}
+
+.footerLogo {
+  height: 90px;
+  width: auto;
+  object-fit: contain;
+  object-position: left;
+  margin-bottom: 20px;
+  align-self: flex-start;
 }
 
 .brandDesc {
@@ -174,6 +183,9 @@
   .logoTitle {
     font-size: 2rem;
   }
+  .footerLogo {
+    height: 72px;
+  }
   .footerHeading {
     font-size: 1.2rem;
     margin-bottom: 20px;
@@ -209,6 +221,9 @@
   }
   .logoTitle {
     font-size: 1.6rem;
+  }
+  .footerLogo {
+    height: 60px;
   }
   .footerHeading {
     font-size: 1.1rem;
