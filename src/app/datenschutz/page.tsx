@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { pageCanonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Datenschutz — JAIPUR Indian Heritage",
   description: "Datenschutzerklärung des Restaurants Jaipur in Freiburg.",
+  alternates: pageCanonical("/datenschutz"),
 };
 
 export default function DatenschutzPage() {

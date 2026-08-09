@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { pageCanonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Impressum — JAIPUR Indian Heritage",
   description: "Impressum und rechtliche Informationen des Restaurants Jaipur in Freiburg.",
+  alternates: pageCanonical("/impressum"),
 };
 
 export default function ImpressumPage() {

@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { languageAlternates } from "@/lib/seo";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -80,14 +81,11 @@ export const metadata: Metadata = {
   creator: "JAIPUR Indian Heritage",
   publisher: "JAIPUR Indian Heritage",
   metadataBase: new URL("https://abhishekmoorjani.github.io/jaipur-website"),
-  alternates: {
-    canonical: "https://abhishekmoorjani.github.io/jaipur-website",
-    languages: {
-      "de-DE": "https://abhishekmoorjani.github.io/jaipur-website",
-      "en": "https://abhishekmoorjani.github.io/jaipur-website",
-      "fr": "https://abhishekmoorjani.github.io/jaipur-website",
-    },
-  },
+  // The German homepage. Every other route overrides this with its own
+  // canonical; previously they all inherited it and declared themselves
+  // duplicates of the homepage. The three language URLs are now distinct, so
+  // hreflang finally points somewhere different for each language.
+  alternates: languageAlternates("de"),
   openGraph: {
     title: "JAIPUR · Indian Heritage | Freiburgs ältestes indisches Restaurant",
     description: "Seit 1995 servieren wir authentische nordindische Küche im Herzen der Freiburger Altstadt. Familiengeführt seit drei Generationen. Reservieren Sie jetzt!",
@@ -333,7 +331,10 @@ export default function RootLayout({
   return (
     <html lang="de" className={`${playfair.variable} ${inter.variable}`}>
       <head>
-        <link rel="canonical" href="https://abhishekmoorjani.github.io/jaipur-website" />
+        {/* No hardcoded canonical here. This tag rendered on every page and
+            pinned all of them to the homepage, which is why /impressum and
+            /datenschutz declared themselves duplicates. Canonicals now come
+            from each route's own metadata.alternates. */}
         <meta name="theme-color" content="#0D1117" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="format-detection" content="telephone=yes" />

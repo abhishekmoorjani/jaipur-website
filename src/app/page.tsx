@@ -946,7 +946,7 @@ const galleryImages = [
   `${BASE}/images/spice-bowls-ganesha.webp`,        // Spice bowls with Ganesha statue
   `${BASE}/images/indian-shrine-decor.webp`,        // Beautiful shrine/decor piece
   // — FOOD —
-  `${BASE}/images/platter-professional.png`,        // Stunning professional platter (prawns, tikka, kebab)
+  `${BASE}/images/platter-professional.jpg`,        // Stunning professional platter (prawns, tikka, kebab)
   `${BASE}/images/tandoori-sizzler.webp`,           // Steaming tandoori chicken sizzler with red flower
   `${BASE}/images/curry-spread-overhead.webp`,      // Multiple curry bowls with rice, overhead
   `${BASE}/images/chicken-cocktails-psd.webp`,      // Prawn/chicken cocktails in shot glasses
