@@ -24,6 +24,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  // Keep <html lang> in step with the rendered copy. Without this the document
+  // stays "de" while showing English or French, so screen readers apply German
+  // pronunciation to the whole page and crawlers read the wrong signal.
+  useEffect(() => {
+    document.documentElement.lang = lang.toLowerCase();
+  }, [lang]);
+
   // Persist to localStorage on every change
   const setLang = useCallback((newLang: Language) => {
     setLangState(newLang);

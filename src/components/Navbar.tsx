@@ -160,7 +160,7 @@ export default function Navbar() {
             if (link.isPage) {
               return (
                 <li key={link.href}>
-                  <a
+                  <Link
                     href={link.href}
                     onClick={(e) => {
                       e.preventDefault();
@@ -174,7 +174,7 @@ export default function Navbar() {
                     className={`${styles.navLink} ${active ? styles.activeLink : ""}`}
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               );
             }
@@ -256,7 +256,7 @@ export default function Navbar() {
           {navLinks.map((link) => {
             if (link.isPage) {
               return (
-                <a
+                <Link
                   key={link.href}
                   href={link.href}
                   className={styles.mobileLink}
@@ -280,7 +280,7 @@ export default function Navbar() {
                   }}
                 >
                   {link.label}
-                </a>
+                </Link>
               );
             }
             if (link.opensMenu) {
