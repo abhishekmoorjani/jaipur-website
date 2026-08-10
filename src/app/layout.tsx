@@ -4,7 +4,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { languageAlternates, SITE } from "@/lib/seo";
-import reviewsData from "@/data/reviews.json";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -185,18 +184,23 @@ const jsonLdRestaurant = {
       closes: "22:00",
     },
   ],
-  // Read from the synced data rather than hardcoded strings. These previously
-  // said 4.6 and 800 while the data file said 701 and Google itself said 4.5
-  // with 875. An aggregateRating that does not match the real reviews breaches
-  // Google's structured data guidelines and costs the star rich result, so
-  // there is exactly one source of truth for it now.
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: String(reviewsData.rating),
-    reviewCount: String(reviewsData.totalReviews),
-    bestRating: "5",
-    worstRating: "1",
-  },
+  // No aggregateRating here, deliberately.
+  //
+  // Google's Review Snippet guidelines (page last updated 2026-07-24): "If the
+  // entity that's being reviewed controls the reviews about itself, their pages
+  // that use LocalBusiness or any other type of Organization structured data
+  // are ineligible for star review feature." The FAQ confirms this covers
+  // AggregateRating, not just Review, and Restaurant is a LocalBusiness subtype
+  // (Thing > Organization > LocalBusiness > FoodEstablishment > Restaurant).
+  //
+  // So this markup could never produce a star rich result: removing it costs
+  // nothing. It also cleared a second, separately manual-action-eligible
+  // guideline on the same page, "Don't aggregate reviews or ratings from other
+  // websites", which is exactly what copying the figure from Google Maps was.
+  //
+  // The visible "4,5 Sterne auf Google" line on the page stays. That is honest
+  // visible text about a third party rating and is unaffected by any of this.
+  // https://developers.google.com/search/docs/appearance/structured-data/review-snippet
   hasMenu: {
     "@type": "Menu",
     name: "Speisekarte / Menu / Carte",

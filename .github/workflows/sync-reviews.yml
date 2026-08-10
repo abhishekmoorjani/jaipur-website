@@ -14,11 +14,24 @@ name: Sync Google Reviews
 # data, so a week is a reasonable staleness ceiling for a number a visitor can
 # check against Google in one click.
 
+# The weekly schedule is commented out on purpose, not forgotten.
+#
+# Google now serves a "limited view" of Maps to sessions it classifies as
+# automated: the star rating renders but the review count, the review list and
+# the Reviews tab are all withheld. This was reproduced from a residential
+# German IP with headless Chrome, headed Chrome, the real Chrome binary and a
+# warmed profile, all with the same result, so it is not an IP or a headless
+# problem and there is no selector fix for it. The scrape therefore cannot
+# succeed unattended, and a scheduled run would only email a failure every
+# Monday.
+#
+# The pipeline itself is proven and left intact: translate, avatar localisation,
+# verification and commit all succeeded in CI. Re-enable the cron the moment
+# the scrape works again, or trigger it by hand from the Actions tab when
+# running somewhere Google trusts.
 on:
-  schedule:
-    # Mondays at 07:14 UTC. Off-peak minute rather than the top of the hour,
-    # where every scheduled job on GitHub piles up and gets delayed.
-    - cron: '14 7 * * 1'
+  # schedule:
+  #   - cron: '14 7 * * 1'
   workflow_dispatch:
 
 # Only one sync at a time. Two overlapping runs would both push to main and the
