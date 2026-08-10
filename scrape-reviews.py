@@ -6,6 +6,7 @@ Scrape FULL ORIGINAL-LANGUAGE Google Maps reviews for Jaipur Restaurant Freiburg
 """
 
 import json
+import os
 import time
 import re
 from datetime import date
@@ -57,7 +58,11 @@ def is_owner_response(text, author):
 
 def scrape():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False, args=["--lang=en-US"])
+        # Headed locally, so the run can be watched and debugged when Google's
+        # markup shifts. Headless in CI, which has no X server: a headed launch
+        # there dies with "Missing X server or $DISPLAY" before reaching Maps.
+        headless = os.environ.get("CI", "").lower() in ("1", "true")
+        browser = p.chromium.launch(headless=headless, args=["--lang=en-US"])
         page = browser.new_page(viewport={"width": 1280, "height": 900}, locale="en-US")
 
         print("[1] Opening Google Maps...")
