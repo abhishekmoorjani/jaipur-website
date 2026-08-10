@@ -1,11 +1,30 @@
 name: Sync Google Reviews
 
+# Keeps the star rating, the review count and the testimonial carousel in step
+# with what Google Maps actually shows.
+#
+# Runs the Playwright pipeline, which needs no Google account, no API key and
+# no billing:
+#   scrape-reviews.py          → reviews.json  (rating, Google's total, reviews)
+#   translate-reviews.mjs      → carousel-reviews.json (best 50, DE/EN/FR)
+#   localize-review-avatars.mjs→ public/images/reviews (self hosted avatars)
+#
+# Monthly rather than weekly on purpose. With ~875 reviews a single new review
+# moves the average by about 0.001, so weekly runs buy nothing and only
+# increase the number of automated requests to Google.
+
 on:
   schedule:
-    # Runs every Monday at 6:00 AM UTC
-    - cron: '0 6 * * 1'
+    # 07:14 on the 3rd of each month. Off-peak minute and an odd day, so this
+    # does not pile onto the top-of-hour, first-of-month rush on the runners.
+    - cron: '14 7 3 * *'
   workflow_dispatch:
-    # Allow manual trigger from GitHub Actions UI
+
+# Only one sync at a time. Two overlapping runs would both push to main and the
+# second would fail on a non fast-forward.
+concurrency:
+  group: sync-reviews
+  cancel-in-progress: false
 
 jobs:
   sync:
@@ -15,44 +34,73 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          pip install playwright
+          playwright install --with-deps chromium
 
-      - name: Fetch Google Reviews & Photos
-        env:
-          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
-          GOOGLE_PLACE_ID: ${{ secrets.GOOGLE_PLACE_ID }}
-        run: node scripts/fetch-reviews.mjs
+      # Writes src/data/reviews.json. Fails the run if Google's rating or total
+      # review count cannot be read, rather than falling back to a stale
+      # hardcoded figure, because those two numbers are published in the
+      # aggregateRating structured data.
+      - name: Scrape Google reviews
+        run: python scrape-reviews.py
 
-      # Without this step every sync would reintroduce hotlinked
+      # Picks the best 50 and pre-translates them into DE, EN and FR.
+      - name: Build the translated carousel
+        run: node translate-reviews.mjs
+
+      # Without this step every sync reintroduces hotlinked
       # lh3.googleusercontent.com avatars, sending visitor IPs to Google before
-      # consent and leaving images that silently break when Google rotates the
-      # URLs. The script exits non-zero if any third party reference survives,
-      # so a regression fails the run rather than shipping quietly.
+      # consent and leaving images that break when Google rotates the URLs. The
+      # script exits non-zero if any third party reference survives, so a
+      # regression fails the run rather than shipping quietly.
       - name: Localise review avatars
         run: node scripts/localize-review-avatars.mjs
+
+      # Sanity gate before anything is committed. A silently wrong rating in
+      # structured data is worse than a failed workflow run.
+      - name: Verify the synced figures
+        run: |
+          node -e '
+            const d = require("./src/data/reviews.json");
+            const c = require("./src/data/carousel-reviews.json");
+            const fail = (m) => { console.error("FAIL: " + m); process.exit(1); };
+            if (!(d.rating >= 1 && d.rating <= 5)) fail(`rating out of range: ${d.rating}`);
+            if (!(d.totalReviews > 0)) fail(`totalReviews missing: ${d.totalReviews}`);
+            if (d.totalReviews < d.scrapedReviews) fail(
+              `Google total (${d.totalReviews}) is below the scraped count (${d.scrapedReviews}), so totalReviews is not Googles figure`);
+            if (!c.reviews?.length) fail("carousel is empty");
+            const hotlinked = c.reviews.filter(r => r.profilePhoto?.startsWith("http")).length;
+            if (hotlinked) fail(`${hotlinked} avatars still point at a third party`);
+            console.log(`OK: ${d.rating} stars, ${d.totalReviews} total, ${c.reviews.length} in carousel`);
+          '
 
       - name: Commit updated review data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/reviews.json src/data/carousel-reviews.json public/images/gallery/ public/images/reviews/
-          git diff --cached --quiet || git commit -m "chore: sync Google reviews and photos [automated]"
+          # Only paths that exist. The previous version listed
+          # public/images/gallery/, which is not in the repo, and git add fails
+          # the whole run on a missing pathspec (exit 128).
+          git add src/data/reviews.json src/data/carousel-reviews.json
+          [ -d public/images/reviews ] && git add public/images/reviews || true
+          git diff --cached --quiet || git commit -m "chore: sync Google reviews [automated]"
           git push
 
-      - name: Build static site
-        run: npx next build
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
+      # No build or deploy step. Cloudflare Pages builds from main on push, so
+      # the commit above is the deploy trigger.

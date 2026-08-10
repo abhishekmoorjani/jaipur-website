@@ -255,20 +255,59 @@ def scrape():
             for r in removed_owners[:10]:
                 print(f"      [{r['rating']}*] {r['author']}: \"{r['text'][:80]}\"")
 
-        # Rating
-        overall = 4.6
-        try:
-            r_el = page.locator('div.fontDisplayLarge').first
-            if r_el.is_visible():
-                m = re.search(r'[\d,.]+', r_el.text_content())
-                if m:
-                    overall = float(m.group().replace(',', '.'))
-        except:
-            pass
+        # Overall rating and Google's TOTAL review count.
+        #
+        # These two numbers are published on the site and in the JSON-LD
+        # aggregateRating, so they must be what Google actually shows. The
+        # previous version defaulted to a hardcoded 4.6 and swallowed every
+        # error, which meant a Google markup change would silently keep
+        # publishing a stale figure that looked plausible. It now fails loudly:
+        # a wrong number in structured data is worse than a failed run.
+        overall = None
+        for sel in ['div.fontDisplayLarge', 'div[class*="fontDisplayLarge"]',
+                    'span[aria-hidden="true"][class*="ceNzKf"]']:
+            try:
+                el = page.locator(sel).first
+                if el.count() and el.is_visible():
+                    m = re.search(r'\d+[.,]\d+', el.text_content() or '')
+                    if m:
+                        overall = float(m.group().replace(',', '.'))
+                        break
+            except Exception:
+                continue
+
+        # Google's total review count, e.g. "875 Rezensionen" / "875 reviews".
+        # This is NOT the number we managed to scrape.
+        google_total = None
+        for sel in ['button[jsaction*="reviewChart"]', 'div[class*="fontBodySmall"]',
+                    'span[aria-label*="Rezension"]', 'span[aria-label*="review"]']:
+            try:
+                for i in range(min(page.locator(sel).count(), 8)):
+                    txt = page.locator(sel).nth(i).text_content() or ''
+                    m = re.search(r'([\d.,\s]+)\s*(Rezension|review|Bewertung)', txt, re.I)
+                    if m:
+                        google_total = int(re.sub(r'[^\d]', '', m.group(1)))
+                        break
+                if google_total:
+                    break
+            except Exception:
+                continue
+
+        if overall is None or google_total is None:
+            raise RuntimeError(
+                f"Could not read Google's aggregate figures (rating={overall}, "
+                f"total={google_total}). Google's markup has probably changed. "
+                f"Refusing to write reviews.json, because publishing a stale "
+                f"rating or review count in structured data breaches Google's "
+                f"guidelines and can cost the star rich result."
+            )
+
+        print(f"[6] Google aggregate: {overall} stars, {google_total} total reviews")
 
         output = {
             "rating": overall,
-            "totalReviews": len(customer_reviews),
+            "totalReviews": google_total,          # what Google Maps shows
+            "scrapedReviews": len(customer_reviews),  # what we hold locally
             "lastUpdated": date.today().isoformat(),
             "reviews": customer_reviews
         }

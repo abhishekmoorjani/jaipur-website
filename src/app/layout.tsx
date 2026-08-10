@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { languageAlternates, SITE } from "@/lib/seo";
+import reviewsData from "@/data/reviews.json";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -184,10 +185,15 @@ const jsonLdRestaurant = {
       closes: "22:00",
     },
   ],
+  // Read from the synced data rather than hardcoded strings. These previously
+  // said 4.6 and 800 while the data file said 701 and Google itself said 4.5
+  // with 875. An aggregateRating that does not match the real reviews breaches
+  // Google's structured data guidelines and costs the star rich result, so
+  // there is exactly one source of truth for it now.
   aggregateRating: {
     "@type": "AggregateRating",
-    ratingValue: "4.6",
-    reviewCount: "800",
+    ratingValue: String(reviewsData.rating),
+    reviewCount: String(reviewsData.totalReviews),
     bestRating: "5",
     worstRating: "1",
   },
