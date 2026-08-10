@@ -8,7 +8,8 @@ import type { Metadata } from "next";
  * resolves them against the origin, which silently drops the basePath and
  * emits canonicals pointing at URLs that do not exist.
  */
-export const SITE = "https://abhishekmoorjani.github.io/jaipur-website";
+export const SITE =
+  process.env.SITE_ORIGIN ?? "https://abhishekmoorjani.github.io/jaipur-website";
 
 type Lang = "de" | "en" | "fr";
 

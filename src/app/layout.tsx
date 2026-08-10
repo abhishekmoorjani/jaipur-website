@@ -3,7 +3,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/context/LanguageContext";
-import { languageAlternates } from "@/lib/seo";
+import { languageAlternates, SITE } from "@/lib/seo";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
   authors: [{ name: "JAIPUR Indian Heritage Restaurant" }],
   creator: "JAIPUR Indian Heritage",
   publisher: "JAIPUR Indian Heritage",
-  metadataBase: new URL("https://abhishekmoorjani.github.io/jaipur-website"),
+  metadataBase: new URL(SITE),
   // The German homepage. Every other route overrides this with its own
   // canonical; previously they all inherited it and declared themselves
   // duplicates of the homepage. The three language URLs are now distinct, so
@@ -93,10 +93,10 @@ export const metadata: Metadata = {
     locale: "de_DE",
     alternateLocale: ["en_US", "fr_FR"],
     siteName: "JAIPUR Indian Heritage",
-    url: "https://abhishekmoorjani.github.io/jaipur-website",
+    url: SITE,
     images: [
       {
-        url: "/jaipur-website/images/food/hero-1.jpg",
+        url: `${SITE}/images/food/hero-1.jpg`,
         width: 1200,
         height: 630,
         alt: "JAIPUR Indian Heritage Restaurant — Authentische indische Küche in Freiburg",
@@ -107,7 +107,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "JAIPUR · Indian Heritage | Indisches Restaurant Freiburg",
     description: "Freiburgs ältestes indisches Restaurant seit 1995. Authentische Küche, warme Atmosphäre, im Herzen der Altstadt.",
-    images: ["/jaipur-website/images/food/hero-1.jpg"],
+    images: [`${SITE}/images/food/hero-1.jpg`],
   },
   robots: {
     index: true,
@@ -130,7 +130,9 @@ export const metadata: Metadata = {
   },
 };
 
-const BASE_URL = "https://abhishekmoorjani.github.io/jaipur-website";
+// Single source of truth for the origin, so moving to jaipur-freiburg.de is
+// one environment variable rather than a hunt through hardcoded strings.
+const BASE_URL = SITE;
 
 const jsonLdRestaurant = {
   "@context": "https://schema.org",
