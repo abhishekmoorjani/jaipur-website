@@ -32,11 +32,19 @@ jobs:
           GOOGLE_PLACE_ID: ${{ secrets.GOOGLE_PLACE_ID }}
         run: node scripts/fetch-reviews.mjs
 
+      # Without this step every sync would reintroduce hotlinked
+      # lh3.googleusercontent.com avatars, sending visitor IPs to Google before
+      # consent and leaving images that silently break when Google rotates the
+      # URLs. The script exits non-zero if any third party reference survives,
+      # so a regression fails the run rather than shipping quietly.
+      - name: Localise review avatars
+        run: node scripts/localize-review-avatars.mjs
+
       - name: Commit updated review data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src/data/reviews.json public/images/gallery/
+          git add src/data/reviews.json src/data/carousel-reviews.json public/images/gallery/ public/images/reviews/
           git diff --cached --quiet || git commit -m "chore: sync Google reviews and photos [automated]"
           git push
 

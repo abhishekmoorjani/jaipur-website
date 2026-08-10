@@ -507,18 +507,40 @@ export default function Home() {
               <p className={styles.noClosingDay}>{t("Kein Ruhetag", "No closing day", "Ouvert tous les jours")}</p>
             </div>
           </div>
-          <div className={styles.mapWrapper}>
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2670.0424710179814!2d7.847128576420615!3d47.99356636117597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47911c98d5014727%3A0x24e7e1a3b6d1dba3!2sJaipur!5e0!3m2!1sen!2sde!4v1773580189972!5m2!1sen!2sde"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
+          {/* A self-hosted OpenStreetMap image, not a Google Maps iframe. The
+              embed contacted Google and set cookies on every page view before
+              the visitor had agreed to anything, and it shipped a large
+              interactive map for something people look at once and then tap
+              for directions. This keeps the function and removes the third
+              party. The OSM attribution is baked into the image and required. */}
+          <a
+            className={styles.mapWrapper}
+            href="https://www.google.com/maps/dir/?api=1&destination=Jaipur+Indian+Heritage%2C+Gerberau+5%2C+79098+Freiburg+im+Breisgau"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t(
+              "Route zum Jaipur in Google Maps öffnen",
+              "Open directions to Jaipur in Google Maps",
+              "Ouvrir l'itinéraire vers Jaipur dans Google Maps"
+            )}
+          >
+            <Image
+              src={`${BASE}/images/map-jaipur.jpg`}
+              alt={t(
+                "Karte mit der Lage des Restaurants Jaipur in der Gerberau, Freiburger Altstadt",
+                "Map showing Jaipur restaurant on Gerberau in Freiburg's old town",
+                "Carte indiquant le restaurant Jaipur dans la Gerberau, vieille ville de Fribourg"
+              )}
+              width={900}
+              height={600}
+              className={styles.mapImage}
               loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title={t("Jaipur Standort Karte", "Jaipur location map", "Carte de localisation Jaipur")}
             />
-          </div>
+            <span className={styles.mapCta}>
+              <MapPin size={15} />
+              {t("Route planen", "Get directions", "Itinéraire")}
+            </span>
+          </a>
         </div>
       </section>
 
@@ -869,8 +891,19 @@ function TestimonialCarousel({ carouselReviews, lang, t }: { carouselReviews: Ca
               )}
               <div className={styles.reviewerInfo}>
                 <div className={styles.reviewerAvatar}>
+                  {/* Avatars are stored root-relative by
+                      scripts/localize-review-avatars.mjs, so they need the
+                      basePath. The startsWith check keeps an absolute URL
+                      working if one ever slips through. */}
                   {review.profilePhoto ? (
-                    <Image src={review.profilePhoto} alt={review.author} width={40} height={40} className={styles.reviewerAvatarImg} loading="lazy" />
+                    <Image
+                      src={review.profilePhoto.startsWith("http") ? review.profilePhoto : `${BASE}${review.profilePhoto}`}
+                      alt={review.author}
+                      width={40}
+                      height={40}
+                      className={styles.reviewerAvatarImg}
+                      loading="lazy"
+                    />
                   ) : (
                     <span>{getInitials(review.author)}</span>
                   )}

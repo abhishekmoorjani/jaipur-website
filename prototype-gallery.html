@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jaipur Gallery — Design Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-primary: #0D1117;
+    --color-accent: #C5972C;
+    --color-surface: #1B232E;
+    --color-text: rgba(255, 255, 255, 0.7);
+    --color-heading: #F5E6C8;
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--color-primary);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2 { font-family: var(--font-heading); color: var(--color-heading); font-weight: 500; }
+  img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .page-header {
+    text-align: center;
+    padding: 50px 5% 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .page-header h1 { font-size: 1.8rem; margin-bottom: 10px; }
+  .page-header p { font-size: 0.9rem; max-width: 550px; margin: 0 auto; }
+  .design-label {
+    text-align: center;
+    padding: 50px 5% 20px;
+  }
+  .design-label h2 {
+    font-size: 1.1rem;
+    color: var(--color-accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-family: var(--font-body);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .design-label p { font-size: 0.82rem; max-width: 500px; margin: 0 auto; opacity: 0.6; }
+  .divider {
+    width: 80%; max-width: 800px; margin: 0 auto;
+    border: none; border-top: 1px solid rgba(197, 151, 44, 0.15);
+  }
+
+  .section-eyebrow {
+    display: inline-block;
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 0.72rem;
+    margin-bottom: 18px;
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  .section-header { text-align: center; margin-bottom: 50px; }
+  .section-header h2 { font-size: clamp(1.8rem, 3.5vw, 3rem); }
+
+  /* Placeholder images — colored rectangles with food emojis */
+  .img-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    color: rgba(255,255,255,0.15);
+  }
+  .img-1 { background: linear-gradient(135deg, #2a1f0e, #1a1408); }
+  .img-2 { background: linear-gradient(135deg, #1a2215, #0e1a0b); }
+  .img-3 { background: linear-gradient(135deg, #1f1525, #140e1a); }
+  .img-4 { background: linear-gradient(135deg, #251a15, #1a100b); }
+  .img-5 { background: linear-gradient(135deg, #15221f, #0b1a17); }
+  .img-6 { background: linear-gradient(135deg, #22201a, #1a180e); }
+  .img-7 { background: linear-gradient(135deg, #1a1522, #0e0b1a); }
+
+  /* ═══════════════════════════════════════
+     OPTION A: Cinematic Trio
+     ═══════════════════════════════════════ */
+  .trio-section { padding: 80px 5%; }
+  .trio-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 450px;
+  }
+  .trio-item {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .trio-item:hover .img-placeholder { transform: scale(1.05); }
+  .trio-item .img-placeholder { transition: transform 0.6s ease; }
+
+  /* The 3rd item has the "see more" overlay */
+  .trio-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 17, 23, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.3s ease;
+  }
+  .trio-overlay:hover { background: rgba(13, 17, 23, 0.4); }
+  .trio-plus {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    border: 2px solid var(--color-accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    color: var(--color-accent);
+    font-weight: 300;
+  }
+  .trio-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--color-heading);
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .trio-grid {
+      grid-template-columns: 1fr 1fr;
+      height: auto;
+    }
+    .trio-item { height: 220px; }
+    .trio-item:first-child { grid-column: span 2; height: 260px; }
+  }
+
+  /* ═══════════════════════════════════════
+     OPTION B: Hero + Peek Strip
+     ═══════════════════════════════════════ */
+  .hero-strip-section { padding: 80px 5%; }
+  .hero-strip-container { max-width: 1200px; margin: 0 auto; }
+  .hero-main {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 420px;
+    margin-bottom: 16px;
+    cursor: pointer;
+  }
+  .hero-main .img-placeholder { transition: transform 0.6s ease; }
+  .hero-main:hover .img-placeholder { transform: scale(1.03); }
+
+  .strip-row {
+    display: flex;
+    gap: 16px;
+    height: 140px;
+  }
+  .strip-item {
+    flex: 1;
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .strip-item:last-child { flex: 0.8; }
+  .strip-item .img-placeholder { transition: transform 0.6s ease; }
+  .strip-item:hover .img-placeholder { transform: scale(1.05); }
+
+  /* Plus overlay on last strip item */
+  .strip-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 17, 23, 0.65);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background 0.3s ease;
+  }
+  .strip-overlay:hover { background: rgba(13, 17, 23, 0.4); }
+  .strip-plus {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--color-accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    color: var(--color-accent);
+    font-weight: 300;
+  }
+  .strip-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--color-heading);
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .hero-main { height: 280px; }
+    .strip-row { height: 110px; }
+    .strip-item:nth-child(3) { display: none; }
+    .strip-item:last-child { flex: 1; }
+  }
+
+  /* ═══════════════════════════════════════
+     OPTION C: Staggered Duo + Overlay
+     ═══════════════════════════════════════ */
+  .duo-section { padding: 80px 5%; }
+  .duo-container { max-width: 1000px; margin: 0 auto; }
+  .duo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: end;
+  }
+  .duo-item {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .duo-item .img-placeholder { transition: transform 0.6s ease; }
+  .duo-item:hover .img-placeholder { transform: scale(1.05); }
+
+  /* Staggered heights */
+  .duo-item:nth-child(1) { height: 480px; }
+  .duo-item:nth-child(2) { height: 400px; }
+
+  .duo-cta {
+    text-align: center;
+    margin-top: 28px;
+  }
+  .duo-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    border-radius: 8px;
+    border: 1px solid rgba(197, 151, 44, 0.4);
+    background: transparent;
+    color: var(--color-heading);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .duo-cta-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .duo-cta-btn .plus-icon {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+
+  @media (max-width: 768px) {
+    .duo-item:nth-child(1) { height: 320px; }
+    .duo-item:nth-child(2) { height: 260px; }
+    .duo-grid { gap: 14px; }
+  }
+  @media (max-width: 480px) {
+    .duo-item:nth-child(1) { height: 260px; }
+    .duo-item:nth-child(2) { height: 220px; }
+  }
+
+  .end-note {
+    padding: 50px; text-align: center; opacity: 0.3; font-size: 0.8rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Gallery Section — 3 Design Options</h1>
+  <p>Each option shows a preview of 2-3 images with a "see more" trigger that opens a lightbox. Scroll to compare.</p>
+</div>
+
+<!-- ═══════════════════════════════════════
+     OPTION A: Cinematic Trio
+     ═══════════════════════════════════════ -->
+<div class="design-label">
+  <h2>Option A — Cinematic Trio</h2>
+  <p>3 images in an asymmetric grid. First image is larger (hero). Third has a "+" overlay to open the lightbox with all photos.</p>
+</div>
+
+<section class="trio-section">
+  <div class="section-header">
+    <span class="section-eyebrow">Impressionen</span>
+    <h2>Ein Abend im Jaipur</h2>
+  </div>
+  <div class="trio-grid">
+    <div class="trio-item">
+      <div class="img-placeholder img-1">&#127858;</div>
+    </div>
+    <div class="trio-item">
+      <div class="img-placeholder img-2">&#127835;</div>
+    </div>
+    <div class="trio-item">
+      <div class="img-placeholder img-3">&#127836;</div>
+      <div class="trio-overlay">
+        <div class="trio-plus">+</div>
+        <span class="trio-label">Alle Fotos</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════
+     OPTION B: Hero + Peek Strip
+     ═══════════════════════════════════════ -->
+<div class="design-label">
+  <h2>Option B — Hero + Peek Strip</h2>
+  <p>One large hero image on top, a strip of smaller thumbnails below. Last thumbnail has "+" overlay.</p>
+</div>
+
+<section class="hero-strip-section">
+  <div class="section-header">
+    <span class="section-eyebrow">Impressionen</span>
+    <h2>Ein Abend im Jaipur</h2>
+  </div>
+  <div class="hero-strip-container">
+    <div class="hero-main">
+      <div class="img-placeholder img-1">&#127858;</div>
+    </div>
+    <div class="strip-row">
+      <div class="strip-item">
+        <div class="img-placeholder img-2">&#127835;</div>
+      </div>
+      <div class="strip-item">
+        <div class="img-placeholder img-3">&#127836;</div>
+      </div>
+      <div class="strip-item">
+        <div class="img-placeholder img-4">&#127837;</div>
+      </div>
+      <div class="strip-item">
+        <div class="img-placeholder img-5">&#127834;</div>
+        <div class="strip-overlay">
+          <div class="strip-plus">+</div>
+          <span class="strip-label">+4 Fotos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════
+     OPTION C: Staggered Duo + Button
+     ═══════════════════════════════════════ -->
+<div class="design-label">
+  <h2>Option C — Staggered Duo + Button</h2>
+  <p>Two images at staggered heights (like a magazine spread). A "See all photos" button below opens the full gallery lightbox.</p>
+</div>
+
+<section class="duo-section">
+  <div class="section-header">
+    <span class="section-eyebrow">Impressionen</span>
+    <h2>Ein Abend im Jaipur</h2>
+  </div>
+  <div class="duo-container">
+    <div class="duo-grid">
+      <div class="duo-item">
+        <div class="img-placeholder img-1">&#127858;</div>
+      </div>
+      <div class="duo-item">
+        <div class="img-placeholder img-2">&#127835;</div>
+      </div>
+    </div>
+    <div class="duo-cta">
+      <button class="duo-cta-btn">
+        <span class="plus-icon">+</span>
+        Alle Fotos ansehen
+      </button>
+    </div>
+  </div>
+</section>
+
+<div class="end-note">End of prototypes. Scroll back up to compare.</div>
+
+</body>
+</html>

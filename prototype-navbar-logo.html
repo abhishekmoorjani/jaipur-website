@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jaipur Logo — A vs B Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-background: #0D1117;
+    --color-surface: #151B23;
+    --color-accent: #C5972C;
+    --color-heading: #F0E6D3;
+    --color-text: rgba(255,255,255,0.55);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--color-background);
+    color: var(--color-heading);
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ═══ HEADER ═══ */
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    text-align: center;
+    padding: 50px 20px 8px;
+    letter-spacing: 2px;
+  }
+  .page-sub {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--color-text);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding-bottom: 40px;
+  }
+
+  /* ═══ SECTION HEADERS ═══ */
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    text-align: center;
+    margin: 0 0 6px;
+    color: var(--color-accent);
+    letter-spacing: 2px;
+  }
+  .label {
+    text-align: center;
+    font-size: 0.68rem;
+    color: var(--color-text);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .divider {
+    width: 50%;
+    max-width: 300px;
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    margin: 50px auto;
+  }
+
+  /* ═══ OPTION BADGES ═══ */
+  .badge {
+    display: inline-block;
+    padding: 5px 14px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .badge-a {
+    background: rgba(197,151,44,0.12);
+    color: var(--color-accent);
+    border: 1px solid rgba(197,151,44,0.25);
+  }
+  .badge-b {
+    background: rgba(126,200,227,0.08);
+    color: #7EC8E3;
+    border: 1px solid rgba(126,200,227,0.18);
+  }
+
+  /* ═══ NAVBAR ═══ */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 5%;
+    background-color: transparent;
+    position: relative;
+  }
+  .navbar.scrolled {
+    padding: 16px 5%;
+    background-color: rgba(13, 17, 23, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+  .logo-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .logo-img {
+    height: 55px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+  }
+  .scrolled .logo-img {
+    height: 46px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+    align-items: center;
+  }
+  .nav-link {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    color: var(--color-text);
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color 0.3s;
+    white-space: nowrap;
+  }
+  .nav-link:hover { color: var(--color-heading); }
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-shrink: 0;
+  }
+  .lang-toggle {
+    display: flex;
+    gap: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    align-items: center;
+  }
+  .lang-btn {
+    color: rgba(255,255,255,0.4);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+    letter-spacing: 1px;
+    font-size: 0.82rem;
+  }
+  .lang-active { color: var(--color-heading); }
+  .nav-cta {
+    padding: 11px 22px;
+    font-size: 0.75rem;
+    background: var(--color-accent);
+    color: var(--color-background);
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ═══ HERO BG ═══ */
+  .hero-bg {
+    background: linear-gradient(180deg, rgba(13,17,23,0.3) 0%, rgba(13,17,23,0.7) 100%),
+                url('public/images/food/hero-1.jpg') center/cover;
+    min-height: 130px;
+    position: relative;
+  }
+  .dark-bg {
+    background: var(--color-background);
+    min-height: 90px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+
+  /* ═══ GRID ═══ */
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+  }
+  .compare-col {
+    text-align: center;
+    padding-top: 16px;
+  }
+
+  /* ═══ MOBILE FRAME ═══ */
+  .mobile-frame {
+    width: 375px;
+    margin: 0 auto;
+    background: var(--color-background);
+    border-radius: 20px;
+    border: 2px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .mobile-frame .navbar { padding: 12px 4%; }
+  .mobile-frame .nav-links { display: none; }
+  .mobile-frame .lang-toggle { display: none; }
+  .mobile-frame .nav-cta { display: none; }
+  .mobile-frame .logo-img { height: 38px; }
+  .mobile-frame .scrolled .logo-img { height: 34px; }
+  .mobile-menu-btn {
+    color: var(--color-heading);
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+
+  @media (max-width: 1000px) {
+    .nav-links { display: none !important; }
+    .lang-toggle { display: none !important; }
+    .nav-cta { display: none !important; }
+    .compare-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h1 class="page-title">Logo Comparison</h1>
+<p class="page-sub">Option A (3D Embossed) vs Option B (Flat Clean) · Properly aligned in navbar</p>
+
+<!-- ════════════════════════════════════
+     1. ON HERO IMAGE — TRANSPARENT NAVBAR
+     ════════════════════════════════════ -->
+<div class="divider"></div>
+<h2>Desktop Navbar — On Hero Image</h2>
+<p class="label">Transparent navbar over hero background</p>
+
+<div class="compare-row">
+  <div class="compare-col">
+    <span class="badge badge-a">A · 3D Embossed</span>
+    <div class="hero-bg">
+      <div class="navbar">
+        <a href="#" class="logo-container">
+          <img src="public/images/logo-navbar.png" alt="Jaipur" class="logo-img">
+        </a>
+        <ul class="nav-links">
+          <li><a href="#" class="nav-link">Home</a></li>
+          <li><a href="#" class="nav-link">Menu</a></li>
+          <li><a href="#" class="nav-link">About</a></li>
+          <li><a href="#" class="nav-link">Reservations</a></li>
+          <li><a href="#" class="nav-link">Gallery</a></li>
+        </ul>
+        <div class="nav-actions">
+          <div class="lang-toggle">
+            <button class="lang-btn lang-active">DE</button>
+            <span style="color:rgba(255,255,255,0.2)">|</span>
+            <button class="lang-btn">EN</button>
+          </div>
+          <a href="#" class="nav-cta">Tisch reservieren</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="compare-col">
+    <span class="badge badge-b">B · Flat Clean</span>
+    <div class="hero-bg">
+      <div class="navbar">
+        <a href="#" class="logo-container">
+          <img src="public/images/logo-flat-navbar.png" alt="Jaipur" class="logo-img">
+        </a>
+        <ul class="nav-links">
+          <li><a href="#" class="nav-link">Home</a></li>
+          <li><a href="#" class="nav-link">Menu</a></li>
+          <li><a href="#" class="nav-link">About</a></li>
+          <li><a href="#" class="nav-link">Reservations</a></li>
+          <li><a href="#" class="nav-link">Gallery</a></li>
+        </ul>
+        <div class="nav-actions">
+          <div class="lang-toggle">
+            <button class="lang-btn lang-active">DE</button>
+            <span style="color:rgba(255,255,255,0.2)">|</span>
+            <button class="lang-btn">EN</button>
+          </div>
+          <a href="#" class="nav-cta">Tisch reservieren</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     2. SCROLLED STATE — GLASSMORPHISM
+     ════════════════════════════════════ -->
+<div class="divider"></div>
+<h2>Scrolled Navbar — Glassmorphism</h2>
+<p class="label">Sticky navbar after scrolling down</p>
+
+<div class="compare-row">
+  <div class="compare-col">
+    <span class="badge badge-a">A · 3D Embossed</span>
+    <div class="dark-bg">
+      <div class="navbar scrolled">
+        <a href="#" class="logo-container">
+          <img src="public/images/logo-navbar.png" alt="Jaipur" class="logo-img">
+        </a>
+        <ul class="nav-links">
+          <li><a href="#" class="nav-link">Home</a></li>
+          <li><a href="#" class="nav-link">Menu</a></li>
+          <li><a href="#" class="nav-link">About</a></li>
+          <li><a href="#" class="nav-link">Reservations</a></li>
+          <li><a href="#" class="nav-link">Gallery</a></li>
+        </ul>
+        <div class="nav-actions">
+          <div class="lang-toggle">
+            <button class="lang-btn lang-active">DE</button>
+            <span style="color:rgba(255,255,255,0.2)">|</span>
+            <button class="lang-btn">EN</button>
+          </div>
+          <a href="#" class="nav-cta">Tisch reservieren</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="compare-col">
+    <span class="badge badge-b">B · Flat Clean</span>
+    <div class="dark-bg">
+      <div class="navbar scrolled">
+        <a href="#" class="logo-container">
+          <img src="public/images/logo-flat-navbar.png" alt="Jaipur" class="logo-img">
+        </a>
+        <ul class="nav-links">
+          <li><a href="#" class="nav-link">Home</a></li>
+          <li><a href="#" class="nav-link">Menu</a></li>
+          <li><a href="#" class="nav-link">About</a></li>
+          <li><a href="#" class="nav-link">Reservations</a></li>
+          <li><a href="#" class="nav-link">Gallery</a></li>
+        </ul>
+        <div class="nav-actions">
+          <div class="lang-toggle">
+            <button class="lang-btn lang-active">DE</button>
+            <span style="color:rgba(255,255,255,0.2)">|</span>
+            <button class="lang-btn">EN</button>
+          </div>
+          <a href="#" class="nav-cta">Tisch reservieren</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     3. LARGE LOGO VIEW
+     ════════════════════════════════════ -->
+<div class="divider"></div>
+<h2>Full Logo — Large View</h2>
+<p class="label">How each logo looks up close on the dark background</p>
+
+<div class="compare-row">
+  <div class="compare-col" style="padding:50px 20px; background:radial-gradient(ellipse at center, rgba(197,151,44,0.02) 0%, transparent 70%);">
+    <span class="badge badge-a">A · 3D Embossed</span><br>
+    <img src="public/images/logo-navbar.png" alt="Jaipur" style="height:180px; width:auto; margin-top:10px;">
+  </div>
+  <div class="compare-col" style="padding:50px 20px; background:radial-gradient(ellipse at center, rgba(197,151,44,0.02) 0%, transparent 70%);">
+    <span class="badge badge-b">B · Flat Clean</span><br>
+    <img src="public/images/logo-flat-navbar.png" alt="Jaipur" style="height:180px; width:auto; margin-top:10px;">
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     4. MOBILE PREVIEW
+     ════════════════════════════════════ -->
+<div class="divider"></div>
+<h2>Mobile Preview — 375px</h2>
+<p class="label">Scrolled state with hamburger menu</p>
+
+<div style="display:flex; gap:30px; justify-content:center; flex-wrap:wrap; padding:20px;">
+  <div>
+    <div style="text-align:center;"><span class="badge badge-a">A · 3D Embossed</span></div>
+    <div class="mobile-frame">
+      <div class="navbar scrolled">
+        <a href="#" class="logo-container">
+          <img src="public/images/logo-navbar.png" alt="Jaipur" class="logo-img">
+        </a>
+        <div class="nav-actions">
+          <button class="mobile-menu-btn">&#9776;</button>
+        </div>
+      </div>
+      <div style="height:200px; background: linear-gradient(var(--color-background), var(--color-surface));"></div>
+    </div>
+  </div>
+  <div>
+    <div style="text-align:center;"><span class="badge badge-b">B · Flat Clean</span></div>
+    <div class="mobile-frame">
+      <div class="navbar scrolled">
+        <a href="#" class="logo-container">
+          <img src="public/images/logo-flat-navbar.png" alt="Jaipur" class="logo-img">
+        </a>
+        <div class="nav-actions">
+          <button class="mobile-menu-btn">&#9776;</button>
+        </div>
+      </div>
+      <div style="height:200px; background: linear-gradient(var(--color-background), var(--color-surface));"></div>
+    </div>
+  </div>
+</div>
+
+<div style="height: 80px;"></div>
+
+</body>
+</html>
