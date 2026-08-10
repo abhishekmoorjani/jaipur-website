@@ -7,16 +7,14 @@ export const metadata: Metadata = {
   alternates: pageCanonical("/impressum"),
 };
 
-// Values taken from the Impressum published at jaipur-freiburg.de, which is the
-// legally binding version currently in force.
-//
-// OPEN QUESTION, needs the owner's confirmation: the live site contradicts
-// itself on the house number. Its Impressum says "Gerberau 5a" while its
-// Anfahrt page, the Google listing and the rest of this site all say
-// "Gerberau 5". The legally published Impressum value is kept here rather than
-// silently changed, because it is the address of record. Once confirmed, the
-// same value has to be used in the contact section, the JSON-LD and the Google
-// Business Profile, since inconsistent NAP data hurts local search.
+// Two addresses, both correct, confirmed by the owner:
+//   Gerberau 5a — the registered business address. Used here and for the
+//                 controller block in the Datenschutz, because both are legal
+//                 identifications of the business.
+//   Gerberau 5  — the restaurant itself. Used everywhere a visitor looks: the
+//                 contact section, the footer, the JSON-LD and the Google
+//                 Business Profile, so the local search NAP stays consistent.
+// The note below the address exists so the difference does not read as a typo.
 const ADDRESS_LINE = "Gerberau 5a";
 
 const heading: React.CSSProperties = {
@@ -36,6 +34,10 @@ export default function ImpressumPage() {
         {ADDRESS_LINE}<br />
         79098 Freiburg im Breisgau<br />
         Deutschland
+      </p>
+      <p style={{ fontSize: "0.9rem", opacity: 0.7, marginTop: "10px" }}>
+        Dies ist die Anschrift des Unternehmens. Das Restaurant selbst finden Sie
+        in der Gerberau 5, 79098 Freiburg im Breisgau.
       </p>
 
       <h2 style={heading}>Vertreten durch</h2>

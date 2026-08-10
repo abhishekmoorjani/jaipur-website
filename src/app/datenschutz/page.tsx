@@ -40,12 +40,18 @@ export default function DatenschutzPage() {
         Datenschutzerklärung.
       </p>
 
+      {/* The controller is a legal identification of the business, so it uses
+          the registered address (Gerberau 5a), matching the Impressum. The
+          restaurant itself is at Gerberau 5, which is what every visitor
+          facing part of the site and the Google listing show. */}
       <h3 style={{ fontSize: "1.2rem", marginBottom: "8px", marginTop: "20px" }}>Hinweis zur verantwortlichen Stelle</h3>
       <p>
-        Jaipur — Indian Heritage<br />
-        Gerberau 5<br />
+        Jaipur Restaurant Freiburg<br />
+        Abhay Singh<br />
+        Gerberau 5a<br />
         79098 Freiburg im Breisgau<br />
-        Telefon: 0761 / 27 20 82
+        Telefon: <a href="tel:0761272082" style={{ color: "inherit" }}>0761 / 27 20 82</a><br />
+        E-Mail: <a href="mailto:abi_ind@hotmail.com" style={{ color: "inherit" }}>abi_ind@hotmail.com</a>
       </p>
 
       <h2 style={{ fontSize: "1.5rem", marginBottom: "12px", marginTop: "30px" }}>4. Datenerfassung auf dieser Website</h2>
