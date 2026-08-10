@@ -9,15 +9,16 @@ name: Sync Google Reviews
 #   translate-reviews.mjs      → carousel-reviews.json (best 50, DE/EN/FR)
 #   localize-review-avatars.mjs→ public/images/reviews (self hosted avatars)
 #
-# Monthly rather than weekly on purpose. With ~875 reviews a single new review
-# moves the average by about 0.001, so weekly runs buy nothing and only
-# increase the number of automated requests to Google.
+# Weekly, at the owner's call. The rating itself barely moves at this review
+# count, but the review COUNT is visible on the page and in the structured
+# data, so a week is a reasonable staleness ceiling for a number a visitor can
+# check against Google in one click.
 
 on:
   schedule:
-    # 07:14 on the 3rd of each month. Off-peak minute and an odd day, so this
-    # does not pile onto the top-of-hour, first-of-month rush on the runners.
-    - cron: '14 7 3 * *'
+    # Mondays at 07:14 UTC. Off-peak minute rather than the top of the hour,
+    # where every scheduled job on GitHub piles up and gets delayed.
+    - cron: '14 7 * * 1'
   workflow_dispatch:
 
 # Only one sync at a time. Two overlapping runs would both push to main and the
