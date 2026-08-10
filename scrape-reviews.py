@@ -109,10 +109,17 @@ def scrape():
         scroll_panel = handle.as_element() if handle else None
 
         if not scroll_panel:
-            print("    ERROR: No scroll panel found")
-            page.screenshot(path="/tmp/gm_err.png")
+            # This used to `return`, which exits 0. The workflow then treated a
+            # scrape that collected nothing as a success, translated March's
+            # stale data and published it. Any failure here must be loud.
+            page.screenshot(path="scrape-failure.png", full_page=True)
             browser.close()
-            return
+            raise RuntimeError(
+                "No review scroll panel found on the Google Maps page. Google's "
+                "markup or a consent interstitial has probably changed. See the "
+                "scrape-failure.png artifact for what the page actually looked "
+                "like. Refusing to continue rather than republishing stale data."
+            )
 
         info = scroll_panel.evaluate('el => `scrollH=${el.scrollHeight} clientH=${el.clientHeight}`')
         print(f"    Found: {info}")

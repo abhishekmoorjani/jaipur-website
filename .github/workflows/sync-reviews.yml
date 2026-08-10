@@ -61,6 +61,17 @@ jobs:
       - name: Scrape Google reviews
         run: python scrape-reviews.py
 
+      # When the scrape fails it saves a full-page screenshot of what Google
+      # actually served. Without this the only diagnosis available is guessing
+      # at selectors.
+      - name: Upload scrape failure screenshot
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrape-failure-screenshot
+          path: scrape-failure.png
+          if-no-files-found: ignore
+
       # Picks the best 50 and pre-translates them into DE, EN and FR.
       - name: Build the translated carousel
         run: node translate-reviews.mjs
@@ -81,6 +92,14 @@ jobs:
             const d = require("./src/data/reviews.json");
             const c = require("./src/data/carousel-reviews.json");
             const fail = (m) => { console.error("FAIL: " + m); process.exit(1); };
+            // Freshness first. Checking only that the numbers are internally
+            // consistent let a run pass that scraped nothing at all and simply
+            // re-published five month old data, because stale data is
+            // perfectly self-consistent. If the scrape did not write today,
+            // the scrape did not happen.
+            const today = new Date().toISOString().slice(0, 10);
+            if (d.lastUpdated !== today) fail(
+              `reviews.json lastUpdated is ${d.lastUpdated}, expected ${today}. The scrape did not write new data.`);
             if (!(d.rating >= 1 && d.rating <= 5)) fail(`rating out of range: ${d.rating}`);
             if (!(d.totalReviews > 0)) fail(`totalReviews missing: ${d.totalReviews}`);
             if (d.totalReviews < d.scrapedReviews) fail(
@@ -101,7 +120,16 @@ jobs:
           git add src/data/reviews.json src/data/carousel-reviews.json
           [ -d public/images/reviews ] && git add public/images/reviews || true
           git diff --cached --quiet || git commit -m "chore: sync Google reviews [automated]"
-          git push
+          # The scrape takes minutes, so main can move underneath the run. A
+          # plain push then fails as a non fast-forward, which is how the
+          # 2026-08-10 run lost a successful scrape at the very last step.
+          # Rebase onto whatever landed meanwhile and retry.
+          for attempt in 1 2 3; do
+            git pull --rebase --autostash origin main && git push && exit 0
+            echo "push attempt $attempt failed, retrying"
+            sleep 5
+          done
+          echo "could not push after 3 attempts"; exit 1
 
       # No build or deploy step. Cloudflare Pages builds from main on push, so
       # the commit above is the deploy trigger.
