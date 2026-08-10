@@ -1,0 +1,72 @@
+AUTHORITATIVE DNS CAPTURE  (queried directly against the live nameservers)
+Captured before any migration. Squarespace's DNS panel is INACTIVE because
+the domain uses custom nameservers (dns1-4.p08.nsone.net).
+
+==================================================================
+DOMAIN: jaipur-freiburg.de
+==================================================================
+-- NS (delegation, set at the registrar) --
+dns1.p08.nsone.net.
+dns2.p08.nsone.net.
+dns3.p08.nsone.net.
+dns4.p08.nsone.net.
+-- A @ --
+198.185.159.144
+198.185.159.145
+198.49.23.144
+198.49.23.145
+-- MX @ --
+10 mail.jaipur-freiburg.de.
+-- SOA @ --
+dns1.p08.nsone.net. hostmaster.nsone.net. 1648225209 43200 7200 1209600 3600
+-- common subdomains --
+  www.jaipur-freiburg.de -> ext-sq.squarespace.com. 198.49.23.145 198.49.23.144 198.185.159.145 198.185.159.144 ext-sq.squarespace.com. ext-sq.squarespace.com. 
+  mail.jaipur-freiburg.de -> 95.130.17.37 
+-- SPF / DMARC --
+  SPF:   ABSENT
+  DMARC: 
+
+==================================================================
+DOMAIN: jaipur-freiburg.com
+==================================================================
+-- NS (delegation, set at the registrar) --
+dns1.p01.nsone.net.
+dns2.p01.nsone.net.
+dns3.p01.nsone.net.
+dns4.p01.nsone.net.
+-- A @ --
+198.185.159.144
+198.185.159.145
+198.49.23.144
+198.49.23.145
+-- SOA @ --
+dns1.p01.nsone.net. hostmaster.nsone.net. 1648029187 43200 7200 1209600 3600
+-- common subdomains --
+  www.jaipur-freiburg.com -> ext-sq.squarespace.com. 198.49.23.145 198.185.159.144 198.185.159.145 198.49.23.144 ext-sq.squarespace.com. ext-sq.squarespace.com. 
+-- SPF / DMARC --
+  SPF:   ABSENT
+  DMARC: 
+
+
+==================================================================
+DISPOSITION OF jaipur-freiburg.com
+==================================================================
+Measured behaviour (curl, before migration):
+  https://jaipur-freiburg.com/      -> 301 -> https://jaipur-freiburg.de/
+  https://www.jaipur-freiburg.com/  -> 301 -> https://jaipur-freiburg.de/
+  MX records: none. No email to preserve.
+  Registrar: Squarespace. Renews 23 Mar 2027.
+
+It is a redirect-only alias domain, not a second site. Its single job is
+to funnel .com traffic to the .de.
+
+MIGRATION ACTION: keep that behaviour. On Cloudflare, add
+jaipur-freiburg.com to the same account and create one Redirect Rule:
+  match  hostname eq "jaipur-freiburg.com" or "www.jaipur-freiburg.com"
+  action 301 to  https://jaipur-freiburg.de/${path}
+Free tier covers this. Do NOT let it lapse and do NOT point it at the
+Pages project directly, or the .com would start serving duplicate
+content and compete with the .de in search.
+
+This cannot go in public/_redirects: that file handles paths within one
+site, not cross-domain redirects.
