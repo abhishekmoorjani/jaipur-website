@@ -1,7 +1,7 @@
 {
-  "rating": 4.6,
-  "totalReviews": 701,
-  "lastUpdated": "2026-03-16",
+  "rating": 4.5,
+  "totalReviews": 875,
+  "lastUpdated": "2026-08-10",
   "reviews": [
     {
       "author": "Monika S",
@@ -4910,5 +4910,7 @@
       "time": "vor 14 Jahren",
       "profilePhoto": "https://lh3.googleusercontent.com/a/ACg8ocKT2IIo5qWiI35t5hD220P4QchtMRHmUSylvMwJI_Q0s2snhA=w72-h72-p-rp-mo-ba4-br100"
     }
-  ]
+  ],
+  "scrapedReviews": 701,
+  "source": "Read from the Google Maps listing aria-labels (4.5 stars, 875 reviews) on 2026-08-10. Replace by a successful scrape run."
 }
