@@ -6,8 +6,7 @@ name: Sync Google Reviews
 # Runs the Playwright pipeline, which needs no Google account, no API key and
 # no billing:
 #   scrape-reviews.py          → reviews.json  (rating, Google's total, reviews)
-#   translate-reviews.mjs      → carousel-reviews.json (best 50, DE/EN/FR)
-#   localize-review-avatars.mjs→ public/images/reviews (self hosted avatars)
+#   translate-reviews.mjs      → carousel-reviews.json (50, DE/EN/FR, no photos)
 #
 # Weekly, at the owner's call. The rating itself barely moves at this review
 # count, but the review COUNT is visible on the page and in the structured
@@ -25,8 +24,8 @@ name: Sync Google Reviews
 # succeed unattended, and a scheduled run would only email a failure every
 # Monday.
 #
-# The pipeline itself is proven and left intact: translate, avatar localisation,
-# verification and commit all succeeded in CI. Re-enable the cron the moment
+# The pipeline itself is proven and left intact: translate, verification and
+# commit all succeeded in CI. Re-enable the cron the moment
 # the scrape works again, or trigger it by hand from the Actions tab when
 # running somewhere Google trusts.
 on:
@@ -89,13 +88,6 @@ jobs:
       - name: Build the translated carousel
         run: node translate-reviews.mjs
 
-      # Without this step every sync reintroduces hotlinked
-      # lh3.googleusercontent.com avatars, sending visitor IPs to Google before
-      # consent and leaving images that break when Google rotates the URLs. The
-      # script exits non-zero if any third party reference survives, so a
-      # regression fails the run rather than shipping quietly.
-      - name: Localise review avatars
-        run: node scripts/localize-review-avatars.mjs
 
       # Sanity gate before anything is committed. A silently wrong rating in
       # structured data is worse than a failed workflow run.
@@ -118,8 +110,12 @@ jobs:
             if (d.totalReviews < d.scrapedReviews) fail(
               `Google total (${d.totalReviews}) is below the scraped count (${d.scrapedReviews}), so totalReviews is not Googles figure`);
             if (!c.reviews?.length) fail("carousel is empty");
-            const hotlinked = c.reviews.filter(r => r.profilePhoto?.startsWith("http")).length;
-            if (hotlinked) fail(`${hotlinked} avatars still point at a third party`);
+            // Reviewer photos are not published at all. Re-hosting one is a
+            // reproduction under section 16 UrhG and section 72 UrhG protects
+            // every photograph regardless of originality, so the card shows a
+            // monogram instead. Fail if any photo comes back.
+            const withPhoto = c.reviews.filter(r => r.profilePhoto).length;
+            if (withPhoto) fail(`${withPhoto} reviews carry a profile photo, which must not be published`);
             console.log(`OK: ${d.rating} stars, ${d.totalReviews} total, ${c.reviews.length} in carousel`);
           '
 
