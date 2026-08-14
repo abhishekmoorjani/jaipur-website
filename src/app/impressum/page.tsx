@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { pageCanonical } from "@/lib/seo";
+import ContactEmail from "@/components/ContactEmail";
 
 export const metadata: Metadata = {
   title: "Impressum — JAIPUR Indian Heritage",
@@ -46,7 +47,7 @@ export default function ImpressumPage() {
       <h2 style={heading}>Kontakt</h2>
       <p>
         Telefon: <a href="tel:0761272082" style={{ color: "inherit" }}>0761 / 27 20 82</a><br />
-        E-Mail: <a href="mailto:abi_ind@hotmail.com" style={{ color: "inherit" }}>abi_ind@hotmail.com</a>
+        E-Mail: <ContactEmail />
       </p>
 
       <h2 style={heading}>Umsatzsteuer-Identifikationsnummer</h2>

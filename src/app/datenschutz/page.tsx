@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { pageCanonical } from "@/lib/seo";
+import ContactEmail from "@/components/ContactEmail";
 
 export const metadata: Metadata = {
   title: "Datenschutz — JAIPUR Indian Heritage",
@@ -51,7 +52,7 @@ export default function DatenschutzPage() {
         Gerberau 5a<br />
         79098 Freiburg im Breisgau<br />
         Telefon: <a href="tel:0761272082" style={{ color: "inherit" }}>0761 / 27 20 82</a><br />
-        E-Mail: <a href="mailto:abi_ind@hotmail.com" style={{ color: "inherit" }}>abi_ind@hotmail.com</a>
+        E-Mail: <ContactEmail />
       </p>
 
       <h2 style={{ fontSize: "1.5rem", marginBottom: "12px", marginTop: "30px" }}>4. Datenerfassung auf dieser Website</h2>
