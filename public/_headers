@@ -1,0 +1,133 @@
+# ---------------------------------------------------------------------------
+# jaipur-freiburg.de : Cloudflare Pages _headers
+# Lives at public/_headers so `next build` (output:"export") copies it to out/.
+# Limits: max 100 rules, max 2000 chars per line. This file uses 2 rules.
+#
+# Cloudflare Pages rules COMBINE, they do not override each other. A request
+# matching two rules inherits both rules' headers, and a header name that
+# appears in both is joined with a comma. NEVER add Cache-Control to /*.
+#
+# All comments in this file are at column 0, outside the rule blocks. The
+# Cloudflare docs only ever demonstrate top-level comments, so indented
+# comments inside a block are an untested assumption. Do not move them in.
+#
+# BLOCK 1 notes, in order of the lines below.
+#
+# Strict-Transport-Security: STAGE 1 value (5 minutes) so a mistake expires
+#   itself. Stage 2 = max-age=86400 after 24 h. Stage 3 = max-age=31536000;
+#   includeSubDomains after a further 48 h. Do NOT add preload.
+#   Measured safe for includeSubDomains: the only subdomains in DNS are www
+#   (Cloudflare, HTTPS, 301 from port 80) and mail (95.130.17.37, refuses both
+#   80 and 443). No autoconfig, autodiscover, webmail, shop, blog, staging,
+#   dev or cpanel record exists. HSTS is browser-only per RFC 6797 and has no
+#   effect on the SMTP/IMAP/STARTTLS traffic that mail.* actually carries.
+#
+# X-Frame-Options: kept permanently, not just as a stopgap. CSP3 6.4.2.2 makes
+#   frame-ancestors override X-Frame-Options only when the policy's disposition
+#   is "enforce", so during the report-only phase this header is the ONLY
+#   clickjacking protection in force. Measured: zero iframes on all 3 locales.
+#
+# Content-Security-Policy-Report-Only: 'unsafe-inline' is unavoidable here.
+#   Measured on the live HTML: 12 executable inline <script> blocks on /
+#   (11 on /en and /fr), all self.__next_f.push RSC payloads, zero nonce=.
+#   A further 4 inline <script type="application/ld+json"> blocks exist on
+#   every locale, but those are HTML data blocks, never executed, and CSP's
+#   inline check does not apply to them. Static export cannot mint a nonce.
+#   Do NOT add a hash, a nonce or 'strict-dynamic'. Per CSP3 6.7.3.2 any one
+#   of those makes the browser return "Does Not Allow" for inline content and
+#   the RSC bootstrap is blocked, so React never hydrates.
+#
+#   script-src-attr 'none' is the one real XSS win available. Measured: zero
+#   inline event handler attributes across all 3 locales, and React delegates
+#   listeners rather than emitting onclick=. Unknown to pre-CSP3 browsers,
+#   which fall back to script-src, so it degrades gracefully.
+#
+#   style-src KEEPS 'unsafe-inline' and is deliberately NOT split into
+#   style-src-elem / style-src-attr. Measured: 175 style="..." attributes and
+#   zero <style> elements in the served HTML, which would suggest the split is
+#   free. It is not: the production bundle contains React's stylesheet
+#   hoisting path, which calls document.createElement("style") at runtime.
+#   Tightening style-src-elem would break that after hydration, not at load.
+#
+#   img-src NEEDS data:. This is required today, not a precaution.
+#   Measured: /_next/static/chunks/027c72bdaa64c137.css contains a
+#   url("data:image/svg+xml,...") chevron, and next/image emits a
+#   data:image/svg+xml blur placeholder. Removing data: breaks both.
+#   blob: is NOT needed: the only blob: token in the bundle is a startsWith
+#   test inside next/image, no blob URL is ever created.
+#
+#   No report-uri or report-to. There is no collection endpoint, and pointing
+#   one at a nonexistent URL just generates failing requests. Violations still
+#   surface in the DevTools console, which is the right instrument here.
+#   upgrade-insecure-requests is omitted here on purpose: it is ignored when
+#   sent via Content-Security-Policy-Report-Only. It appears in the enforcing
+#   policy below.
+#
+# Cross-Origin-Opener-Policy: measured safe. Zero window.open in ~1 MB of
+#   bundles, and the single target="_blank" already carries
+#   rel="noopener noreferrer". Severs cross-origin window references.
+#
+# Permissions-Policy: Chromium-only. Firefox and Safari honour only the iframe
+#   allow attribute, so on a site with zero iframes and zero third-party
+#   subresources the present-day value is close to zero. It is defence against
+#   a future third-party embed, not against anything on the site today.
+#   Every token below is in the current W3C/MDN directive enumeration and is
+#   recognised by shipping Chrome.
+#   Deliberately excluded: interest-cohort and sync-xhr and document-domain
+#   (no longer enumerated at all), browsing-topics (Topics API deprecated in
+#   Chrome 144, removed in Chrome 150, and the browsing-topics and
+#   interest-cohort policy features go with it), speaker-selection (specced,
+#   not implemented in Chromium), ambient-light-sensor (still enumerated by
+#   MDN, but gated behind a Chromium runtime flag, so it logs "Unrecognized
+#   feature" in stock Chrome), and the remaining Privacy Sandbox tokens
+#   (attribution-reporting, private-state-token-*) which are on the same
+#   deprecation track as Topics.
+#   Breakage checked before denying: zero requestFullscreen, zero
+#   getUserMedia, zero geolocation, zero navigator.share, zero serviceWorker
+#   and zero <video>/<audio> in the bundles, so every deny below is inert.
+#
+# ! Access-Control-Allow-Origin removes the inherited wildcard. The Cloudflare
+#   docs for the "!" operator say explicitly that it removes "a default header
+#   or a header which has been added by a more pervasive rule".
+#   Measured safe: all 11 woff2 fonts are same-origin under
+#   /_next/static/media/, and a same-origin fetch is basic-tainted and skips
+#   the CORS check, so the crossorigin="" preloads keep working without ACAO.
+#   If you would rather not touch it, delete that one line. Nothing else
+#   in this file depends on it.
+# ---------------------------------------------------------------------------
+
+/*
+  Strict-Transport-Security: max-age=300
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline'; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  Permissions-Policy: accelerometer=(), autoplay=(), bluetooth=(), camera=(), captured-surface-control=(), compute-pressure=(), display-capture=(), encrypted-media=(), fullscreen=(), gamepad=(), geolocation=(), gyroscope=(), hid=(), identity-credentials-get=(), idle-detection=(), local-fonts=(), magnetometer=(), microphone=(), midi=(), otp-credentials=(), payment=(), picture-in-picture=(), publickey-credentials-create=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), storage-access=(), usb=(), web-share=(), window-management=(), xr-spatial-tracking=()
+  ! Access-Control-Allow-Origin
+
+# ---------------------------------------------------------------------------
+# BLOCK 2. Content-hashed build assets only. Both the .js chunks and the .css
+# chunks live under /_next/static/chunks/, and all 11 woff2 fonts live under
+# /_next/static/media/, so this single rule covers every fingerprinted asset
+# and no separate font rule is needed. Filenames change whenever the content
+# changes, so a stale entry is unreachable by construction.
+#
+# Current live value on these paths is public, max-age=14400, must-revalidate,
+# so this is a real win: hashed assets currently revalidate every 4 hours.
+#
+# HTML must NOT get this. Cloudflare already serves HTML as
+# public, max-age=0, must-revalidate and this file deliberately leaves that
+# alone. An immutable-cached HTML page would hide a menu or price change from
+# returning visitors for a year with no way to force a refresh.
+#
+# NEVER put Cache-Control on /*. A request for /_next/static/chunks/abc.js
+# matches BOTH rules, the two values are comma-joined into
+# "public, max-age=0, must-revalidate, public, max-age=31536000, immutable",
+# the first max-age wins, and this line silently stops working. There is no
+# error and no warning, only a slower site. Keep header names disjoint between
+# the two blocks.
+# ---------------------------------------------------------------------------
+
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
