@@ -159,8 +159,39 @@
   font-size: 0.82rem;
 }
 
-.heroStars > span {
+.heroStarsLabel {
   margin-left: 8px;
+}
+
+/* Fractional star row.
+   A 4.5 average was being drawn as five filled stars, which asserts a perfect
+   score. The gold row is layered over an unfilled row and clipped to an exact
+   pixel width, so half a star reads as half a star at any rating.
+   The width is computed in page.tsx rather than as a percentage, because a
+   percentage of the total would divide the gaps as well as the stars and land
+   the clip slightly short of the true half. */
+.starRating {
+  position: relative;
+  display: inline-flex;
+  gap: var(--star-gap, 3px);
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.starRatingFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  display: inline-flex;
+  gap: var(--star-gap, 3px);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.starRating svg,
+.starRatingFill svg {
+  flex: 0 0 auto;
 }
 
 .heroAddress {

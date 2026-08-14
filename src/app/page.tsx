@@ -33,6 +33,54 @@ const heroImages = [
   `${BASE}/images/food/hero-7.jpg`,
 ];
 
+/**
+ * A star row that can show a fraction of a star.
+ *
+ * Every star row on this page used to render five filled stars regardless of
+ * the actual score, so a 4.5 Google average was drawn as a perfect five. The
+ * filled row is layered over an unfilled one and clipped.
+ *
+ * The clip width is computed here in pixels instead of as a percentage: a
+ * percentage of the row would scale the gaps too, so 4.5 of 5 would clip at
+ * 4.5 stars plus 3.6 gaps rather than the 4.5 stars plus 4 gaps a reader
+ * expects. At size 14 and gap 3 that is the difference between 73.8px and the
+ * correct 75px.
+ */
+function StarRating({
+  value,
+  size,
+  gap = 3,
+  className,
+}: {
+  value: number;
+  size: number;
+  gap?: number;
+  className?: string;
+}) {
+  const rowWidth = 5 * size + 4 * gap;
+  const clamped = Math.max(0, Math.min(5, value));
+  const full = Math.floor(clamped);
+  const width = Math.min(full * size + full * gap + (clamped - full) * size, rowWidth);
+
+  return (
+    <span
+      className={`${styles.starRating} ${className ?? ""}`}
+      style={{ ["--star-gap" as string]: `${gap}px` }}
+      role="img"
+      aria-label={`${clamped} / 5`}
+    >
+      {[...Array(5)].map((_, i) => (
+        <Star key={i} size={size} fill="none" color="var(--color-accent)" aria-hidden="true" />
+      ))}
+      <span className={styles.starRatingFill} style={{ width: `${width}px` }} aria-hidden="true">
+        {[...Array(5)].map((_, i) => (
+          <Star key={i} size={size} fill="var(--color-accent)" color="var(--color-accent)" />
+        ))}
+      </span>
+    </span>
+  );
+}
+
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -300,10 +348,10 @@ export default function Home() {
           </div>
           <div className={styles.heroMeta}>
             <div className={styles.heroStars}>
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={14} fill="var(--color-accent)" color="var(--color-accent)" />
-              ))}
-              <span>{reviewsData.rating} {t("Sterne auf Google", "Stars on Google", "étoiles sur Google")}</span>
+              <StarRating value={reviewsData.rating} size={14} gap={3} />
+              <span className={styles.heroStarsLabel}>
+                {reviewsData.rating} {t("Sterne auf Google", "Stars on Google", "étoiles sur Google")}
+              </span>
             </div>
             <span className={styles.heroAddress}>
               <MapPin size={13} /> Gerberau 5
@@ -424,9 +472,7 @@ export default function Home() {
               <div className={styles.editorialDeco} />
               <div className={styles.editorialLabel}>{t("Google Bewertung", "Google Rating", "Note Google")}</div>
               <div className={styles.editorialStars}>
-                {[...Array(5)].map((_, j) => (
-                  <Star key={j} size={12} fill="var(--color-accent)" color="var(--color-accent)" />
-                ))}
+                <StarRating value={reviewsData.rating} size={12} gap={2} />
               </div>
             </div>
           </div>
@@ -897,9 +943,7 @@ function TestimonialCarousel({ carouselReviews, lang, t }: { carouselReviews: Ca
               tabIndex={0}
             >
               <div className={styles.reviewStars}>
-                {[...Array(5)].map((_, j) => (
-                  <Star key={j} size={14} fill="var(--color-accent)" color="var(--color-accent)" />
-                ))}
+                <StarRating value={review.rating} size={14} gap={3} />
               </div>
               <p className={styles.reviewCardText}>&ldquo;{getReviewText(review, lang)}&rdquo;</p>
               {getReviewText(review, lang).length > 80 && (
@@ -942,9 +986,7 @@ function TestimonialCarousel({ carouselReviews, lang, t }: { carouselReviews: Ca
               <X size={18} />
             </button>
             <div className={styles.reviewModalStars}>
-              {[...Array(5)].map((_, j) => (
-                <Star key={j} size={16} fill="var(--color-accent)" color="var(--color-accent)" />
-              ))}
+              <StarRating value={expandedReview.rating} size={16} gap={3} />
             </div>
             <p className={styles.reviewModalText}>&ldquo;{getReviewText(expandedReview, lang)}&rdquo;</p>
             {getReviewText(expandedReview, lang).length >= 178 && (
