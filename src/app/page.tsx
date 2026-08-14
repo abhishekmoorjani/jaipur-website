@@ -150,9 +150,13 @@ export default function Home() {
     // Editorial sub-stats — count up + staggered entrance (supports decimals like 4.6)
     const subStatEls = gsap.utils.toArray(`.${styles.editorialNumber}`) as HTMLElement[];
     subStatEls.forEach((el, i) => {
-      const target = parseFloat(el.dataset.target || "0");
+      const raw = el.dataset.target || "0";
+      const target = parseFloat(raw);
       const suffix = el.dataset.suffix || "";
-      const isDecimal = target % 1 !== 0;
+      // Read the format off the string, not the value. The rating is written
+      // as "4.5"/"5.0", so a month where Google lands on a round 5 still
+      // renders "5.0" rather than snapping to a bare "5".
+      const isDecimal = raw.includes(".");
       const counter = { val: 0 };
       gsap.to(counter, {
         val: target,
@@ -413,7 +417,10 @@ export default function Home() {
           </div>
           <div className={styles.editorialStat}>
             <div className={styles.editorialStatBg}>
-              <div className={styles.editorialNumber} data-target="4.6" data-suffix="">0</div>
+              {/* Derived, never hardcoded. This card read 4.6 while the
+                  testimonials header read 4.5 from the same page, because this
+                  number was a literal the reviews sync could not reach. */}
+              <div className={styles.editorialNumber} data-target={reviewsData.rating.toFixed(1)} data-suffix="">0</div>
               <div className={styles.editorialDeco} />
               <div className={styles.editorialLabel}>{t("Google Bewertung", "Google Rating", "Note Google")}</div>
               <div className={styles.editorialStars}>
