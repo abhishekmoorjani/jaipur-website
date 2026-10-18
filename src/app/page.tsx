@@ -18,10 +18,16 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 const MenuPopup = dynamic(() => import("@/components/MenuPopup"), { ssr: false });
 import { useLanguage } from "@/context/LanguageContext";
 import { useGSAP } from "@gsap/react";
-import reviewsData from "@/data/reviews.json";
+import reviewsData from "@/data/review-summary.json";
 import carouselData from "@/data/carousel-reviews.json";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
+const GOOGLE_REVIEWS_URL = "https://maps.google.com/?cid=2659342198248692643";
+// UTC, or a visitor west of Greenwich sees the scrape date as the day before (and hydration mismatches).
+const stand = (locale: string) =>
+  new Date(reviewsData.lastUpdated).toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+const avg = (locale: string) => reviewsData.rating.toLocaleString(locale, { minimumFractionDigits: 1 });
 
 const heroImages = [
   `${BASE}/images/food/hero-1.jpg`,
@@ -319,9 +325,9 @@ export default function Home() {
           </h1>
           <p className={styles.heroSub}>
             {t(
-              "Authentische indische Küche im Herzen der Altstadt. Warm, elegant und seit drei Jahrzehnten familiengeführt.",
-              "Authentic Indian cuisine in the heart of the old town. Warm, elegant, and family-run for three decades.",
-              "Cuisine indienne authentique au cœur de la vieille ville. Chaleureuse, élégante et familiale depuis trois décennies."
+              "Authentische indische Küche im Herzen der Altstadt, direkt neben der Markthalle.",
+              "Authentic Indian cuisine in the heart of the old town, right next to the Markthalle.",
+              "Cuisine indienne authentique au cœur de la vieille ville, juste à côté de la Markthalle."
             )}
           </p>
           <div className={styles.heroCtas}>
@@ -918,14 +924,27 @@ function TestimonialCarousel({ carouselReviews, lang, t }: { carouselReviews: Ca
   return (
     <section className={`${styles.testimonialsSection} ${styles.revealSection}`}>
       <div className={styles.sectionHeader}>
-        <span className={styles.sectionEyebrow}>{t("Stimmen unserer Gäste", "Guest Voices", "Avis de nos clients")}</span>
-        <h2>{t("Was unsere Gäste sagen", "What our guests say", "Ce que disent nos clients")}</h2>
+        {/* Headed by source, not "our guests": Anhang Nr. 23b UWG bars claiming reviewers were customers without verifying it. */}
+        <span className={styles.sectionEyebrow}>{t("Google Rezensionen", "Google reviews", "Avis Google")}</span>
+        <h2>{t("Was Gäste bei Google schreiben", "What guests write on Google", "Ce que les clients écrivent sur Google")}</h2>
+        {/* Average needs count and date beside it (LG Hamburg, upheld in BGH I ZR 143/23). Date is the scrape date, not the build date. */}
         <p>
           {t(
-            `${reviewsData.rating} Sterne auf Google`,
-            `Rated ${reviewsData.rating} stars on Google`,
-            `${reviewsData.rating} étoiles sur Google`
+            `${avg("de-DE")} von 5 Sternen, aus allen ${reviewsData.totalReviews} Rezensionen unseres Google Profils. Stand: ${stand("de-DE")}.`,
+            `${avg("en-GB")} out of 5, from all ${reviewsData.totalReviews} reviews on our Google profile. As of ${stand("en-GB")}.`,
+            `${avg("fr-FR")} sur 5, sur l'ensemble des ${reviewsData.totalReviews} avis de notre profil Google. Au ${stand("fr-FR")}.`
           )}
+        </p>
+        {/* Section 5b(3) UWG: visible static text next to the reviews, never behind a click (OLG Köln 6 U 59/24). */}
+        <p className={styles.reviewDisclosure}>
+          {t(
+            `Alle Rezensionen stammen unverändert aus unserem öffentlichen Google Profil. Wir prüfen nicht, ob die Verfasser tatsächlich bei uns zu Gast waren. Die ${carouselReviews.length} hier gezeigten sind unsere Auswahl und kein repräsentatives Abbild aller Bewertungen.`,
+            `All reviews are taken unchanged from our public Google profile. We do not verify whether the authors actually visited us. The ${carouselReviews.length} shown here are our selection and not a representative picture of all ratings.`,
+            `Tous les avis proviennent tels quels de notre profil Google public. Nous ne vérifions pas si les auteurs sont réellement venus chez nous. Les ${carouselReviews.length} avis présentés ici sont notre sélection et ne reflètent pas l'ensemble des évaluations.`
+          )}{" "}
+          <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer">
+            {t("Alle Rezensionen bei Google ansehen", "See all reviews on Google", "Voir tous les avis sur Google")}
+          </a>
         </p>
       </div>
 
@@ -991,7 +1010,7 @@ function TestimonialCarousel({ carouselReviews, lang, t }: { carouselReviews: Ca
             <p className={styles.reviewModalText}>&ldquo;{getReviewText(expandedReview, lang)}&rdquo;</p>
             {getReviewText(expandedReview, lang).length >= 178 && (
               <a
-                href="https://maps.google.com/?cid=2659342198248692643"
+                href={GOOGLE_REVIEWS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.viewOnGoogle}
@@ -1025,7 +1044,10 @@ function TestimonialCarousel({ carouselReviews, lang, t }: { carouselReviews: Ca
    ═══════════════════════════════════════ */
 const galleryImages = [
   // — AMBIANCE & PEOPLE —
+  // The homepage preview shows the first three, so it opens food, ambiance, food.
+  `${BASE}/images/platter-professional.jpg`,        // Stunning professional platter (prawns, tikka, kebab)
   `${BASE}/images/terrace-evening.webp`,           // Terrace full of guests, evening glow, elephant murals
+  `${BASE}/images/tandoori-sizzler.webp`,           // Steaming tandoori chicken sizzler with red flower
   `${BASE}/images/group-dinner-terrace.webp`,       // Large group dinner on terrace
   `${BASE}/images/terrace-umbrella-evening.webp`,   // Evening terrace with umbrella, atmospheric
   `${BASE}/images/jaipur-sign-night.webp`,          // "JAIPUR" signage at night, warm glow
@@ -1034,8 +1056,6 @@ const galleryImages = [
   `${BASE}/images/spice-bowls-ganesha.webp`,        // Spice bowls with Ganesha statue
   `${BASE}/images/indian-shrine-decor.webp`,        // Beautiful shrine/decor piece
   // — FOOD —
-  `${BASE}/images/platter-professional.jpg`,        // Stunning professional platter (prawns, tikka, kebab)
-  `${BASE}/images/tandoori-sizzler.webp`,           // Steaming tandoori chicken sizzler with red flower
   `${BASE}/images/chicken-cocktails-psd.webp`,      // Prawn/chicken cocktails in shot glasses
   `${BASE}/images/thali-naan-spread.webp`,          // Thali with naan, chutneys, full spread
   `${BASE}/images/shrimp-curry-rice.webp`,          // Shrimp curry with vegetables and rice

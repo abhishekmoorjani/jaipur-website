@@ -1934,3 +1934,23 @@ select.inputField option {
     font-size: 1.1rem;
   }
 }
+
+/* Qualified so it outranks .sectionHeader p. */
+.sectionHeader .reviewDisclosure {
+  max-width: 640px;
+  margin: 14px auto 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.sectionHeader .reviewDisclosure a {
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+/* Balanced lines so the hero and the rating line never strand a lone word. */
+.heroSub,
+.testimonialsSection .sectionHeader p {
+  text-wrap: balance;
+}
