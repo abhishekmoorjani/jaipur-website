@@ -245,8 +245,15 @@
   z-index: 1;
   flex: 1;
   overflow-y: auto;
-  padding: 10px 36px 48px;
-  --list-pad-bottom: 48px;
+  /* The gold frame is drawn over this list, so dishes scrolled to the bottom edge
+     ran under its line and read as struck through. Fade the list out just above
+     the frame's bottom band (same units as .frame), and pad the end so the last
+     dish always comes to rest clear of the fade. */
+  --frame-band: calc(100cqi * 130 / 2504);
+  --list-pad-bottom: calc(var(--frame-band) + 24px);
+  padding: 10px 36px var(--list-pad-bottom);
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--frame-band) - 16px), transparent calc(100% - var(--frame-band)));
+  mask-image: linear-gradient(to bottom, #000 calc(100% - var(--frame-band) - 16px), transparent calc(100% - var(--frame-band)));
 }
 
 .menuList::-webkit-scrollbar {
@@ -684,8 +691,7 @@
   }
 
   .menuList {
-    padding: 8px 16px 28px;
-  --list-pad-bottom: 28px;
+    padding: 8px 16px var(--list-pad-bottom);
     -webkit-overflow-scrolling: touch;
   }
 
@@ -812,8 +818,7 @@
   }
 
   .menuList {
-    padding: 6px 12px 24px;
-  --list-pad-bottom: 24px;
+    padding: 6px 12px var(--list-pad-bottom);
   }
 
   .coverWrap {
