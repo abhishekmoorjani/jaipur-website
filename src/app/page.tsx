@@ -388,10 +388,10 @@ export default function Home() {
         </div>
         <div className={styles.dishGrid}>
           {[
-            { name: "Jaipur Thali", desc: t("Eine feine Auswahl traditioneller nordindischer Spezialitäten", "A fine selection of traditional North Indian specialties", "Une fine sélection de spécialités traditionnelles du nord de l'Inde"), img: `${BASE}/images/food/jaipur-thali.jpg` },
-            { name: "Tandoori Mixed Grill", desc: t("Spezialitäten aus dem original Lehmofen", "Specialties from the original clay oven", "Spécialités du four tandoor traditionnel"), img: `${BASE}/images/food/tandoori-mixed-grill.jpg` },
+            { name: "Thali", desc: t("Mittags, Montag bis Freitag: Vorspeise, Hauptgericht und Dessert", "Lunch, Monday to Friday: starter, main course and dessert", "Le midi, du lundi au vendredi\u00a0: entrée, plat et dessert"), img: `${BASE}/images/food/jaipur-thali.jpg` },
+            { name: "Mixed-Grill-Teller", desc: t("Spezialitäten aus dem original Lehmofen", "Specialties from the original clay oven", "Spécialités du four tandoor traditionnel"), img: `${BASE}/images/food/tandoori-mixed-grill.jpg` },
             { name: "Chicken Tikka Masala", desc: t("Zartes Huhn in cremiger Tomaten-Curry-Soße", "Tender chicken in creamy tomato curry sauce", "Poulet tendre dans une sauce crémeuse au curry et tomates"), img: `${BASE}/images/food/chicken-tikka-masala.jpg` },
-            { name: "Lamb Biryani", desc: t("Basmatireis mit Lammfleisch, Mandeln und Rosinen", "Basmati rice with lamb, almonds and raisins", "Riz basmati avec agneau, amandes et raisins secs"), img: `${BASE}/images/food/lamb-biryani.jpg` },
+            { name: "Bombay Lamm-Biryani", desc: t("Basmatireis mit Lammfleisch, Mandeln und Rosinen", "Basmati rice with lamb, almonds and raisins", "Riz basmati avec agneau, amandes et raisins secs"), img: `${BASE}/images/food/lamb-biryani.jpg` },
           ].map((dish, i) => (
             <div key={i} className={styles.dishCard}>
               <div className={styles.dishImgWrapper}>

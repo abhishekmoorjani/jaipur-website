@@ -63,11 +63,11 @@ const menuData: MenuCategory[] = [
     titleEn: "Lunch Menu: Thali",
     titleFr: "Menu du midi : Thali",
     subtitle: "Mit Vorspeise, Hauptgericht & Dessert: eine traditionelle Kombination verschiedener indischer Gerichte mit Naan-Brot & Basmati-Reis. „Sharing is caring“: Sie möchten sich ein Thali teilen? Dann berechnen wir 4,90 € pro weitere Person für das Gedeck.",
-    subtitleEn: "With starter, main course & dessert: a traditional combination of different Indian dishes with naan bread & Basmati rice. “Sharing is caring”: would you like to share a thali? We charge 4.90 € per additional person for the place setting.",
+    subtitleEn: "With starter, main course & dessert: a traditional combination of different Indian dishes with naan bread & Basmati rice. “Sharing is caring”: would you like to share a thali? We charge 4,90 € per additional person for the place setting.",
     subtitleFr: "Avec entrée, plat principal & dessert : une combinaison traditionnelle de différents plats indiens avec pain naan & riz basmati. « Sharing is caring » : vous souhaitez partager un thali ? Nous facturons 4,90 € par personne supplémentaire pour le couvert.",
     dishes: [
-      { num: "", name: "Vegetarisch Thali", desc: "Vegetarisches Thali", descEn: "Vegetarian Thali", descFr: "Thali végétarien", price: "14,90 €", vegetarian: true },
-      { num: "", name: "Hähnchen & Gemüse Thali", desc: "Thali mit Hähnchen und Gemüse", descEn: "Thali with chicken and vegetables", descFr: "Thali avec poulet et légumes", price: "16,90 €" },
+      { num: "", name: "Thali Vegetarisch", desc: "", descEn: "Vegetarian thali", descFr: "Thali végétarien", price: "14,90 €", vegetarian: true },
+      { num: "", name: "Thali mit Hähnchen und Gemüse", desc: "", descEn: "Thali with chicken and vegetables", descFr: "Thali avec poulet et légumes", price: "16,90 €" },
     ],
   },
   {
@@ -121,7 +121,7 @@ const menuData: MenuCategory[] = [
     titleEn: "Raita",
     titleFr: "Raïta",
     dishes: [
-      { num: "74", name: "Gurken-Tomaten-Raita", desc: "Joghurt mit Tomaten & Gurken, frischen Kräutern & indischen Gewürzen", descEn: "Yogurt with tomatoes & cucumbers, fresh herbs & Indian spices", descFr: "Yaourt aux tomates & concombres, herbes fraîches & épices indiennes", price: "5,90 €", vegetarian: true },
+      { num: "74", name: "Joghurtmischung mit indischen Gewürzen", desc: "Joghurt mit Tomaten & Gurken, frischen Kräutern & Gewürzen", descEn: "Yogurt with tomatoes & cucumbers, fresh herbs & Indian spices", descFr: "Yaourt aux tomates & concombres, herbes fraîches & épices indiennes", price: "5,90 €", vegetarian: true },
     ],
   },
   {
@@ -133,9 +133,9 @@ const menuData: MenuCategory[] = [
     subtitleEn: "Served with Basmati rice & homemade grill sauce",
     subtitleFr: "Servi avec du riz basmati & sauce grillade maison",
     dishes: [
-      { num: "75", name: "Tandoori-Chicken", desc: "2 Hähnchenkeulen, mariniert mit Knoblauch, Kurkuma, Kardamom & Zimt, am Spieß gegrillt. Spezialität aus Neu-Delhi", descEn: "2 chicken legs marinated with garlic, turmeric, cardamom & cinnamon, grilled on the skewer. A specialty from New Delhi", descFr: "2 cuisses de poulet marinées à l'ail, au curcuma, à la cardamome & à la cannelle, grillées à la broche. Spécialité de New Delhi", price: "20,90 €", signature: true },
+      { num: "75", name: "Tandoori-Chicken", desc: "2 Hähnchenkeulen, mariniert mit Knoblauch, Kurkuma, Kardamom & Zimt, am Spieß gegrillt. Spezialität aus Neu-Delhi", descEn: "2 chicken legs marinated with garlic, turmeric, cardamom & cinnamon, grilled on the skewer. A specialty from New Delhi", descFr: "2 cuisses de poulet marinées à l'ail, au curcuma, à la cardamome & à la cannelle, grillées à la broche. Spécialité de New Delhi", price: "20,90 €" },
       { num: "76", name: "Chicken Tikka", desc: "Hähnchen, mariniert mit Kardamom, Ingwer, Joghurt, Zitrone & Garam Masala, am Spieß gegrillt", descEn: "Chicken marinated with cardamom, ginger, yogurt, lemon & Garam Masala, grilled on the skewer", descFr: "Poulet mariné à la cardamome, au gingembre, au yaourt, au citron & au Garam Masala, grillé à la broche", price: "21,90 €" },
-      { num: "77", name: "Garlic-Mint Tikka", desc: "Hähnchen, mariniert mit Minze, Knoblauch, Joghurt, Zitrone & Kräutern, am Spieß gegrillt", descEn: "Chicken marinated with mint, garlic, yogurt, lemon & herbs, grilled on the skewer", descFr: "Poulet mariné à la menthe, à l'ail, au yaourt, au citron & aux herbes, grillé à la broche", price: "21,90 €", signature: true },
+      { num: "77", name: "Garlic-Mint Tikka", desc: "Hähnchen, mariniert mit Minze, Knoblauch, Joghurt, Zitrone & Kräutern, am Spieß gegrillt", descEn: "Chicken marinated with mint, garlic, yogurt, lemon & herbs, grilled on the skewer", descFr: "Poulet mariné à la menthe, à l'ail, au yaourt, au citron & aux herbes, grillé à la broche", price: "21,90 €" },
       { num: "78", name: "Lamm Tikka", desc: "Lammhüfte mit Joghurt, Knoblauch, Ingwer, Kardamom & Garam Masala, am Spieß gegrillt", descEn: "Lamb rump with yogurt, garlic, ginger, cardamom & Garam Masala, grilled on the skewer", descFr: "Quasi d'agneau au yaourt, à l'ail, au gingembre, à la cardamome & au Garam Masala, grillé à la broche", price: "24,90 €", signature: true },
       { num: "79", name: "Mixed-Grill-Teller", desc: "Hähnchen, Lamm & Garnelen mit Joghurt, Knoblauch, Ingwer, Kardamom & Garam Masala, am Spieß im Tandoor gegrillt", descEn: "Chicken, lamb & prawns with yogurt, garlic, ginger, cardamom & Garam Masala, grilled on the skewer in the tandoor", descFr: "Poulet, agneau & crevettes au yaourt, à l'ail, au gingembre, à la cardamome & au Garam Masala, grillés à la broche au tandoor", price: "26,90 €", signature: true },
       { num: "80", name: "Jaipur Prawn Tikka", desc: "Garnelen mit Joghurt, Knoblauch, Ingwer, Kardamom & Garam Masala, am Spieß im Tandoor gegrillt", descEn: "Prawns with yogurt, garlic, ginger, cardamom & Garam Masala, grilled on the skewer in the tandoor", descFr: "Crevettes au yaourt, à l'ail, au gingembre, à la cardamome & au Garam Masala, grillées à la broche au tandoor", price: "24,90 €" },
@@ -153,12 +153,12 @@ const menuData: MenuCategory[] = [
     dishes: [
       { num: "82", name: "Butter-Chicken", desc: "Das ikonischste Gericht der Welt: gegrilltes Hähnchen in Tomaten-Butter-Soße mit aromatischen Gewürzen, leicht süßlich. Sehr beliebt!", descEn: "The world's most iconic dish: grilled chicken in a tomato butter sauce with aromatic spices, slightly sweet. A real favourite!", descFr: "Le plat le plus emblématique du monde : poulet grillé en sauce tomate au beurre et aux épices aromatiques, légèrement sucrée. Très apprécié !", price: "21,90 €" },
       { num: "83", name: "Karahi Chicken", desc: "Hähnchen mit Tomaten, Paprika, Ingwer & Kreuzkümmel in Curry-Soße", descEn: "Chicken with tomatoes, peppers, ginger & cumin in curry sauce", descFr: "Poulet aux tomates, poivrons, gingembre & cumin en sauce curry", price: "19,90 €" },
-      { num: "84", name: "Chicken Curry", desc: "Hähnchen mit Tomaten, Knoblauch, Ingwer & Zwiebeln in pikanter Currysoße, scharf", descEn: "Chicken with tomatoes, garlic, ginger & onions in spicy curry sauce, hot", descFr: "Poulet aux tomates, ail, gingembre & oignons en sauce curry relevée, piquant", price: "18,90 €", spicy: true },
-      { num: "85", name: "Chicken Tikka Masala", desc: "Gegrilltes Hähnchen in einer würzigen Tomaten-Masala-Soße", descEn: "Grilled chicken in a spicy tomato Masala sauce", descFr: "Poulet grillé en sauce Masala épicée à la tomate", price: "19,90 €", signature: true },
+      { num: "84", name: "Chicken Curry", desc: "Hähnchen mit Tomaten, Knoblauch, Ingwer & Zwiebeln in pikanter Currysoße, scharf", descEn: "Chicken with tomatoes, garlic, ginger & onions in spicy curry sauce, hot", descFr: "Poulet aux tomates, ail, gingembre & oignons en sauce curry relevée, piquant", price: "18,90 €", verySpicy: true },
+      { num: "85", name: "Chicken Tikka Masala", desc: "Gegrilltes Hähnchen in einer würzigen Tomaten-Masala-Soße", descEn: "Grilled chicken in a spicy tomato Masala sauce", descFr: "Poulet grillé en sauce Masala épicée à la tomate", price: "19,90 €" },
       { num: "86", name: "Murgh Safran", desc: "Hähnchen in Cashewsoße mit Kardamom, Safran & gerösteten Zwiebeln", descEn: "Chicken in cashew sauce with cardamom, saffron & roasted onions", descFr: "Poulet en sauce aux noix de cajou avec cardamome, safran & oignons grillés", price: "20,90 €", signature: true },
       { num: "87", name: "Chili Chicken", desc: "Hähnchen mit Paprika, Zwiebeln, Knoblauch & Ingwer in pikanter Chilisoße, exotisch scharf", descEn: "Chicken with peppers, onions, garlic & ginger in spicy chili sauce, exotically hot", descFr: "Poulet aux poivrons, oignons, ail & gingembre en sauce chili relevée, piquant et exotique", price: "20,90 €", verySpicy: true },
       { num: "88", name: "Kerala Chicken", desc: "Hähnchen mit Ingwer, Knoblauch, Zimt & Garam Masala in würziger Kokosmilch-Soße, nach südindischer Art", descEn: "Chicken with ginger, garlic, cinnamon & Garam Masala in spicy coconut milk sauce, South Indian style", descFr: "Poulet au gingembre, ail, cannelle & Garam Masala en sauce épicée au lait de coco, à la mode du sud de l'Inde", price: "19,90 €" },
-      { num: "89", name: "Murg Vindaloo", desc: "Hähnchen mit Kartoffeln, Ingwer, Zimt & Koriander in Vindaloo-Curry-Soße, scharf!", descEn: "Chicken with potatoes, ginger, cinnamon & coriander in Vindaloo curry sauce, hot!", descFr: "Poulet aux pommes de terre, gingembre, cannelle & coriandre en sauce curry Vindaloo, piquant !", price: "19,90 €", spicy: true },
+      { num: "89", name: "Murg Vindaloo", desc: "Hähnchen mit Kartoffeln, Ingwer, Zimt & Koriander in Vindaloo-Curry-Soße, scharf!", descEn: "Chicken with potatoes, ginger, cinnamon & coriander in Vindaloo curry sauce, hot!", descFr: "Poulet aux pommes de terre, gingembre, cannelle & coriandre en sauce curry Vindaloo, piquant !", price: "19,90 €", verySpicy: true },
     ],
   },
   {
@@ -171,8 +171,8 @@ const menuData: MenuCategory[] = [
     subtitleFr: "Servi avec du riz basmati",
     dishes: [
       { num: "90", name: "Lamm Curry", desc: "Lamm mit Ingwer, Tomaten, Kardamom, Zwiebeln & Knoblauch in würziger Curry-Soße", descEn: "Lamb with ginger, tomatoes, cardamom, onions & garlic in spicy curry sauce", descFr: "Agneau au gingembre, tomates, cardamome, oignons & ail en sauce curry épicée", price: "21,90 €", signature: true },
-      { num: "91", name: "Lamm Korma", desc: "Lamm mit Cashewkernen & Garam Masala in Mandelsoße mit Sahne, aus der königlichen Mogul-Küche", descEn: "Lamb with cashews & Garam Masala in almond sauce with cream, from the royal Mughal cuisine", descFr: "Agneau aux noix de cajou & Garam Masala en sauce aux amandes et à la crème, de la cuisine royale moghole", price: "22,90 €", signature: true },
-      { num: "92", name: "Lamm Vindaloo", desc: "Lamm mit Kartoffeln, Ingwer, Kardamom & Kümmel in Vindaloo-Soße, scharf", descEn: "Lamb with potatoes, ginger, cardamom & caraway in Vindaloo sauce, hot", descFr: "Agneau aux pommes de terre, gingembre, cardamome & carvi en sauce Vindaloo, piquant", price: "21,90 €", spicy: true },
+      { num: "91", name: "Lamm Korma", desc: "Lamm mit Cashewkernen & Garam Masala in Mandelsoße mit Sahne, aus der königlichen Mogul-Küche", descEn: "Lamb with cashews & Garam Masala in almond sauce with cream, from the royal Mughal cuisine", descFr: "Agneau aux noix de cajou & Garam Masala en sauce aux amandes et à la crème, de la cuisine royale moghole", price: "22,90 €" },
+      { num: "92", name: "Lamm Vindaloo", desc: "Lamm mit Kartoffeln, Ingwer, Kardamom & Kümmel in Vindaloo-Soße, scharf", descEn: "Lamb with potatoes, ginger, cardamom & caraway in Vindaloo sauce, hot", descFr: "Agneau aux pommes de terre, gingembre, cardamome & carvi en sauce Vindaloo, piquant", price: "21,90 €", verySpicy: true },
       { num: "93", name: "Gosht Saagwala", desc: "Lamm mit Spinat, Tomaten, Nelken, Zimt & Zwiebeln in milder Curry-Sahne-Soße", descEn: "Lamb with spinach, tomatoes, cloves, cinnamon & onions in a mild creamy curry sauce", descFr: "Agneau aux épinards, tomates, clous de girofle, cannelle & oignons en sauce curry douce à la crème", price: "21,90 €" },
       { num: "94", name: "Gosht Achari", desc: "Lamm mit Ingwer, Knoblauch, Koriander & Senfkörnern in Achari-Masala-Soße, scharf", descEn: "Lamb with ginger, garlic, coriander & mustard seeds in Achari Masala sauce, hot", descFr: "Agneau au gingembre, ail, coriandre & graines de moutarde en sauce Achari Masala, piquant", price: "21,90 €", spicy: true },
       { num: "95", name: "Lamm Karahi", desc: "Lamm mit Champignons, Tomaten, Brokkoli, Paprika, Ingwer & Zwiebeln in würziger Soße", descEn: "Lamb with mushrooms, tomatoes, broccoli, peppers, ginger & onions in spicy sauce", descFr: "Agneau aux champignons, tomates, brocoli, poivrons, gingembre & oignons en sauce épicée", price: "22,90 €", signature: true },
@@ -189,9 +189,9 @@ const menuData: MenuCategory[] = [
     dishes: [
       { num: "96", name: "Prawn Jal Frezi", desc: "Garnelen mit Paprika, Tomaten, Ingwer, Knoblauch & Zwiebeln in würziger Curry-Soße", descEn: "Prawns with peppers, tomatoes, ginger, garlic & onions in spicy curry sauce", descFr: "Crevettes aux poivrons, tomates, gingembre, ail & oignons en sauce curry épicée", price: "22,90 €" },
       { num: "97", name: "Coconut Prawn", desc: "Garnelen mit Kartoffeln, Ingwer, Knoblauch & Nelken in Kokosmilch und südindischer Curry-Soße, nach Goa-Art", descEn: "Prawns with potatoes, ginger, garlic & cloves in coconut milk and South Indian curry sauce, Goa style", descFr: "Crevettes aux pommes de terre, gingembre, ail & clous de girofle au lait de coco et sauce curry du sud de l'Inde, façon Goa", price: "22,90 €" },
-      { num: "98", name: "Chili Prawn", desc: "Garnelen mit Chili, Ingwer, Paprika, Knoblauch & Zwiebeln in scharfer Soße", descEn: "Prawns with chili, ginger, peppers, garlic & onions in hot sauce", descFr: "Crevettes au piment, gingembre, poivrons, ail & oignons en sauce piquante", price: "22,90 €", spicy: true },
+      { num: "98", name: "Chili Prawn", desc: "Garnelen mit Chili, Ingwer, Paprika, Knoblauch & Zwiebeln in scharfer Soße", descEn: "Prawns with chili, ginger, peppers, garlic & onions in hot sauce", descFr: "Crevettes au piment, gingembre, poivrons, ail & oignons en sauce piquante", price: "22,90 €", verySpicy: true },
       { num: "99", name: "Fish Masala", desc: "Zanderfilet mit Kreuzkümmel, Ingwer, Koriander, Kurkuma & Tomaten in Masala-Soße", descEn: "Pike-perch fillet with cumin, ginger, coriander, turmeric & tomatoes in Masala sauce", descFr: "Filet de sandre au cumin, gingembre, coriandre, curcuma & tomates en sauce Masala", price: "22,90 €" },
-      { num: "100", name: "Kerala Fish Curry", desc: "Zanderfilet mit Ingwer, Zimt, Knoblauch & Nelken in Kokosmilch und würziger Curry-Soße, nach südindischer Art", descEn: "Pike-perch fillet with ginger, cinnamon, garlic & cloves in coconut milk and spicy curry sauce, South Indian style", descFr: "Filet de sandre au gingembre, cannelle, ail & clous de girofle au lait de coco et sauce curry épicée, à la mode du sud de l'Inde", price: "22,90 €", signature: true },
+      { num: "100", name: "Kerala Fish Curry", desc: "Zanderfilet mit Ingwer, Zimt, Knoblauch & Nelken in Kokosmilch und würziger Curry-Soße, nach südindischer Art", descEn: "Pike-perch fillet with ginger, cinnamon, garlic & cloves in coconut milk and spicy curry sauce, South Indian style", descFr: "Filet de sandre au gingembre, cannelle, ail & clous de girofle au lait de coco et sauce curry épicée, à la mode du sud de l'Inde", price: "22,90 €" },
     ],
   },
   {
@@ -225,7 +225,7 @@ const menuData: MenuCategory[] = [
       { num: "109", name: "Chicken Biryani", desc: "Hähnchen mit Safran-Basmati-Reis & aromatischen Gewürzen, garniert mit Röstzwiebeln, Mandeln & Rosinen", descEn: "Chicken with saffron Basmati rice & aromatic spices, garnished with crispy fried onions, almonds & raisins", descFr: "Poulet avec riz basmati au safran & épices aromatiques, garni d'oignons frits, d'amandes & de raisins secs", price: "19,90 €", signature: true },
       { num: "110", name: "Bombay Lamm-Biryani", desc: "Lamm mit Safran-Basmati-Reis, Ingwer, Knoblauch & Koriander, garniert mit Mandeln & Rosinen", descEn: "Lamb with saffron Basmati rice, ginger, garlic & coriander, garnished with almonds & raisins", descFr: "Agneau avec riz basmati au safran, gingembre, ail & coriandre, garni d'amandes & de raisins secs", price: "21,90 €" },
       { num: "111", name: "Prawn Biryani", desc: "Garnelen mit Ingwer, Knoblauch, Zimt, Kardamom & Safran-Basmati-Reis, garniert mit Röstzwiebeln, Mandeln & Rosinen", descEn: "Prawns with ginger, garlic, cinnamon, cardamom & saffron Basmati rice, garnished with crispy fried onions, almonds & raisins", descFr: "Crevettes au gingembre, ail, cannelle, cardamome & riz basmati au safran, garnies d'oignons frits, d'amandes & de raisins secs", price: "22,90 €" },
-      { num: "112", name: "Jaipur Mix Biryani", desc: "Hähnchen, Lamm & Garnelen in Joghurt-Masala-Marinade mit Safran-Basmati-Reis, garniert mit Mandeln, Rosinen & Zwiebeln", descEn: "Chicken, lamb & prawns in a yogurt Masala marinade with saffron Basmati rice, garnished with almonds, raisins & onions", descFr: "Poulet, agneau & crevettes en marinade Masala au yaourt avec riz basmati au safran, garnis d'amandes, de raisins secs & d'oignons", price: "23,90 €", signature: true },
+      { num: "112", name: "Jaipur Mix Biryani", desc: "Hähnchen, Lamm & Garnelen in Joghurt-Masala-Marinade mit Safran-Basmati-Reis, garniert mit Mandeln, Rosinen & Zwiebeln", descEn: "Chicken, lamb & prawns in a yogurt Masala marinade with saffron Basmati rice, garnished with almonds, raisins & onions", descFr: "Poulet, agneau & crevettes en marinade Masala au yaourt avec riz basmati au safran, garnis d'amandes, de raisins secs & d'oignons", price: "23,90 €" },
       { num: "113", name: "Gemüse Biryani", desc: "Safran-Basmati-Reis mit Paneer, Tomaten, Blumenkohl, Paprika, Erbsen & Kartoffeln, garniert mit Mandeln, Rosinen & Zwiebeln", descEn: "Saffron Basmati rice with paneer, tomatoes, cauliflower, peppers, peas & potatoes, garnished with almonds, raisins & onions", descFr: "Riz basmati au safran avec paneer, tomates, chou-fleur, poivrons, petits pois & pommes de terre, garni d'amandes, de raisins secs & d'oignons", price: "16,90 €", vegetarian: true },
     ],
   },
@@ -406,7 +406,7 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
                 <div className={styles.coverText}>
                   <img src={`${BASE}/images/logo-navbar.png`} alt="Jaipur Indian Heritage" className={styles.coverLogo} width={766} height={500} />
                   <p className={styles.coverTagline}>Authentic Indian Cuisine</p>
-                  <p className={styles.coverSince}>For over 30 years</p>
+                  <p className={styles.coverSince}>For Over 30 years</p>
                   <h3 id="menu-cover-heading" className={styles.coverHeading}>
                     {t("Freiburgs ältestes indisches Restaurant", "Freiburg\u2019s oldest Indian restaurant", "Le plus ancien restaurant indien de Fribourg")}
                   </h3>
@@ -464,7 +464,10 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
                   )}
                 </div>
                 <div className={styles.dishList}>
-                  {category.dishes.map((dish, di) => (
+                  {category.dishes.map((dish, di) => {
+                    // A German name needs no German repeat, but EN and FR still get a gloss (Thali).
+                    const desc = t(dish.desc, dish.descEn || dish.desc, dish.descFr || dish.descEn || dish.desc);
+                    return (
                     <div key={di} className={styles.dishRow}>
                       {dish.num && <span className={styles.dishNum}>{dish.num}</span>}
                       <div className={styles.dishContent}>
@@ -479,12 +482,11 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
                           <span className={styles.dishDots} />
                           <span className={styles.dishPrice}>{dish.price}</span>
                         </div>
-                        {dish.desc && (
-                          <p className={styles.dishDesc}>{t(dish.desc, dish.descEn || dish.desc, dish.descFr || dish.descEn || dish.desc)}</p>
-                        )}
+                        {desc && <p className={styles.dishDesc}>{desc}</p>}
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             ))}

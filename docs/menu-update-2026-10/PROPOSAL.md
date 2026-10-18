@@ -2,6 +2,22 @@
 
 Draft for review. Nothing is live: the changes sit on the branch `menu/2026-10-update` and are not pushed.
 
+## Third round: fixes after checking every dish against the print
+
+This section is the newest. Where it disagrees with anything below, this section wins; the lines below that it changes were updated too.
+
+- **74 Raita** now carries its printed name, "Joghurtmischung mit indischen Gewürzen", under the heading "Raita". The German description is the printed one ("Joghurt mit Tomaten & Gurken, frischen Kräutern & Gewürzen"). The English and French descriptions still say "Indian spices", because the German name shows to those guests untranslated.
+- **Lunch Thalis** are now "Thali Vegetarisch" and "Thali mit Hähnchen und Gemüse". The German description line only repeated the name, so it is gone. English and French guests still get one line under the German name ("Vegetarian thali", "Thali with chicken and vegetables") so they know what it is. Prices unchanged: 14,90 € and 16,90 €.
+- **The English Thali note** now writes the place setting charge as "4,90 €", like every price on the menu.
+- **Specialty badge** only where the print says "Chef Spezial", "Spezialität des Hauses" or "Spezialität des Küchenchefs": lunch Chicken Tikka Masala, 78 Lamm Tikka, 79 Mixed-Grill-Teller, 86 Murgh Safran, 90 Lamm Curry, 95 Lamm Karahi, 108 Paneer Tikka Masala, 109 Chicken Biryani and 118 Peshwari Naan. Removed from six dishes that had it only from the old site: 75 Tandoori-Chicken, 77 Garlic-Mint Tikka, 85 Chicken Tikka Masala, 91 Lamm Korma, 100 Kerala Fish Curry and 112 Jaipur Mix Biryani. A place of origin ("Spezialität aus Neu-Delhi", "aus Nordindien", "aus Kaschmir") is not a house specialty, so none of the three gets the badge; the words stay in the description.
+- **Spice levels follow the print's chilis.** Two chilis show as "Sehr scharf": 84 Chicken Curry, 87 Chili Chicken, 89 Murg Vindaloo, 92 Lamm Vindaloo and 98 Chili Prawn. One chili shows as "Scharf": 94 Gosht Achari. The lunch Chicken Curry has no chili on the lunch card but says "Scharf!!", so it stays "Scharf".
+- **Cover:** "For Over 30 years" is now written as printed. "Mit frischen Zutaten" stays corrected for now; see the open point below.
+- **Homepage and Google.** The four dish tiles on the homepage and the hidden menu summary that Google reads now use only printed dishes under their printed names: "Thali" (was "Jaipur Thali", which is not on the card), "Mixed-Grill-Teller" (was "Tandoori Mixed Grill"), "Chicken Tikka Masala" and "Bombay Lamm-Biryani" (was "Lamb Biryani"). The Thali tile now says it is a lunch dish, Monday to Friday, because the card offers it only then. In the Google summary "Butter Chicken" and "Garlic Naan" also became the printed "Butter-Chicken" and "Knoblauch Naan".
+
+### Open point for this round
+
+1. **"Mit der frischen Zutaten" on page 2.** The print says "Mit der frischen Zutaten", which is not correct German. The cover shows "Mit frischen Zutaten". Please say which you want: keep the correction (our advice), or show the printed words exactly.
+
 ## Second round: the printed card look, the welcome cover, only the printed dishes
 
 This section is newer than everything below it. Where the two disagree (desserts, drinks, Papad and Samosa), this section wins.
@@ -41,11 +57,11 @@ The catering note at the end of the menu stays. It is not a dish.
 
 ### The welcome page is the cover
 
-When the menu opens, the first thing a guest sees is printed page 2, rebuilt as real text: the restaurant logo, "Authentic Indian Cuisine", "For over 30 years", the green heading "Freiburgs ältestes indisches Restaurant", the three welcome paragraphs and "Vielen Dank für Ihren Besuch.", with the gold ornaments between them, the leaves top left and bottom right, the lace corners and the palace drawing along the bottom, placed as on the print.
+When the menu opens, the first thing a guest sees is printed page 2, rebuilt as real text: the restaurant logo, "Authentic Indian Cuisine", "For Over 30 years", the green heading "Freiburgs ältestes indisches Restaurant", the three welcome paragraphs and "Vielen Dank für Ihren Besuch.", with the gold ornaments between them, the leaves top left and bottom right, the lace corners and the palace drawing along the bottom, placed as on the print.
 
-- The text follows the site language. German is the printed text with three print errors fixed: "Cuisine" (printed "Cusine"), "For over" (printed "For Over") and "Mit frischen Zutaten" (printed "Mit der frischen Zutaten"). The printed dash before "erleben Sie den echten Geschmack Indiens" is kept because it is your printed copy.
+- The text follows the site language. German is the printed text with two print errors fixed: "Cuisine" (printed "Cusine") and "Mit frischen Zutaten" (printed "Mit der frischen Zutaten"; the second one waits for your word, see the third round). The printed dash before "erleben Sie den echten Geschmack Indiens" is kept because it is your printed copy.
 - English and French are new translations in the same warm tone, written by us. **Drafted for owner review.**
-- "Authentic Indian Cuisine" and "For over 30 years" are English on the German print, so they stay English in all three languages.
+- "Authentic Indian Cuisine" and "For Over 30 years" are English on the German print, so they stay English in all three languages.
 - The logo is the site's own gold Jaipur logo (the one in the navigation), not the teal arch version on the print.
 - One step into the dishes: a green "Zur Speisekarte" button (English "View the menu", French "Voir la carte") stays at the bottom of the window while the cover is on screen and scrolls straight to the lunch card. Scrolling down also continues into the menu, and the filter buttons work as before; choosing a filter shows only that section, without the cover.
 - On a phone the cover becomes one readable column: logo and corners at the top, the text at full width, the palace drawing underneath.
@@ -69,7 +85,7 @@ Contrast, measured in the browser against the darkest paper tone of the print (#
 | Body text and dish names | 9.5:1 |
 | Green headings, "Vielen Dank" | 8.2:1 |
 | Descriptions, notes, legend, filter buttons | 5.6:1 |
-| Prices, dish numbers, gold text, "For over 30 years" | 4.6:1 |
+| Prices, dish numbers, gold text, "For Over 30 years" | 4.6:1 |
 | Light text on the green buttons | 9.8:1 |
 | Vegetarian badge icon (not text) | 3.1:1 |
 
@@ -81,7 +97,7 @@ Nothing was drawn or invented. Page 2 is a set of full page pictures with the te
 
 1. The print's "Neu" label has no badge on the site. Aloo Tikki Chaat still says "Neu!" at the start of its description, as before.
 2. The spicy flame colours (orange and red) are unchanged from the old site.
-3. The hidden menu summary for search engines in `src/app/layout.tsx` was not touched. It lists no dessert or drink, only dishes that are still on the menu, under English names.
+3. The hidden menu summary for search engines in `src/app/layout.tsx` now uses printed names only (third round).
 
 
 ## In short
@@ -148,8 +164,8 @@ The site already had a small lunch block with only the two Thalis. It is now the
 | Naan (plain / with butter or garlic) | | 3,60 / 4,70 € | New |
 | Gemüse-Pakora | | 7,90 € | New |
 | Indischer Beilagensalat | | 6,20 € | New. Only with a Thali or main course, as printed |
-| Vegetarisch Thali | 13,90 € | 14,90 € | Price. Your correction: the print says 13.9 |
-| Hähnchen & Gemüse Thali | 15,90 € | 16,90 € | Price. Your correction: the print says 15.9 |
+| Thali Vegetarisch | 13,90 € | 14,90 € | Price. Your correction: the print says 13.9 |
+| Thali mit Hähnchen und Gemüse | 15,90 € | 16,90 € | Price. Your correction: the print says 15.9 |
 | Aloo Chana Masala | | 15,90 € | New. Marked vegan in the text |
 | Palak Paneer | | 16,90 € | New |
 | Gemüse-Paneer Biryani | | 16,90 € | New |
@@ -182,7 +198,7 @@ It sits between the lunch card and the starters, and it also shows under the "Ve
 | 72 | Gemüse-Pakora | 7,90 € | 7,90 € | Number 69 to 72 |
 | 73 | Dahi-Puri | | 7,90 € | New. Takes number 73 from Chat Papadi |
 | 73 | Chat Papadi | 6,90 € | | **Removed.** Not on page 13 |
-| 74 | Gurken-Tomaten-Raita | 5,60 € | 5,90 € | Price. Wording now tomatoes, cucumbers, fresh herbs and spices; onions no longer mentioned |
+| 74 | Joghurtmischung mit indischen Gewürzen | 5,60 € | 5,90 € | Price. Renamed from "Gurken-Tomaten-Raita" as printed. Wording now tomatoes, cucumbers, fresh herbs and spices; onions no longer mentioned |
 
 ## Tandoor
 
@@ -338,9 +354,8 @@ Prices were never changed to "fix" anything.
 | Seite 19, no. 109 | garniert mit , Röstzwiebeln | stray comma removed |
 | Seite 19, no. 112 | Joghurt-Masalla-Marinade | Joghurt-Masala-Marinade |
 | Seite 20, no. 118 | ladenbrot ... okosnuss | Fladenbrot ... Kokosnuss (the first letters are cut off on the printed page) |
-| Seite 2 | Authentic Indian Cusine | Authentic Indian Cuisine (print only, not on the site) |
-| Seite 2 | For Over 30 years | For over 30 years (print only) |
-| Seite 2 | Mit der frischen Zutaten | Mit frischen Zutaten (print only) |
+| Seite 2 | Authentic Indian Cusine | Authentic Indian Cuisine |
+| Seite 2 | Mit der frischen Zutaten | Mit frischen Zutaten (waits for your word) |
 
 Not changed, but worth a look on the print: the spelling varies between "Karahi" (chicken, lamb) and "Kadahi" (paneer), and between "Murgh" (heading, Murgh Safran) and "Murg" (Murg Vindaloo). The site keeps the printed names. "Jal Frezi" is often written "Jalfrezi"; the site keeps the print.
 
@@ -371,15 +386,15 @@ Please confirm or correct these.
 5. **Lunch dish numbers.** The lunch card numbers its dishes 1 to 8. The site shows them without numbers, as the old lunch block did, so they do not clash with drink numbers 1 to 61.
 6. **Lunch hours.** The section title says Monday to Friday, as printed. We did not add times because the lunch card does not give any.
 7. **Lunch filter.** As before, the lunch card shows under "Alle" only. A separate "Mittag" filter button would be a small follow-up if you want one.
-8. **Raita name.** The print calls it "Joghurtmischung mit indischen Gewürzen". We kept the short name "Gurken-Tomaten-Raita", because dish names are not translated and the long German name would show to English and French guests. The new wording is in the description.
+8. **Raita name.** Settled in the third round: the site uses the printed name "Joghurtmischung mit indischen Gewürzen".
 9. **Vegetarian badge.** Aloo Tikki Chaat, Palak Patta-Chaat and the Beilagensalat are not marked Veggie on the print, so they have no vegetarian badge. They look vegetarian; please confirm and we will add it.
 10. **Vegan.** The site has no vegan badge, so "(vegan)" is written into the description of Aloo Chana Masala and Bharta.
-11. **Specialty badge.** New dishes get it when the print says "Chef Spezial", "Spezialität des Hauses" or "Spezialität des Küchenchefs" (Mixed-Grill-Teller, lunch Chicken Tikka Masala). Regional notes such as "Spezialität aus Nordindien" or "nach Goa-Art" go into the description. Existing badges were kept.
-12. **Spice badges.** Gosht Achari is now marked spicy (one chili on the print). Dishes with two chilis keep their existing site level: Chili Chicken very spicy; Chicken Curry, Murg Vindaloo, Lamm Vindaloo and Chili Prawn spicy.
+11. **Specialty badge.** New dishes get it when the print says "Chef Spezial", "Spezialität des Hauses" or "Spezialität des Küchenchefs" (Mixed-Grill-Teller, lunch Chicken Tikka Masala). Regional notes such as "Spezialität aus Nordindien" or "nach Goa-Art" go into the description. Since the third round the same rule applies to existing dishes too.
+12. **Spice badges.** Since the third round two printed chilis mean "Sehr scharf" (Chicken Curry, Chili Chicken, Murg Vindaloo, Lamm Vindaloo, Chili Prawn) and one chili means "Scharf" (Gosht Achari).
 13. **Allergen codes are not shown.** The print puts codes such as 2,4 next to most dishes. The site has never shown them, and the key that explains the numbers was not on any supplied page. They are recorded in `extracted-pdf.json` if you want them added later.
 14. **Kümmel on Lamm Vindaloo.** Other dishes say Kreuzkümmel (cumin). Kümmel is caraway, and the English and French text says caraway. If cumin is meant, the print should say Kreuzkümmel.
 15. **Dal Makhni oder Dal Tadka.** We read the black lentil description as Dal Makhni and "gelbe Linsen" as Dal Tadka.
 16. **Papad flour.** The lunch Dip-Teller says chickpea flour; the main menu Papad on the site says lentil flour. Both kept as written.
 17. **Dessert numbers.** The naan page now ends at 121. The desserts on the site keep 123 to 125 because their page was not supplied; they are probably renumbered in print.
 18. **Set menu name and price.** Shown as "Ganges", 28,00 € with "price per person, from 2 people" in the section note.
-19. **Search engine data.** The hidden menu summary for Google in `src/app/layout.tsx` still lists "Chicken Tikka Biryani". It was left untouched; renaming it to "Chicken Biryani" is a one-line follow-up.
+19. **Search engine data.** Done: the hidden menu summary for Google uses printed names only (third round).
