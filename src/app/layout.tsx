@@ -231,7 +231,7 @@ const jsonLdRestaurant = {
         name: "Biryani / Rice Dishes",
         hasMenuItem: [
           { "@type": "MenuItem", name: "Jaipur Mix Biryani", description: "Saffron rice with chicken, prawns & lamb, garnished with almond flakes" },
-          { "@type": "MenuItem", name: "Chicken Tikka Biryani", description: "Grilled chicken with fried saffron rice" },
+          { "@type": "MenuItem", name: "Chicken Biryani", description: "Chicken with saffron basmati rice and aromatic spices" },
         ],
       },
     ],
