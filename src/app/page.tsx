@@ -991,7 +991,7 @@ function TestimonialCarousel({ carouselReviews, lang, t }: { carouselReviews: Ca
             <p className={styles.reviewModalText}>&ldquo;{getReviewText(expandedReview, lang)}&rdquo;</p>
             {getReviewText(expandedReview, lang).length >= 178 && (
               <a
-                href="https://www.google.com/maps/place/Jaipur/@47.9935628,7.8497035,17z/data=!4m8!3m7!1s0x47911c98d5014727:0x24e7e1a3b6d1dba3!8m2!3d47.9935628!4d7.8497035!9m1!1b1"
+                href="https://maps.google.com/?cid=2659342198248692643"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.viewOnGoogle}
