@@ -415,7 +415,7 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
                     {t("Namaste und herzlich willkommen im Jaipur!", "Namaste and a warm welcome to Jaipur!", "Namaste et bienvenue chez Jaipur\u00a0!")}
                     <br />
                     {t(
-                      "Seit über drei Jahrzehnten verwöhnen wir unsere Gäste mit der Vielfalt der traditionellen indischen Küche. Mit frischen Zutaten, authentischen Rezepten und aromatischen Gewürzen bereiten wir jedes Gericht mit Leidenschaft zu.",
+                      "Seit über drei Jahrzehnten verwöhnen wir unsere Gäste mit der Vielfalt der traditionellen indischen Küche. Mit der frischen Zutaten, authentischen Rezepten und aromatischen Gewürzen bereiten wir jedes Gericht mit Leidenschaft zu.",
                       "For more than three decades we have been spoiling our guests with the variety of traditional Indian cooking. With fresh ingredients, authentic recipes and aromatic spices, we prepare every dish with passion.",
                       "Depuis plus de trois décennies, nous régalons nos hôtes de toute la richesse de la cuisine indienne traditionnelle. Avec des ingrédients frais, des recettes authentiques et des épices aromatiques, nous préparons chaque plat avec passion."
                     )}

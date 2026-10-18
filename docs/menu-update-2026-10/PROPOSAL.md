@@ -11,12 +11,12 @@ This section is the newest. Where it disagrees with anything below, this section
 - **The English Thali note** now writes the place setting charge as "4,90 €", like every price on the menu.
 - **Specialty badge** only where the print says "Chef Spezial", "Spezialität des Hauses" or "Spezialität des Küchenchefs": lunch Chicken Tikka Masala, 78 Lamm Tikka, 79 Mixed-Grill-Teller, 86 Murgh Safran, 90 Lamm Curry, 95 Lamm Karahi, 108 Paneer Tikka Masala, 109 Chicken Biryani and 118 Peshwari Naan. Removed from six dishes that had it only from the old site: 75 Tandoori-Chicken, 77 Garlic-Mint Tikka, 85 Chicken Tikka Masala, 91 Lamm Korma, 100 Kerala Fish Curry and 112 Jaipur Mix Biryani. A place of origin ("Spezialität aus Neu-Delhi", "aus Nordindien", "aus Kaschmir") is not a house specialty, so none of the three gets the badge; the words stay in the description.
 - **Spice levels follow the print's chilis.** Two chilis show as "Sehr scharf": 84 Chicken Curry, 87 Chili Chicken, 89 Murg Vindaloo, 92 Lamm Vindaloo and 98 Chili Prawn. One chili shows as "Scharf": 94 Gosht Achari. The lunch Chicken Curry has no chili on the lunch card but says "Scharf!!", so it stays "Scharf".
-- **Cover:** "For Over 30 years" is now written as printed. "Mit frischen Zutaten" stays corrected for now; see the open point below.
+- **Cover:** "For Over 30 years" is now written as printed. "Mit der frischen Zutaten" is now also back as printed, because the brief allows only one change to the cover ("Cusine" to "Cuisine"); see the open point below.
 - **Homepage and Google.** The four dish tiles on the homepage and the hidden menu summary that Google reads now use only printed dishes under their printed names: "Thali" (was "Jaipur Thali", which is not on the card), "Mixed-Grill-Teller" (was "Tandoori Mixed Grill"), "Chicken Tikka Masala" and "Bombay Lamm-Biryani" (was "Lamb Biryani"). The Thali tile now says it is a lunch dish, Monday to Friday, because the card offers it only then. In the Google summary "Butter Chicken" and "Garlic Naan" also became the printed "Butter-Chicken" and "Knoblauch Naan".
 
 ### Open point for this round
 
-1. **"Mit der frischen Zutaten" on page 2.** The print says "Mit der frischen Zutaten", which is not correct German. The cover shows "Mit frischen Zutaten". Please say which you want: keep the correction (our advice), or show the printed words exactly.
+1. **"Mit der frischen Zutaten" on page 2.** The print says "Mit der frischen Zutaten", which is not correct German. The cover now shows the printed words exactly. Our advice is to drop "der" ("Mit frischen Zutaten"); this needs your yes, because it would be a second change to the printed cover.
 
 ## Second round: the printed card look, the welcome cover, only the printed dishes
 
@@ -59,7 +59,7 @@ The catering note at the end of the menu stays. It is not a dish.
 
 When the menu opens, the first thing a guest sees is printed page 2, rebuilt as real text: the restaurant logo, "Authentic Indian Cuisine", "For Over 30 years", the green heading "Freiburgs ältestes indisches Restaurant", the three welcome paragraphs and "Vielen Dank für Ihren Besuch.", with the gold ornaments between them, the leaves top left and bottom right, the lace corners and the palace drawing along the bottom, placed as on the print.
 
-- The text follows the site language. German is the printed text with two print errors fixed: "Cuisine" (printed "Cusine") and "Mit frischen Zutaten" (printed "Mit der frischen Zutaten"; the second one waits for your word, see the third round). The printed dash before "erleben Sie den echten Geschmack Indiens" is kept because it is your printed copy.
+- The text follows the site language. German is the printed text with one print error fixed: "Cuisine" (printed "Cusine"). "Mit der frischen Zutaten" is kept as printed until you decide on dropping "der" (see the third round). The printed dash before "erleben Sie den echten Geschmack Indiens" is kept because it is your printed copy.
 - English and French are new translations in the same warm tone, written by us. **Drafted for owner review.**
 - "Authentic Indian Cuisine" and "For Over 30 years" are English on the German print, so they stay English in all three languages.
 - The logo is the site's own gold Jaipur logo (the one in the navigation), not the teal arch version on the print.
@@ -355,7 +355,7 @@ Prices were never changed to "fix" anything.
 | Seite 19, no. 112 | Joghurt-Masalla-Marinade | Joghurt-Masala-Marinade |
 | Seite 20, no. 118 | ladenbrot ... okosnuss | Fladenbrot ... Kokosnuss (the first letters are cut off on the printed page) |
 | Seite 2 | Authentic Indian Cusine | Authentic Indian Cuisine |
-| Seite 2 | Mit der frischen Zutaten | Mit frischen Zutaten (waits for your word) |
+| Seite 2 | Mit der frischen Zutaten | kept as printed; dropping "der" waits for your word |
 
 Not changed, but worth a look on the print: the spelling varies between "Karahi" (chicken, lamb) and "Kadahi" (paneer), and between "Murgh" (heading, Murgh Safran) and "Murg" (Murg Vindaloo). The site keeps the printed names. "Jal Frezi" is often written "Jalfrezi"; the site keeps the print.
 
