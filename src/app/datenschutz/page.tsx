@@ -169,7 +169,7 @@ export default function DatenschutzPage() {
         Der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Baden-Württemberg<br />
         Heilbronner Straße 35, 70191 Stuttgart<br />
         Telefon: 0711 61 55 41-0<br />
-        poststelle@lfdi.bwl.de
+        <ContactEmail address="poststelle@lfdi.bwl.de" />
       </p>
 
       <h2 style={H2}>Keine automatisierte Entscheidungsfindung</h2>

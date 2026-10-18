@@ -20,12 +20,14 @@ const ADDRESS = "abi_ind@hotmail.com";
  * zone in the Cloudflare dashboard. This is narrower: it exempts only the two
  * legal pages that must stay readable.
  */
-export default function ContactEmail() {
+// address is only ever a string literal from our own source, never user input,
+// so interpolating it into raw HTML stays free of any injection surface.
+export default function ContactEmail({ address = ADDRESS }: { address?: string }) {
   return (
     <span
       dangerouslySetInnerHTML={{
         __html:
-          `<!--email_off--><a href="mailto:${ADDRESS}" style="color:inherit">${ADDRESS}</a><!--/email_off-->`,
+          `<!--email_off--><a href="mailto:${address}" style="color:inherit">${address}</a><!--/email_off-->`,
       }}
     />
   );
