@@ -1026,26 +1026,20 @@ function TestimonialCarousel({ carouselReviews, lang, t }: { carouselReviews: Ca
 const galleryImages = [
   // — AMBIANCE & PEOPLE —
   `${BASE}/images/terrace-evening.webp`,           // Terrace full of guests, evening glow, elephant murals
-  `${BASE}/images/interior-chandeliers.webp`,       // Gorgeous interior, chandeliers, Indian ceiling art
-  `${BASE}/images/friends-cheers.webp`,             // Young friends cheers-ing — fun & lively
   `${BASE}/images/group-dinner-terrace.webp`,       // Large group dinner on terrace
   `${BASE}/images/terrace-umbrella-evening.webp`,   // Evening terrace with umbrella, atmospheric
   `${BASE}/images/jaipur-sign-night.webp`,          // "JAIPUR" signage at night, warm glow
   `${BASE}/images/entrance-elephants-day.webp`,     // Entrance with elephant murals, daytime
-  `${BASE}/images/interior-red-wall.webp`,          // Interior with red accent wall, set tables
   `${BASE}/images/sculpture-corner.webp`,           // Intimate corner with Indian sculpture + candle
   `${BASE}/images/spice-bowls-ganesha.webp`,        // Spice bowls with Ganesha statue
   `${BASE}/images/indian-shrine-decor.webp`,        // Beautiful shrine/decor piece
   // — FOOD —
   `${BASE}/images/platter-professional.jpg`,        // Stunning professional platter (prawns, tikka, kebab)
   `${BASE}/images/tandoori-sizzler.webp`,           // Steaming tandoori chicken sizzler with red flower
-  `${BASE}/images/curry-spread-overhead.webp`,      // Multiple curry bowls with rice, overhead
   `${BASE}/images/chicken-cocktails-psd.webp`,      // Prawn/chicken cocktails in shot glasses
   `${BASE}/images/thali-naan-spread.webp`,          // Thali with naan, chutneys, full spread
-  `${BASE}/images/paneer-curry-copper.webp`,        // Paneer curry in hammered copper pot
   `${BASE}/images/shrimp-curry-rice.webp`,          // Shrimp curry with vegetables and rice
   `${BASE}/images/tandoori-shrimp-salad.webp`,      // Tandoori shrimp with fresh salad
-  `${BASE}/images/thali-naan-coke.webp`,            // Thali spread with garlic naan
   `${BASE}/images/dessert-chocolate-orange.webp`,   // Dessert with chocolate drizzle & orange
 ];
 
