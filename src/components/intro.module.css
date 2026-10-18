@@ -1,0 +1,151 @@
+/* PROTOTYPE: assembled banner intro. Geometry is pure CSS, so the very first paint (static HTML,
+   before hydration) already shows the logo centred over the picture. */
+
+.stage {
+  /* --nav-h is measured from the real navbar once JS runs. */
+  --nav-h: 116px;
+  /* The picture covers the stage like object-fit: cover (banner 4716 x 2152, 2.1914:1). Units are
+     the stage's own (container units), so it stays exact while a phone's toolbars come and go. */
+  --pw: max(100cqw, 100cqh * 2.1914);
+  --ph: calc(var(--pw) / 2.1914);
+  --pic-top: calc((100cqh - var(--ph)) / 2);
+  /* Free paper between the navbar and the top of the thali, 40 % down the picture. */
+  --free: calc(var(--pic-top) + var(--ph) * 0.4 - var(--nav-h));
+  /* Logo plus one line of tagline is 0.76 logo widths tall; it fits the free paper, within limits. */
+  --logo-w: clamp(140px, (var(--free) - 16px) / 0.76, var(--pw) * 0.2);
+  --brand-h: calc(var(--logo-w) * 0.76);
+  --brand-top: calc(var(--nav-h) + max(8px, (var(--free) - var(--brand-h)) / 2));
+  /* How far below its resting place the logo starts: centred in the stage. */
+  --logo-dy: calc(50cqh - var(--brand-top) - var(--logo-w) * 0.3264);
+
+  position: fixed;
+  inset: 0;
+  container-type: size;
+  z-index: 998; /* under the navbar (1000), so it stays visible and clickable */
+  overflow: hidden;
+  background: #f5e0c4; /* the plate's paper, shown only until the plate has loaded */
+  /* No JS: never leave the stage over the page. Removed by the component once it runs. */
+  animation: introFailsafe 0.4s ease 6s forwards;
+}
+
+@keyframes introFailsafe {
+  to { opacity: 0; visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage { display: none; }
+}
+
+/* Behind the navbar: its links are light and would vanish on the cream paper. Same tint and blur
+   as the navbar's own scrolled state, so the picture runs on underneath it. */
+.band {
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--nav-h);
+  background: rgba(13, 17, 23, 0.85);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 28px rgba(13, 17, 23, 0.28);
+  z-index: 2;
+}
+
+/* Centred on the thali, but never so far that the picture stops covering the stage. */
+.picture {
+  position: absolute;
+  left: clamp(100cqw - var(--pw), 50cqw - var(--pw) * 0.48855, 0px);
+  top: var(--pic-top);
+  width: var(--pw);
+  height: var(--ph);
+}
+
+/* Plate and pieces share one box model: position and size in percent of the picture, from
+   intro-layers.json, so every piece stays locked to the plate at any size. */
+.plate,
+.piece {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  height: var(--h);
+}
+
+.piece {
+  opacity: 0;
+  transform: translateY(-6px) scale(1.08);
+}
+
+/* Phones get files cut to the band they show (export.py); same query as PHONE in HomeIntro.tsx. */
+@media (max-aspect-ratio: 3/5) {
+  .plate,
+  .piece {
+    left: var(--phone-x);
+    width: var(--phone-w);
+  }
+
+  .offPhone {
+    display: none; /* outside the band; loading="lazy" means it is never downloaded either */
+  }
+}
+
+.brand {
+  position: absolute;
+  left: 50%;
+  top: var(--brand-top);
+  translate: -50% 0;
+  transform: translateY(var(--logo-dy)); /* starts with the logo centred in the stage */
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* A soft paper coloured glow, so logo and tagline stay legible where they reach a leaf or a dish. */
+.brand::before {
+  content: "";
+  position: absolute;
+  inset: -18% -22%;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(245, 224, 196, 0.9), rgba(245, 224, 196, 0.65) 55%, rgba(245, 224, 196, 0));
+  pointer-events: none;
+}
+
+.logo {
+  width: var(--logo-w);
+  height: auto;
+  /* Gold on cream measured 1.8:1. A thin dark brown edge plus a soft halo lifts the
+     real logo off the cream without recolouring it. */
+  filter: drop-shadow(0 0 0.6px rgba(46, 28, 8, 0.9)) drop-shadow(0 1px 3px rgba(46, 28, 8, 0.5))
+    drop-shadow(0 0 14px rgba(46, 28, 8, 0.25));
+}
+
+.tagline {
+  margin-top: 0.35em;
+  font-family: var(--font-heading), "Playfair Display", serif;
+  font-style: italic;
+  font-size: calc(var(--logo-w) * 0.062);
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: #5a3a12; /* 8.4:1 on the cream */
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* Phones and other portrait screens: the tagline wraps to two balanced lines under a logo sized to
+   the screen width, and both still fit the free paper above the thali. */
+@media (orientation: portrait) {
+  .stage {
+    --nav-h: 76px;
+    --logo-w: clamp(120px, (var(--free) - 16px - 56px) / 0.6527, min(56cqw, 300px));
+    --brand-h: calc(var(--logo-w) * 0.6527 + 56px);
+  }
+
+  .tagline {
+    font-size: clamp(15px, 4.3cqw, 22px);
+    white-space: normal;
+    text-wrap: balance;
+    width: 88cqw;
+    text-align: center;
+  }
+}

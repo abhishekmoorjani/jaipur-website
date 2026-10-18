@@ -44,3 +44,10 @@ next-env.d.ts
 
 # unused shoot outtakes and logo experiments, kept out of the build
 /assets-unused
+
+# intro cut masters: full resolution, rebuilt by design/intro/cut.py, never shipped
+/design/intro/master/
+
+# Intro verification output: regenerate with design/intro/frames.py and proof.py
+design/intro/frames/
+design/intro/proof/

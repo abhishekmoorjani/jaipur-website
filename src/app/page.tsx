@@ -16,6 +16,7 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 // ssr:false is correct here: it is a modal that begins closed, so there is no
 // server-rendered markup to lose and nothing above the fold depends on it.
 const MenuPopup = dynamic(() => import("@/components/MenuPopup"), { ssr: false });
+import HomeIntro, { introPlayed } from "@/components/HomeIntro";
 import { useLanguage } from "@/context/LanguageContext";
 import { useGSAP } from "@gsap/react";
 import reviewsData from "@/data/review-summary.json";
@@ -91,6 +92,9 @@ export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  // The hero carousel waits for the intro. After a client side return to the homepage
+  // the intro has already played, so this starts true.
+  const [introDone, setIntroDone] = useState(introPlayed);
   const { lang, t } = useLanguage();
 
   // Force scroll to top on initial load — prevents mobile browsers
@@ -102,13 +106,14 @@ export default function Home() {
     window.scrollTo(0, 0);
   }, []);
 
-  // Hero slideshow cycle every 5 seconds
+  // Hero slideshow cycle every 5 seconds, from the moment the intro has finished
   useEffect(() => {
+    if (!introDone) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [introDone]);
 
   // Listen for "openMenu" event from Navbar's Speisekarte link
   useEffect(() => {
@@ -293,6 +298,7 @@ export default function Home() {
 
   return (
     <main ref={containerRef} className={styles.main}>
+      {!introDone && <HomeIntro onDone={() => setIntroDone(true)} />}
 
       {/* ═══════════════════════════════════════
           1) HERO — Full-screen slideshow
