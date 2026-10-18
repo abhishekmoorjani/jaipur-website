@@ -13,6 +13,10 @@ const NEG_PHRASES = [
   "okay", "nichts besonderes", "nothing special", "could be better",
   "könnte besser", "zu scharf", "too spicy", "too long", "zu lange",
   "leider", "unfortunately", "worst", "schlimmst",
+  "horrible", "terrible", "furchtbar", "schrecklich",
+  // A review that runs down a named competitor becomes our own advertising once
+  // we republish it, and disparaging a competitor breaks section 4 Nr. 1 UWG.
+  "goddess",
 ];
 
 // Detect language of text (rough but effective)
@@ -46,7 +50,7 @@ function translateTime(timeStr, targetLang) {
   const t = timeStr.toLowerCase().trim();
 
   // Parse German time strings: "vor X Monaten/Jahren/Wochen/Tagen"
-  let match = t.match(/vor\s+(\d+|einem?|einer?)\s+(jahr|jahren|monat|monaten|woche|wochen|tag|tagen)/i);
+  let match = t.match(/vor\s+(\d+|einem?|einer?)\s+(jahr|jahren|monat|monaten|woche|wochen|tag|tagen|stunde|stunden)/i);
   if (match) {
     let num = match[1];
     let unit = match[2].toLowerCase();
@@ -56,20 +60,21 @@ function translateTime(timeStr, targetLang) {
     else if (unit === "monaten" || unit === "monat") unit = num === "1" ? "month" : "months";
     else if (unit === "wochen" || unit === "woche") unit = num === "1" ? "week" : "weeks";
     else if (unit === "tagen" || unit === "tag") unit = num === "1" ? "day" : "days";
+    else if (unit === "stunden" || unit === "stunde") unit = num === "1" ? "hour" : "hours";
 
     if (targetLang === "en") return `${num} ${unit} ago`;
     if (targetLang === "de") {
-      const deUnit = { year: "Jahr", years: "Jahren", month: "Monat", months: "Monaten", week: "Woche", weeks: "Wochen", day: "Tag", days: "Tagen" }[unit];
+      const deUnit = { year: "Jahr", years: "Jahren", month: "Monat", months: "Monaten", week: "Woche", weeks: "Wochen", day: "Tag", days: "Tagen", hour: "Stunde", hours: "Stunden" }[unit];
       return `vor ${num} ${deUnit}`;
     }
     if (targetLang === "fr") {
-      const frUnit = { year: "an", years: "ans", month: "mois", months: "mois", week: "semaine", weeks: "semaines", day: "jour", days: "jours" }[unit];
+      const frUnit = { year: "an", years: "ans", month: "mois", months: "mois", week: "semaine", weeks: "semaines", day: "jour", days: "jours", hour: "heure", hours: "heures" }[unit];
       return `il y a ${num} ${frUnit}`;
     }
   }
 
   // Parse English time strings: "X months/years/weeks/days ago"
-  match = t.match(/(\d+|a|an)\s+(year|years|month|months|week|weeks|day|days)\s+ago/i);
+  match = t.match(/(\d+|a|an)\s+(year|years|month|months|week|weeks|day|days|hour|hours)\s+ago/i);
   if (match) {
     let num = match[1];
     let unit = match[2].toLowerCase();
@@ -77,11 +82,11 @@ function translateTime(timeStr, targetLang) {
 
     if (targetLang === "en") return `${num} ${unit} ago`;
     if (targetLang === "de") {
-      const deUnit = { year: "Jahr", years: "Jahren", month: "Monat", months: "Monaten", week: "Woche", weeks: "Wochen", day: "Tag", days: "Tagen" }[unit];
+      const deUnit = { year: "Jahr", years: "Jahren", month: "Monat", months: "Monaten", week: "Woche", weeks: "Wochen", day: "Tag", days: "Tagen", hour: "Stunde", hours: "Stunden" }[unit];
       return `vor ${num} ${deUnit}`;
     }
     if (targetLang === "fr") {
-      const frUnit = { year: "an", years: "ans", month: "mois", months: "mois", week: "semaine", weeks: "semaines", day: "jour", days: "jours" }[unit];
+      const frUnit = { year: "an", years: "ans", month: "mois", months: "mois", week: "semaine", weeks: "semaines", day: "jour", days: "jours", hour: "heure", hours: "heures" }[unit];
       return `il y a ${num} ${frUnit}`;
     }
   }
@@ -99,11 +104,11 @@ function translateTime(timeStr, targetLang) {
 
     if (targetLang === "en") return `${num} ${unit} ago`;
     if (targetLang === "de") {
-      const deUnit = { year: "Jahr", years: "Jahren", month: "Monat", months: "Monaten", week: "Woche", weeks: "Wochen", day: "Tag", days: "Tagen" }[unit];
+      const deUnit = { year: "Jahr", years: "Jahren", month: "Monat", months: "Monaten", week: "Woche", weeks: "Wochen", day: "Tag", days: "Tagen", hour: "Stunde", hours: "Stunden" }[unit];
       return `vor ${num} ${deUnit}`;
     }
     if (targetLang === "fr") {
-      const frUnit = { year: "an", years: "ans", month: "mois", months: "mois", week: "semaine", weeks: "semaines", day: "jour", days: "jours" }[unit];
+      const frUnit = { year: "an", years: "ans", month: "mois", months: "mois", week: "semaine", weeks: "semaines", day: "jour", days: "jours", hour: "heure", hours: "heures" }[unit];
       return `il y a ${num} ${frUnit}`;
     }
   }
@@ -137,7 +142,10 @@ function abbreviateAuthor(name) {
   if (parts.length < 2) return parts[0] || "";
   const last = parts[parts.length - 1];
   if (last.length <= 2 && last.endsWith(".")) return parts.join(" ");
-  return `${parts.slice(0, -1).join(" ")} ${last[0].toUpperCase()}.`;
+  // Initial from the first letter, so "Black Pirate (Jack)" gives "Black Pirate J." not "(.".
+  const initial = last.match(/\p{L}/u);
+  if (!initial) return parts.slice(0, -1).join(" ");
+  return `${parts.slice(0, -1).join(" ")} ${initial[0].toUpperCase()}.`;
 }
 
 async function main() {
@@ -254,6 +262,11 @@ async function main() {
   };
 
   writeFileSync("src/data/carousel-reviews.json", JSON.stringify(output, null, 2), "utf-8");
+  // The homepage needs only these three numbers. Importing reviews.json itself
+  // shipped every scraped review, with full names, inside the page script.
+  writeFileSync("src/data/review-summary.json", JSON.stringify({
+    rating: data.rating, totalReviews: data.totalReviews, lastUpdated: data.lastUpdated,
+  }, null, 2) + "\n", "utf-8");
   console.log(`\nSaved ${translated.length} translated reviews to src/data/carousel-reviews.json`);
 
   // Verify all have all 3 languages

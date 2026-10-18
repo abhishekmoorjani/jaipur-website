@@ -18,7 +18,7 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 const MenuPopup = dynamic(() => import("@/components/MenuPopup"), { ssr: false });
 import { useLanguage } from "@/context/LanguageContext";
 import { useGSAP } from "@gsap/react";
-import reviewsData from "@/data/reviews.json";
+import reviewsData from "@/data/review-summary.json";
 import carouselData from "@/data/carousel-reviews.json";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
