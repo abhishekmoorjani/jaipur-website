@@ -1,0 +1,231 @@
+{
+  "_about": {
+    "source_folder": "Downloads/Jaipur_Speisekarte_PDF-Dateien",
+    "extracted": "2026-10-18",
+    "method": "Each PDF read twice: pdftotext -layout and a 110 dpi render (price columns re-checked at 200 dpi). Most dish names on the A la carte pages are outlined artwork with no text layer, so the image is the source for names, codes and prices. Where the two disagreed, the image was used.",
+    "fields": {
+      "num": "dish number as printed",
+      "name": "dish name exactly as printed, typos kept",
+      "tagline": "label printed next to the name, typos kept",
+      "desc": "description exactly as printed, typos kept, line breaks joined",
+      "price": "price exactly as printed (euro, dot decimal)",
+      "codes": "small superscript allergen or additive codes printed next to the name; their key is not on any supplied page",
+      "labels": "coloured labels on the page (Veggie, VEGAN, vegetarisch, Neu)",
+      "chilis": "number of chili icons printed next to the dish"
+    },
+    "owner_price_overrides": [
+      { "page": "Mittagskarte", "item": "Thali Vegetarisch", "printed": "13.9", "use": "14.9" },
+      { "page": "Mittagskarte", "item": "Thali mit Hähnchen, Gemüse", "printed": "15.9", "use": "16.9" }
+    ]
+  },
+  "pages": [
+    {
+      "file": "Seite 2 Authentic Indian Cusine_beige.pdf",
+      "kind": "welcome text, no prices",
+      "text": {
+        "logo_line": "Jaipur",
+        "subline": "Authentic Indian Cusine",
+        "kicker": "For Over 30 years",
+        "headline": "Freiburgs ältestes indisches Restaurant",
+        "paragraphs": [
+          "Namaste und herzlich willkommen im Jaipur! Seit über drei Jahrzehnten verwöhnen wir unsere Gäste mit der Vielfalt der traditionellen indischen Küche. Mit der frischen Zutaten, authentischen Rezepten und aromatischen Gewürzen bereiten wir jedes Gericht mit Leidenschaft zu.",
+          "Ob würzige Currys, duftender Biryani oder frisch gebackenes Naan aus dem Tandoor-Ofen – erleben Sie den echten Geschmack Indiens.",
+          "Wir wünschen Ihnen einen angenehmen Aufenthalt und guten Appetit.",
+          "Vielen Dank für Ihren Besuch."
+        ]
+      }
+    },
+    {
+      "file": "Seite 10 Vegetarisches Menü.pdf",
+      "kind": "set menu",
+      "heading": "Taste of India - Tandoor & Currys",
+      "items": [
+        {
+          "num": "",
+          "name": "Vegetarisch - Ganges",
+          "tagline": "ab 2 Personen",
+          "desc": "Mit Vorspeise - Hauptgang & Dessert dazu Reis & Naan-Brot.",
+          "price": "28",
+          "price_note": "28 - pro Person",
+          "courses": {
+            "Vorspeisen": [
+              { "name": "Papad", "desc": "knusprige Kräcker mit Minze-Chutney" },
+              { "name": "Gemüse Pakora", "desc": "Blumenkohl, Kartoffeln, Auberginen in Kirchererbsenmehl frittiert" }
+            ],
+            "Hauptgericht": [
+              { "name": "Shahi Paneer", "desc": "Hausgemachter Käse - Kardamom Nelken - Kreuzkümmel - in Cashewsoße" },
+              { "name": "Bharta", "desc": "Gegrillte Aubergine - Erbsen - Zwiebeln, Ingwer - Tomaten - Knoblauch" },
+              { "name": "Dal Makhni", "desc": "Schwarze Linsen - Tomaten - Ingwer - Buttersoße" }
+            ],
+            "Beilagen": [ { "name": "", "desc": "Gurken-Raita - Basmati Reis - Naan Brot" } ],
+            "Dessert": [ { "name": "Gulab Jamun", "desc": "Goldbraun frittierte Bällchen - Kardamom - Safran, garniert mit Mandelflocken - Rosenwasser-Sirup" } ]
+          },
+          "codes": "",
+          "labels": ["Vegetarisch"],
+          "photos": ["Shahi Paneer", "Bharta"]
+        }
+      ]
+    },
+    {
+      "file": "Seite 13 indische Tapas.pdf",
+      "kind": "a la carte",
+      "heading": "Indische Tapas - Pakora",
+      "items": [
+        { "num": "68", "name": "Mixed Pakora-Teller", "tagline": "für 2 Personen", "desc": "Gemüse-Pakora - Paneer-Pakora - Samosa", "price": "14.9", "codes": "", "labels": ["Veggie"], "chilis": 0 },
+        { "num": "69", "name": "Aloo Tikki - Chaat", "tagline": "", "desc": "Kartoffel-Patties, Kichererbsen mit Joghurt und würzigen Chutneys", "price": "9.4", "codes": "2", "labels": ["Neu"], "chilis": 0 },
+        { "num": "70", "name": "Palak Patta-Chaat", "tagline": "", "desc": "in Kichererbsenmehl frittierte Spinatblätter mit Tamarinden-Minz-Chutney, würzig und leicht süß-sauer", "price": "8.9", "codes": "2", "labels": [], "chilis": 0 },
+        { "num": "71", "name": "Paneer-Pakora", "tagline": "", "desc": "Hausgemachter Paneer (hausgem. Käse) mit Chat Masala, in Kichererbsenteig frittiert", "price": "8.6", "codes": "2", "labels": ["Veggie"], "chilis": 0 },
+        { "num": "72", "name": "Gemüse-Pakora", "tagline": "", "desc": "Kartoffeln - Blumenkohl - Aubergine", "price": "7.9", "codes": "", "labels": ["Veggie"], "chilis": 0 },
+        { "num": "73", "name": "Dahi- Puri", "tagline": "", "desc": "knusprige Teigkugeln, gefüllt mit Kartoffeln, Tomaten, Zwiebel, Kichererbsen & süß-saure Joghurtsoße", "price": "7.9", "codes": "1,2", "labels": ["Veggie"], "chilis": 0 },
+        { "num": "74", "name": "Joghurtmischung mit indischen Gewürzen", "tagline": "", "desc": "Joghurt mit Tomaten & Gurken, frischen Kräutern & Gewürzen", "price": "5.9", "codes": "", "labels": [], "chilis": 0, "subheading": "Raita" }
+      ]
+    },
+    {
+      "file": "Seite 14 Tandoor neue zahlen.pdf",
+      "kind": "a la carte",
+      "status": "current",
+      "heading": "Hauptgerichte aus dem Tandoor (indischer Lehmofen) serviert mit Basmati-Reis und hausgemachter Grill Soße",
+      "items": [
+        { "num": "75", "name": "Tandoori-Chicken", "tagline": "Spezialität aus Neu-Delhi", "desc": "2 Hähnchenkeulen marniert Koblauch - Kurkuma - Kardamom - Zimt - am Spieß gegrillt", "price": "20.9", "codes": "2", "labels": [], "chilis": 0 },
+        { "num": "76", "name": "Chicken Tikka", "tagline": "", "desc": "Hähnchen mariniert - Kardamom - Ingwer, Joghurt Zitrone - Garam-Masala - am Spieß gegrillt", "price": "21.9", "codes": "2", "labels": [], "chilis": 0 },
+        { "num": "77", "name": "Garlic-Mint Tikka", "tagline": "", "desc": "Hähnchen mariniert - Minze - Knoblauch - Joghurt - Zitrone - Kräutern - am Spieß gegrillt", "price": "21.9", "codes": "2", "labels": [], "chilis": 0 },
+        { "num": "78", "name": "Lamm Tikka", "tagline": "Chef Spezial", "desc": "Lammhüfte, am Spieß gegrillt mit Joghurt, Knoblauch, Ingwer, Kardamom, Garam Masala", "price": "24.9", "codes": "2", "labels": [], "chilis": 0 },
+        { "num": "79", "name": "Mixed-Grill-Teller", "tagline": "Spezialität des Hauses", "desc": "Hähnchen, Lamm & Garnelen am Spieß im Tandoor gegrillt mit Joghurt, Knoblauch, Ingwer, Kardamom, Garam Masala", "price": "26.9", "codes": "2", "labels": [], "chilis": 0 },
+        { "num": "80", "name": "Jaipur Prawn Tikka", "tagline": "", "desc": "Garnelen am Spieß im Tandoor gegrillt mit Joghurt, Knoblauch, Ingwer, Kardamom, Garam Masala", "price": "24.9", "codes": "2", "labels": [], "chilis": 0 },
+        { "num": "81", "name": "Seekh Kebab", "tagline": "Spezialität aus Nordindien", "desc": "Hausgemachtes Hackfleisch aus der Lammhüfte am Spieß gegrillt, mit Cashew-Nüssen, Ingwer, Koriander, Tomaten, Marinade", "price": "20.9", "codes": "", "labels": [], "chilis": 0 }
+      ]
+    },
+    {
+      "file": "Seite 14 Tandoor.pdf",
+      "kind": "a la carte",
+      "status": "superseded by 'Seite 14 Tandoor neue zahlen.pdf'",
+      "differences_vs_current": [
+        "Dish numbers: old 76, 77, 78, 79, 80, 81, 82 became 75, 76, 77, 78, 79, 80, 81. The old 82 (Seekh Kebab) clashed with 82 Butter-Chicken on the Chicken page.",
+        "Prices: identical on all seven dishes (pixel diff of the two renders shows no change anywhere in the price column).",
+        "Names, taglines and description wording: identical.",
+        "Typesetting only: descriptions of Lamm Tikka, Mixed-Grill-Teller, Jaipur Prawn Tikka and Seekh Kebab were set in a condensed bold face in the old file and match the other dishes in the new file; Garlic-Mint Tikka was re-indented."
+      ]
+    },
+    {
+      "file": "Seite 15 Hauptgericht Chicken.pdf",
+      "kind": "a la carte",
+      "heading": "Hauptgerichte - Murgh - Hähnchen serviert mit Basmati-Reis",
+      "items": [
+        { "num": "82", "name": "Butter-Chicken", "tagline": "Ikonischtes Gericht der Welt", "desc": "Hähnchen gegrillt - Tomaten-Butter-Soße mit aromatischen Gewürzen, leicht süßlich - sehr beliebt!", "price": "21.9", "codes": "2,4", "labels": [], "chilis": 0 },
+        { "num": "83", "name": "Karahi Chicken", "tagline": "", "desc": "Hähnchen - Tomaten - Paprika Ingwer - Kreuzkümmel - Curry-Soße", "price": "19.9", "codes": "2,4", "labels": [], "chilis": 0 },
+        { "num": "84", "name": "Chicken Curry", "tagline": "", "desc": "Hähnchen - Tomaten - Knoblauch - Ingwer pikanten Currysoße - Zwiebeln - scharf", "price": "18.9", "codes": "2,4", "labels": [], "chilis": 2 },
+        { "num": "85", "name": "Chicken Tikka Masala", "tagline": "", "desc": "Hähnchen gegrillt - in einer würzigen Tomaten - Masala - Soße", "price": "19.9", "codes": "2,4", "labels": [], "chilis": 0 },
+        { "num": "86", "name": "Murgh Safran", "tagline": "Spezialität des Küchenchefs", "desc": "Hähnchen - Cashewsoße - Kardamom - Safran - gerösteten Zwiebeln", "price": "20.9", "codes": "2,4", "labels": [], "chilis": 0 },
+        { "num": "87", "name": "Chili Chicken", "tagline": "", "desc": "Hähnchen - Paprika - Zwiebeln - Knoblauch - Ingwer - pikanten Chilisoße - exotisch scharf", "price": "20.9", "codes": "1", "labels": [], "chilis": 2 },
+        { "num": "88", "name": "Kerla Chicken", "tagline": "südindische Art", "desc": "Hähnchen - Ingwer - Knoblauch - Zimt Garam Masala - würzigen Kokosmilch-Soße", "price": "19.9", "codes": "4", "labels": [], "chilis": 0 },
+        { "num": "89", "name": "Murg Vindaloo", "tagline": "", "desc": "Hähnchen - Kartoffel - Ingwer - Zimt - Koriander - Vindaloo-Curry-Soße - scharf!", "price": "19.9", "codes": "", "labels": [], "chilis": 2 }
+      ]
+    },
+    {
+      "file": "Seite 16 Hauptgericht Lamm_KORREKTUR.pdf",
+      "kind": "a la carte",
+      "heading": "Hauptgerichte Gosht - Lamm aus der Keule serviert mit Basmati-Reis",
+      "items": [
+        { "num": "90", "name": "Lamm Curry", "tagline": "Chef Spezial", "desc": "Lamm - Ingwer - Tomaten - Kardamom - Zwiebel - Knoblauch - würzigen Curry-Soße", "price": "21.9", "codes": "", "labels": [], "chilis": 0 },
+        { "num": "91", "name": "Lamm Korma", "tagline": "aus der königlichen Mogul-Küche", "desc": "Lamm - Cashew-Kernen - Garam-Masala - Mandelsoße - Sahne", "price": "22.9", "codes": "2,4", "labels": [], "chilis": 0 },
+        { "num": "92", "name": "Lamm Vindaloo", "tagline": "", "desc": "Lamm - Kartoffeln - Ingwer - Kardamom - Kümmel - Vindaloo-Soße - scharf", "price": "21.9", "codes": "", "labels": [], "chilis": 2 },
+        { "num": "93", "name": "Gosht Saagwala", "tagline": "", "desc": "Lamm - Spinat - Tomaten - Nelken - Zimt Zwiebeln - milden Curry-Sahne-Soße", "price": "21.9", "codes": "", "labels": [], "chilis": 0 },
+        { "num": "94", "name": "Gosht Achari", "tagline": "", "desc": "Lamm - Ingwer - Knoblauch - Koriander - Senfkörner - Achari-Masala-Soße - scharf", "price": "21.9", "codes": "", "labels": [], "chilis": 1 },
+        { "num": "95", "name": "Lamm Karahi", "tagline": "Spezialität des Hauses", "desc": "Lamm - Champignons - Tomaten - Brokkoli - Paprika - Ingwer - Zwiebeln - würzige Soße", "price": "22.9", "codes": "", "labels": [], "chilis": 0 }
+      ]
+    },
+    {
+      "file": "Seite 17 Hauptgericht Seafood.pdf",
+      "kind": "a la carte",
+      "heading": "Hauptgerichte Samundari - aus dem Meer serviert mit Basmati-Reis",
+      "items": [
+        { "num": "96", "name": "Prawn Jal Frezi", "tagline": "", "desc": "Garnelen - Paprika - Tomaten - Ingwer - Knoblauch - Zwiebeln - würzigen Curry-Soße", "price": "22.9", "codes": "2,4", "labels": [], "chilis": 0 },
+        { "num": "97", "name": "Coconut Prawn", "tagline": "Goa Art", "desc": "Garnelen - Kartoffeln -Ingwer - Knoblauch - Nelken - Kokosmilch - Südindische-Curry-Soße", "price": "22.9", "codes": "4", "labels": [], "chilis": 0 },
+        { "num": "98", "name": "Chili Prawn", "tagline": "", "desc": "Garnelen - Chili - Ingwer - Paprika Knoblauch - Zwiebel - scharfer Soße", "price": "22.9", "codes": "1", "labels": [], "chilis": 2 },
+        { "num": "99", "name": "Fish Masala", "tagline": "", "desc": "Zanderfilet - Kreuzkümmel - Ingwer - Koriander - Kurkuma - Tomaten - Masala-Soße", "price": "22.9", "codes": "2,4", "labels": [], "chilis": 0 },
+        { "num": "100", "name": "Kerala Fish Curry", "tagline": "südindische Art", "desc": "Zanderfilet - Ingwer - Zimt - Knoblauch - Nelken - Kokosmilch - würzigen Curry-Soße", "price": "22.9", "codes": "2,4", "labels": [], "chilis": 0 }
+      ]
+    },
+    {
+      "file": "Seite 18 Hauptgericht Veggie.pdf",
+      "kind": "a la carte",
+      "heading": "Hauptgerichte vegetarisch Gemüse & Paneer (hausg. Käse) serviert mit Basmati-Reis",
+      "items": [
+        { "num": "101", "name": "Dal Makhni or Dal Dadka - gelbe Linsen", "tagline": "", "desc": "Schwarze Linsen - Tomaten - Ingwer - Knoblauch - cremigen Buttersoße", "price": "14.9", "codes": "2", "labels": [], "chilis": 0 },
+        { "num": "102", "name": "Mix Veg Curry", "tagline": "gemischtes Gemüse", "desc": "Kartoffeln - Paprika - Erbsen - Karotten - Blumenkohl - Champignongs - Curry-Soße", "price": "15.9", "codes": "2", "labels": [], "chilis": 0 },
+        { "num": "103", "name": "Palak Paneer", "tagline": "", "desc": "Paneer - Spinat - Tomaten - Ingwer - Masala - in Sahnesoße", "price": "16.9", "codes": "2", "labels": [], "chilis": 0 },
+        { "num": "104", "name": "Kadahi Paneer", "tagline": "", "desc": "Paneer - Paprika - Tomaten - Ingwer - Nelken - Curry-Soße", "price": "17.9", "codes": "2,4", "labels": [], "chilis": 0 },
+        { "num": "105", "name": "Aloo Chana Masala", "tagline": "", "desc": "Kircherebsen - Kartoffeln - würzigen Masala-Soße", "price": "15.9", "codes": "", "labels": ["VEGAN"], "chilis": 0 },
+        { "num": "106", "name": "Bharta", "tagline": "", "desc": "Gegrillte Auberginen - Erbsen - Tomaten - Zwiebeln - Ingwer - Knoblauch - Kreuzkümmel", "price": "16.9", "codes": "", "labels": ["VEGAN"], "chilis": 0 },
+        { "num": "107", "name": "Malai Kofta", "tagline": "", "desc": "Paneer - Kartoffel-Gewürz-Bällchen in Cashew-Soße mit Rosinen garniert", "price": "17.9", "codes": "2,4", "labels": [], "chilis": 0 },
+        { "num": "108", "name": "Paneer Tikka Masala", "tagline": "Chef Spezial", "desc": "Gegrillter Paneer - Ingwer - Knoblauch - würzigen Tomaten-Masala-Soße", "price": "17.9", "codes": "2", "labels": [], "chilis": 0 }
+      ]
+    },
+    {
+      "file": "Seite 19 Hauptgericht Biryani.pdf",
+      "kind": "a la carte",
+      "heading": "Hauptgerichte Biryani - würziges Reisgericht serviert mit Gurken-Raita",
+      "items": [
+        { "num": "109", "name": "Chicken Biryani", "tagline": "Chef Spezial", "desc": "Hähnchen mit Safran-Basmati-Reis - aromatischen Gewürzen garniert mit , Röstzwiebeln, Mandeln & Rosinen", "price": "19.9", "codes": "2,4", "labels": [], "chilis": 0, "photo_caption": "Chicken Tikka Biryani" },
+        { "num": "110", "name": "Bombay Lamm-Biryani", "tagline": "", "desc": "Lamm mit Safran-Basmati-Reis - Ingwer - Knoblauch - Koriander - garniert mit Mandeln & Rosinen", "price": "21.9", "codes": "2,4", "labels": [], "chilis": 0 },
+        { "num": "111", "name": "Prawn Biryani", "tagline": "", "desc": "Garnelen mit Ingwer - Knoblauch - Zimt - Kardamom - Safran-Basmati-Reis - garniert mit Röstzwiebeln, Mandeln & Rosinen", "price": "22.9", "codes": "4", "labels": [], "chilis": 0 },
+        { "num": "112", "name": "Jaipur Mix Biryani", "tagline": "", "desc": "Hähnchen, Lamm & Garnelen in Joghurt-Masalla-Marinade mit Safran-Basmati-Reis garniert mit Mandeln, Rosinen & Zwiebeln", "price": "23.9", "codes": "2,4", "labels": [], "chilis": 0 },
+        { "num": "113", "name": "Gemüse Biryani", "tagline": "", "desc": "Safran-Basmati-Reis - Paneer - Tomaten - Blumenkohl - Paprika - Erbsen - Kartoffeln - garniert mit Mandeln, Rosinen & Zwiebeln", "price": "16.9", "codes": "2,4", "labels": [], "chilis": 0 }
+      ]
+    },
+    {
+      "file": "Seite 20 Naan Fladenbrot.pdf",
+      "kind": "a la carte",
+      "heading": "Naan Indisches Fladenbrot",
+      "items": [
+        { "num": "114", "name": "Gemischter Brotkorb", "tagline": "", "desc": "Dreierlei Fladenbrot Knoblauch-Naan - Butter-Naan - Tandoori Roti", "price": "9.9", "codes": "1,2,3", "labels": [], "chilis": 0 },
+        { "num": "115", "name": "Knoblauch Naan", "tagline": "", "desc": "Fladenbrot - Knoblauch & Koriander", "price": "4.7", "codes": "1,2,3", "labels": [], "chilis": 0 },
+        { "num": "116", "name": "Butter Naan", "tagline": "", "desc": "Fladenbrot - Butter", "price": "4.4", "codes": "1,2,3", "labels": [], "chilis": 0 },
+        { "num": "117", "name": "Paneer Naan", "tagline": "", "desc": "Fladenbrot - gefüllt mit Paneer (hausg. Käse) Ingwer - Koriander", "price": "6.6", "codes": "1,2,3", "labels": [], "chilis": 0 },
+        { "num": "118", "name": "Peshwari Naan", "tagline": "Spezialität des Hauses", "desc": "ladenbrot - gefüllt mit Nüssen & Rosinen okosnuss & Paneer - dazu Mango-Chutney", "price": "6.9", "codes": "1,2,3", "labels": [], "chilis": 0, "note": "first letters of 'Fladenbrot' and 'Kokosnuss' are clipped off on the printed page" },
+        { "num": "119", "name": "Classic Naan", "tagline": "", "desc": "Fladenbrot aus Weizenmehl", "price": "3.6", "codes": "1,2,3", "labels": [], "chilis": 0 },
+        { "num": "120", "name": "Tandoori Roti", "tagline": "", "desc": "Aus Vollkornmehl", "price": "2.9", "codes": "1", "labels": [], "chilis": 0 },
+        { "num": "121", "name": "Knoblauch Roti", "tagline": "", "desc": "Aus Vollkornmehl mit Knoblauch", "price": "3.6", "codes": "1", "labels": [], "chilis": 0 }
+      ]
+    },
+    {
+      "file": "2026_08_05_Mittagskarte_VS_mit gewuerzen.pdf",
+      "kind": "lunch menu",
+      "heading": "Mittagskarte (Mo - Fr)",
+      "footer": "Lust auf ein indisches Dessert oder einen Espresso, dann sprechen Sie uns an!",
+      "sections": [
+        {
+          "heading": "Indian Street Food - Vorspeisen",
+          "items": [
+            { "num": "", "name": "Dip-Teller", "desc": "Knusprig gebackene Papad aus Kirchererbsenmehl dazu Dip-Teller (Minz-Soße, Mango-Chutney, Chili-Dip)", "price": "5.5", "codes": "", "labels": [] },
+            { "num": "", "name": "Naan", "desc": "Indisches Fladenbrot natur / mit Butter od. Knoblauch", "price": "3.6 / 4.7", "codes": "", "labels": [] },
+            { "num": "", "name": "Gemüse Pakora", "desc": "Kartoffeln, Blumenkohl und Aubergine in Kirchererbsenmehl frittiert", "price": "7.9", "codes": "", "labels": [] },
+            { "num": "", "name": "Indischer Beilagensalat", "desc": "Grüner Salat, Tomaten, Gurken, Kircherbsen, Oliven mit hausgemachtem Dressing. Nur in Kombination mit einem Thali oder Hauptgericht", "price": "6.2", "codes": "", "labels": [] }
+          ]
+        },
+        {
+          "heading": "Thali - mit Vorspeise - Hauptgericht & Dessert, typische indische Mittagsgerichte",
+          "note": "„Sharing is caring“ - Sie möchten sich ein Thali teilen? Dann berechnen wir € 4,90 pro weitere Person für das Gedeck.",
+          "intro": "Traditionelle Kombination aus versch. indischen Gerichten mit Naan-Brot & Basmati-Reis",
+          "items": [
+            { "num": "", "name": "Vegetarisch", "desc": "", "price": "13.9", "price_owner_override": "14.9", "codes": "", "labels": [] },
+            { "num": "", "name": "mit Hähnchen, Gemüse", "desc": "", "price": "15.9", "price_owner_override": "16.9", "codes": "", "labels": [] }
+          ]
+        },
+        {
+          "heading": "Traditionelle Gerichte - serviert mit Basmati-Reis",
+          "items": [
+            { "num": "1", "name": "Aloo Chana Masala", "tagline": "", "desc": "Kirchererbsen mit Kartoffeln, in einer milden Curry-Soße", "price": "15.9", "codes": "", "labels": ["VEGAN"] },
+            { "num": "2", "name": "Palak Paneer", "tagline": "", "desc": "Spinat mit hausgemachtem Käse (Paneer), Tomaten & Ingwer, in einer Masala-Soße", "price": "16.9", "codes": "", "labels": ["vegetarisch"] },
+            { "num": "3", "name": "Gemüse Panner Biryani", "tagline": "", "desc": "Frisches Gemüse mit hausgemachtem Käse, in gebratenem Safran-Reis", "price": "16.9", "codes": "2,4", "labels": ["vegetarisch"] },
+            { "num": "4", "name": "Chicken Tikka Masala", "tagline": "Chef Spezial", "desc": "Hähnchenbrustfilet im Tandoor gegrillt, in einer Joghurt-Tomaten-Masala-Soß", "price": "19.9", "codes": "2,4", "labels": [] },
+            { "num": "5", "name": "Kerala Fish Curry", "tagline": "", "desc": "Zanderfilet in einer würzigenCurry-Soße mit Kokosmilch", "price": "22.9", "codes": "4", "labels": [] },
+            { "num": "6", "name": "Chicken Curry", "tagline": "", "desc": "Hähnchenbrustfilet in einer pikanten Curry-Soße - Scharf!!", "price": "18.9", "codes": "2,4", "labels": [] },
+            { "num": "7", "name": "Lamm Curry", "tagline": "Spezialität aus Kashmir", "desc": "Lamm mit Ingwer, Tomaten, Kardamom, Zimt & Kreuzkümmel, in einer würzigen Curry-Soße", "price": "21.9", "codes": "", "labels": [] },
+            { "num": "8", "name": "Butter-Chicken", "tagline": "Ikonischtes Gericht Indiens", "desc": "Hähnchen gegrillt - Tomaten-Butter-Soße mit aromatischen Gewürzen, leicht süßlich - sehr beliebt!", "price": "22.9", "codes": "2,4", "labels": [] }
+          ]
+        }
+      ]
+    }
+  ]
+}
