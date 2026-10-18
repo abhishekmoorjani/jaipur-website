@@ -13,15 +13,13 @@ const ADDRESS = "abi_ind@hotmail.com";
  *
  * Cloudflare's documented exemption is a literal HTML comment pair. JSX
  * comments compile away and never reach the served markup, so the anchor has
- * to be emitted as raw HTML. The content is a module constant with no props
- * and no interpolation, so there is no injection surface here.
+ * to be emitted as raw HTML. The address only ever comes from a string literal
+ * in our own source, never from user input, so there is no injection surface.
  *
  * The alternative is switching Email Address Obfuscation off for the whole
- * zone in the Cloudflare dashboard. This is narrower: it exempts only the two
- * legal pages that must stay readable.
+ * zone in the Cloudflare dashboard. This is narrower: it exempts only the
+ * addresses on the legal pages that must stay readable.
  */
-// address is only ever a string literal from our own source, never user input,
-// so interpolating it into raw HTML stays free of any injection surface.
 export default function ContactEmail({ address = ADDRESS }: { address?: string }) {
   return (
     <span
