@@ -13,7 +13,9 @@
 #
 # BLOCK 1 notes, in order of the lines below.
 #
-# Strict-Transport-Security: STAGE 1 value (5 minutes) so a mistake expires
+# Strict-Transport-Security: STAGE 2 since 2026-10-18 (stage 1, 5 minutes, ran
+#   cleanly from 2026-08-14). Next: stage 3 from 2026-10-20.
+# Original plan: a STAGE 1 value (5 minutes) so a mistake expires
 #   itself. Stage 2 = max-age=86400 after 24 h. Stage 3 = max-age=31536000;
 #   includeSubDomains after a further 48 h. Do NOT add preload.
 #   Measured safe for includeSubDomains: the only subdomains in DNS are www
@@ -97,7 +99,7 @@
 # ---------------------------------------------------------------------------
 
 /*
-  Strict-Transport-Security: max-age=300
+  Strict-Transport-Security: max-age=86400
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
