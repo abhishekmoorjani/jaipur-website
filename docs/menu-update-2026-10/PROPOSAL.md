@@ -2,6 +2,88 @@
 
 Draft for review. Nothing is live: the changes sit on the branch `menu/2026-10-update` and are not pushed.
 
+## Second round: the printed card look, the welcome cover, only the printed dishes
+
+This section is newer than everything below it. Where the two disagree (desserts, drinks, Papad and Samosa), this section wins.
+
+### Only the dishes on the supplied pages
+
+The online menu now holds exactly the dishes printed on the lunch card and on pages 10 and 13 to 20, with your two Thali prices (14,90 € and 16,90 €). Nothing else is left. Every remaining dish keeps its name, price and description exactly as before; only whole dishes and sections were taken out. We checked the result against an independent reading of the pages: 69 dishes on the site, 69 on the print, the same prices, and dish numbers 68 to 121 with no gap.
+
+Items: 136 before, 69 after. Sections: 24 before, 13 after. Filter buttons: 11 before, 9 after.
+
+| Section | Before | After |
+|---|---|---|
+| Lunch: starters | 4 | 4 |
+| Lunch: Thali | 2 | 2 |
+| Lunch: traditional dishes | 8 | 8 |
+| Vegetarian set menu Ganges | 1 | 1 |
+| Starters / Indian tapas | 8 | 6 |
+| Raita | 1 | 1 |
+| Tandoor | 7 | 7 |
+| Chicken | 8 | 8 |
+| Lamb | 6 | 6 |
+| Seafood | 5 | 5 |
+| Vegetarian | 8 | 8 |
+| Biryani | 5 | 5 |
+| Naan | 8 | 8 |
+| Desserts | 3 | removed |
+| Drinks, 10 sections | 62 | removed |
+
+Removed, 67 items in total:
+
+- From the starters (2): 65 Papad mit Dip Teller and 66 Aloo-Paneer-Samosa. They are not on page 13.
+- Desserts, the whole section (3): Kulfi Pista, Gulab Jamun, Vanille-Eis.
+- All 10 drinks sections (62): Aperitifs (6), Sekt (3), Lassi (2), Spirituosen (8), Digestifs (4), Alkoholfreie Getränke (13), Indischer Masala Chai (1), Warme Getränke (5), Biere (10), Offene Weine (10).
+- Filter buttons that would have been empty (2): "Nachspeisen" and "Getränke".
+
+The catering note at the end of the menu stays. It is not a dish.
+
+### The welcome page is the cover
+
+When the menu opens, the first thing a guest sees is printed page 2, rebuilt as real text: the restaurant logo, "Authentic Indian Cuisine", "For over 30 years", the green heading "Freiburgs ältestes indisches Restaurant", the three welcome paragraphs and "Vielen Dank für Ihren Besuch.", with the gold ornaments between them, the leaves top left and bottom right, the lace corners and the palace drawing along the bottom, placed as on the print.
+
+- The text follows the site language. German is the printed text with three print errors fixed: "Cuisine" (printed "Cusine"), "For over" (printed "For Over") and "Mit frischen Zutaten" (printed "Mit der frischen Zutaten"). The printed dash before "erleben Sie den echten Geschmack Indiens" is kept because it is your printed copy.
+- English and French are new translations in the same warm tone, written by us. **Drafted for owner review.**
+- "Authentic Indian Cuisine" and "For over 30 years" are English on the German print, so they stay English in all three languages.
+- The logo is the site's own gold Jaipur logo (the one in the navigation), not the teal arch version on the print.
+- One step into the dishes: a green "Zur Speisekarte" button (English "View the menu", French "Voir la carte") stays at the bottom of the window while the cover is on screen and scrolls straight to the lunch card. Scrolling down also continues into the menu, and the filter buttons work as before; choosing a filter shows only that section, without the cover.
+- On a phone the cover becomes one readable column: logo and corners at the top, the text at full width, the palace drawing underneath.
+
+### The card look
+
+Same window as before: size, position, rounded corners, header, close button, filter buttons and the row layout of every dish (name, dotted line, price, description, badges) are unchanged. What changed is the look:
+
+- Parchment paper with the print's light centre and warmer edges, and the print's gold double frame with its corner scrolls around the whole window.
+- Section headings in the green of the page 2 heading, centred, with the print's gold ornament between sections.
+- Body text in the dark ink of the print, descriptions in a softer shade of it, prices and dish numbers in a deep gold.
+- The vegetarian badge in the green of the "Veggie" labels on page 13. The active filter button, the cover button and the catering phone button use the heading green.
+- Small leaf sprigs from the print sit on the frame in the top left and bottom right corners while you read the dishes. They stay in the margin so they never sit under text, and they are left out on phones where the margin is too narrow.
+
+All colours were sampled from the rendered pages, not guessed. Three printed colours are too light to read as small text on the paper, so they are used in a darker shade of the same colour: the gold of "Authentic Indian Cusine" (#B18C41, now #735B2A), the teal of "For Over 30 years" (#2E7D7D, now #266868) and the page 13 green (#42B23C, now #338B2F for the badge icon).
+
+Contrast, measured in the browser against the darkest paper tone of the print (#F0D8AD):
+
+| Text | Contrast |
+|---|---|
+| Body text and dish names | 9.5:1 |
+| Green headings, "Vielen Dank" | 8.2:1 |
+| Descriptions, notes, legend, filter buttons | 5.6:1 |
+| Prices, dish numbers, gold text, "For over 30 years" | 4.6:1 |
+| Light text on the green buttons | 9.8:1 |
+| Vegetarian badge icon (not text) | 3.1:1 |
+
+### Where the artwork comes from
+
+Nothing was drawn or invented. Page 2 is a set of full page pictures with the text printed into them, so the paper, frame, ornaments, leaves, lace and palace were cut out of a 300 dpi render of the page, only from areas without text, with the paper made transparent so each piece sits cleanly on the new background. The paper itself is a small tile built from clean paper areas of the print. The scripts are in `design/menu-card/` (`extract.py` rebuilds every picture, `shoot.py` takes the screenshots and measurements), and the screenshots are in `design/menu-card/screens/`. The ten pictures together weigh 475 kB.
+
+### Open points for this round
+
+1. The print's "Neu" label has no badge on the site. Aloo Tikki Chaat still says "Neu!" at the start of its description, as before.
+2. The spicy flame colours (orange and red) are unchanged from the old site.
+3. The hidden menu summary for search engines in `src/app/layout.tsx` was not touched. It lists no dessert or drink, only dishes that are still on the menu, under English names.
+
+
 ## In short
 
 - The online menu now matches the new printed pages 10, 13 to 20 and the lunch card (Mittagskarte).

@@ -1,0 +1,44 @@
+{
+  "heading_green": "#134325",
+  "thanks_green": "#144828",
+  "body_ink": "#32302B",
+  "teal": "#2E7D7D",
+  "gold_text": "#B18C41",
+  "divider_gold": "#BC8A26",
+  "frame_gold": "#A67C26",
+  "veggie_green_p13": "#42B23C",
+  "paper_edge": "#F4E0BC",
+  "paper_centre": "#F4E7CD",
+  "paper_dark_p1": "#F0D8AD",
+  "gold_text_4_5": "#735B2A",
+  "teal_4_5": "#266868",
+  "veggie_green_3_0": "#338B2F",
+  "paper_vignette": {
+    "targets": {
+      "centre": "#F5E9D1",
+      "quarter": "#F5E6CA",
+      "sides": "#F2DDB7",
+      "corners": "#F0DAB0"
+    },
+    "css_stops": [
+      "rgba(246, 244, 235, 0.45) 0%",
+      "rgba(246, 244, 235, 0.31) 35%",
+      "rgba(246, 244, 235, 0) 59%",
+      "rgba(230, 199, 138, 0.12) 71%",
+      "rgba(230, 199, 138, 0.25) 100%"
+    ]
+  },
+  "contrast_on_darkest_paper": {
+    "heading_green": 8.15,
+    "thanks_green": 7.61,
+    "body_ink": 9.5,
+    "teal": 3.48,
+    "gold_text": 2.26,
+    "divider_gold": 2.22,
+    "frame_gold": 2.75,
+    "veggie_green_p13": 1.97,
+    "gold_text_4_5": 4.64,
+    "teal_4_5": 4.61,
+    "veggie_green_3_0": 3.11
+  }
+}

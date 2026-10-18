@@ -1,9 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import styles from "./menu.module.css";
-import { X, Flame, Leaf, Award, Phone, Wine, GlassWater } from "lucide-react";
+import { X, Flame, Leaf, Award, Phone, ChevronDown } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
+// Artwork cropped from printed page 2 by design/menu-card/extract.py
+const ART = `${BASE}/images/menu-card`;
 
 export interface MenuPopupProps {
   isOpen: boolean;
@@ -103,8 +107,6 @@ const menuData: MenuCategory[] = [
     titleEn: "Starters · Indian Tapas",
     titleFr: "Entrées · Tapas indiennes",
     dishes: [
-      { num: "65", name: "Papad mit Dip Teller", desc: "Knusprig gebackene Kräcker aus Linsenmehl mit viererlei indischen Chutneys", descEn: "Crispy crackers from lentil flour with four Indian chutneys", descFr: "Crackers croustillants à la farine de lentilles avec quatre chutneys indiens", price: "4,90 €", vegetarian: true },
-      { num: "66", name: "Aloo-Paneer-Samosa", desc: "2 gefüllte Teigtaschen mit Kartoffeln, Paneer & Erbsen dazu Minze-Dip", descEn: "2 stuffed pastries with potatoes, paneer & peas with mint dip", descFr: "2 chaussons farcis aux pommes de terre, paneer & petits pois avec sauce à la menthe", price: "7,90 €", vegetarian: true },
       { num: "68", name: "Mixed Pakora-Teller", desc: "Gemüse-Pakora, Paneer-Pakora & Samosa (für 2 Personen)", descEn: "Vegetable pakora, paneer pakora & samosa (for 2 people)", descFr: "Pakora de légumes, pakora de paneer & samosa (pour 2 personnes)", price: "14,90 €", vegetarian: true },
       { num: "69", name: "Aloo Tikki Chaat", desc: "Neu! Kartoffel-Patties und Kichererbsen mit Joghurt & würzigen Chutneys", descEn: "New! Potato patties and chickpeas with yogurt & spicy chutneys", descFr: "Nouveau ! Galettes de pommes de terre et pois chiches avec yaourt & chutneys épicés", price: "9,40 €" },
       { num: "70", name: "Palak Patta-Chaat", desc: "In Kichererbsenmehl frittierte Spinatblätter mit Tamarinden-Minz-Chutney, würzig und leicht süß-sauer", descEn: "Spinach leaves fried in chickpea batter with tamarind mint chutney, spicy and slightly sweet and sour", descFr: "Feuilles d'épinards frites en pâte de pois chiches avec chutney tamarin et menthe, épicé et légèrement aigre-doux", price: "8,90 €" },
@@ -243,172 +245,6 @@ const menuData: MenuCategory[] = [
       { num: "121", name: "Knoblauch Roti", desc: "Aus Vollkornmehl mit Knoblauch", descEn: "Whole wheat with garlic", descFr: "Farine complète à l'ail", price: "3,60 €", vegetarian: true },
     ],
   },
-  {
-    id: "desserts",
-    title: "Mithai · Nachspeisen",
-    titleEn: "Mithai · Desserts",
-    titleFr: "Mithai · Desserts",
-    dishes: [
-      { num: "123", name: "Kulfi Pista", desc: "Hausgemachte Spezialität — Pistazien, Safran", descEn: "Homemade specialty — pistachio, saffron", descFr: "Spécialité maison — pistache, safran", price: "7,40 €", vegetarian: true, signature: true },
-      { num: "124", name: "Gulab Jamun", desc: "2 goldbraun frittierte Bällchen in Rosenwasser-Sirup, garniert mit Mandelflocken", descEn: "2 golden-fried balls in rose water syrup, garnished with almond flakes", descFr: "2 boulettes dorées frites dans un sirop à l'eau de rose, garnies de flocons d'amandes", price: "6,50 €", vegetarian: true },
-      { num: "125", name: "Vanille-Eis", desc: "Vanille-Eis garniert mit Rosinen, Mandeln & Mango-Sauce", descEn: "Vanilla ice cream garnished with raisins, almonds & mango sauce", descFr: "Glace vanille garnie de raisins secs, amandes & sauce mangue", price: "6,50 €", vegetarian: true },
-    ],
-  },
-
-  /* ═══════════════════════════════════════
-     DRINKS MENU — from physical menu card
-     ═══════════════════════════════════════ */
-  {
-    id: "aperitifs",
-    title: "Aperetifs",
-    titleEn: "Aperitifs",
-    titleFr: "Apéritifs",
-    dishes: [
-      { num: "1", name: "Aperol Spritz", desc: "", descEn: "", descFr: "", price: "8,40 €" },
-      { num: "2", name: "Gin Tonic", desc: "Roku Gin — Japanese Premium Gin · 5cl", descEn: "Roku Gin — Japanese Premium Gin · 5cl", descFr: "Roku Gin — Gin premium japonais · 5cl", price: "9,90 €" },
-      { num: "3", name: "Campari Orange / Soda", desc: "5cl", descEn: "5cl", descFr: "5cl", price: "7,90 €" },
-      { num: "4", name: "Martini bianco", desc: "5cl", descEn: "5cl", descFr: "5cl", price: "4,90 €" },
-      { num: "5", name: "Martini rosso", desc: "2cl", descEn: "2cl", descFr: "2cl", price: "4,70 €" },
-      { num: "6", name: "Sherry Medium Dry", desc: "2cl", descEn: "2cl", descFr: "2cl", price: "4,70 €" },
-    ],
-  },
-  {
-    id: "sekt",
-    title: "Sekt",
-    titleEn: "Sparkling Wine",
-    titleFr: "Vin mousseux",
-    dishes: [
-      { num: "7", name: "Geldermann Carte Blanche", desc: "0,1l", descEn: "0.1l", descFr: "0,1l", price: "5,40 €" },
-      { num: "8", name: "Geldermann Picolo", desc: "0,2l", descEn: "0.2l", descFr: "0,2l", price: "7,90 €" },
-      { num: "9", name: "Geldermann Carte Blanche", desc: "0,75l · Flasche", descEn: "0.75l · Bottle", descFr: "0,75l · Bouteille", price: "34,00 €" },
-    ],
-  },
-  {
-    id: "lassi",
-    title: "Lassi · Indisches Joghurtgetränk",
-    titleEn: "Lassi · Indian Yogurt Drink",
-    titleFr: "Lassi · Boisson indienne au yaourt",
-    subtitle: "Hausgemacht — erfrischend & gesund",
-    subtitleEn: "Homemade — refreshing & healthy",
-    subtitleFr: "Fait maison — rafraîchissant & sain",
-    dishes: [
-      { num: "10", name: "Mango-Lassi", desc: "Hausgemacht mit Mango & Kardamom · 0,35l / 0,5l", descEn: "Homemade with mango & cardamom · 0.35l / 0.5l", descFr: "Fait maison avec mangue & cardamome · 0,35l / 0,5l", price: "5,90 €", vegetarian: true, signature: true },
-      { num: "11", name: "Masala-Lassi", desc: "Hausgemacht mit Kreuzkümmel & Salz · 0,35l", descEn: "Homemade with cumin & salt · 0.35l", descFr: "Fait maison avec cumin & sel · 0,35l", price: "4,40 €", vegetarian: true },
-    ],
-  },
-  {
-    id: "spirits",
-    title: "Spirituosen",
-    titleEn: "Spirits",
-    titleFr: "Spiritueux",
-    dishes: [
-      { num: "12", name: "Old Monk", desc: "Indischer Rum · 4cl", descEn: "Indian Rum · 4cl", descFr: "Rhum indien · 4cl", price: "6,40 €" },
-      { num: "13", name: "Whisky Glenfiddich", desc: "4cl", descEn: "4cl", descFr: "4cl", price: "10,90 €" },
-      { num: "14", name: "Chivas Regal Scotch", desc: "4cl", descEn: "4cl", descFr: "4cl", price: "9,90 €" },
-      { num: "15", name: "Johnny Walker Black Label", desc: "4cl", descEn: "4cl", descFr: "4cl", price: "9,90 €" },
-      { num: "16", name: "Vodka / Grey Goose Premium", desc: "4cl", descEn: "4cl", descFr: "4cl", price: "6,90 €" },
-      { num: "17", name: "Grappa di Prosecco", desc: "2cl", descEn: "2cl", descFr: "2cl", price: "3,30 €" },
-      { num: "18", name: "Fernet Branca", desc: "2cl", descEn: "2cl", descFr: "2cl", price: "3,40 €" },
-      { num: "19", name: "Pernod", desc: "5cl", descEn: "5cl", descFr: "5cl", price: "6,90 €" },
-    ],
-  },
-  {
-    id: "digestifs",
-    title: "Digestifs",
-    titleEn: "Digestifs",
-    titleFr: "Digestifs",
-    dishes: [
-      { num: "20", name: "Indischer Mango Schnaps", desc: "Exotisch · 2cl · 38%", descEn: "Exotic · 2cl · 38%", descFr: "Exotique · 2cl · 38%", price: "3,60 €" },
-      { num: "21", name: "Schladerer Kirschwasser", desc: "2cl · 42%", descEn: "2cl · 42%", descFr: "Eau-de-vie de cerise · 2cl · 42%", price: "3,40 €" },
-      { num: "22", name: "Schladerer Mirabellenschnaps", desc: "2cl · 45%", descEn: "2cl · 45%", descFr: "Eau-de-vie de mirabelle · 2cl · 45%", price: "3,40 €" },
-      { num: "23", name: "Schladerer Williams Christ", desc: "2cl · 40%", descEn: "2cl · 40%", descFr: "Eau-de-vie de poire Williams · 2cl · 40%", price: "3,40 €" },
-    ],
-  },
-  {
-    id: "softdrinks",
-    title: "Alkoholfreie Getränke",
-    titleEn: "Non-Alcoholic Drinks",
-    titleFr: "Boissons sans alcool",
-    dishes: [
-      { num: "24", name: "Mineralwasser still", desc: "Gerolsteiner · 0,5l", descEn: "Gerolsteiner · 0.5l", descFr: "Gerolsteiner · 0,5l", price: "4,40 €", vegetarian: true },
-      { num: "25", name: "Mineralwasser mit Kohlensäure", desc: "0,5l / 0,7l", descEn: "Sparkling · 0.5l / 0.7l", descFr: "Gazeuse · 0,5l / 0,7l", price: "4,60 €", vegetarian: true },
-      { num: "26", name: "Mineralwasser", desc: "0,25l", descEn: "0.25l", descFr: "0,25l", price: "3,20 €", vegetarian: true },
-      { num: "27", name: "Schweppes Bitter Lemon", desc: "0,2l", descEn: "0.2l", descFr: "0,2l", price: "3,40 €", vegetarian: true },
-      { num: "28", name: "Schweppes Ginger Ale", desc: "0,2l", descEn: "0.2l", descFr: "0,2l", price: "3,40 €", vegetarian: true },
-      { num: "29", name: "Coca-Cola", desc: "0,2l", descEn: "0.2l", descFr: "0,2l", price: "3,20 €", vegetarian: true },
-      { num: "30", name: "Coca-Cola Light", desc: "0,2l", descEn: "0.2l", descFr: "0,2l", price: "3,20 €", vegetarian: true },
-      { num: "31", name: "Fanta", desc: "0,2l", descEn: "0.2l", descFr: "0,2l", price: "3,20 €", vegetarian: true },
-      { num: "32", name: "Spezi", desc: "0,2l", descEn: "0.2l", descFr: "0,2l", price: "3,20 €", vegetarian: true },
-      { num: "33", name: "Sprite", desc: "0,2l", descEn: "0.2l", descFr: "0,2l", price: "3,20 €", vegetarian: true },
-      { num: "34", name: "Saftschorle", desc: "0,2l", descEn: "Juice spritzer · 0.2l", descFr: "Jus pétillant · 0,2l", price: "3,20 €", vegetarian: true },
-      { num: "35", name: "Säfte", desc: "Apfel, Orangen, Johannisbeer, Maracuja, Mango · 0,2l", descEn: "Apple, orange, blackcurrant, passion fruit, mango · 0.2l", descFr: "Pomme, orange, cassis, fruit de la passion, mangue · 0,2l", price: "3,70 €", vegetarian: true },
-      { num: "36", name: "Pfirsich Eistee", desc: "Fuze · 0,2l", descEn: "Fuze · 0.2l", descFr: "Thé glacé pêche Fuze · 0,2l", price: "3,20 €", vegetarian: true },
-    ],
-  },
-  {
-    id: "chai",
-    title: "Indischer Masala Chai",
-    titleEn: "Indian Masala Chai",
-    titleFr: "Chai Masala indien",
-    subtitle: "Chai in Indien ist mehr als nur ein Getränk — es ist ein Symbol für\u2019s tägliche Leben und für die Kultur",
-    subtitleEn: "Chai in India is more than just a drink — it is a symbol of daily life and culture",
-    subtitleFr: "Le chai en Inde est bien plus qu'une boisson — c'est un symbole de la vie quotidienne et de la culture",
-    dishes: [
-      { num: "", name: "Masala Chai", desc: "Klein / Groß", descEn: "Small / Large", descFr: "Petit / Grand", price: "3,20 / 4,20 €", vegetarian: true, signature: true },
-    ],
-  },
-  {
-    id: "warmdrinks",
-    title: "Warme Getränke",
-    titleEn: "Hot Beverages",
-    titleFr: "Boissons chaudes",
-    dishes: [
-      { num: "37", name: "Indischer Chai Tee", desc: "Schwarztee mit Kardamom, Milch, Ingwer & Zucker", descEn: "Black tea with cardamom, milk, ginger & sugar", descFr: "Thé noir au cardamome, lait, gingembre & sucre", price: "4,40 €", vegetarian: true },
-      { num: "38", name: "Kahawa Tee aus Kashmir", desc: "Grüntee mit Safran, Mandel, Kardamom, Zimt & Zucker", descEn: "Green tea with saffron, almond, cardamom, cinnamon & sugar", descFr: "Thé vert au safran, amande, cardamome, cannelle & sucre", price: "4,40 €", vegetarian: true },
-      { num: "39", name: "Pfefferminztee / Darjeeling / Kräutertee", desc: "Grüntee, Ingwertee", descEn: "Peppermint, Darjeeling, herbal, green or ginger tea", descFr: "Menthe poivrée, Darjeeling, tisane, thé vert ou gingembre", price: "4,20 €", vegetarian: true },
-      { num: "40", name: "Kaffee", desc: "", descEn: "", descFr: "", price: "3,60 €", vegetarian: true },
-      { num: "41", name: "Espresso", desc: "", descEn: "", descFr: "", price: "2,60 €", vegetarian: true },
-    ],
-  },
-  {
-    id: "beer",
-    title: "Biere",
-    titleEn: "Beers",
-    titleFr: "Bières",
-    dishes: [
-      { num: "42", name: "Indisches Bier — Kingfisher", desc: "0,33l", descEn: "0.33l", descFr: "Bière indienne · 0,33l", price: "4,80 €" },
-      { num: "43", name: "Jever", desc: "0,33l", descEn: "0.33l", descFr: "0,33l", price: "4,20 €" },
-      { num: "44", name: "Rothaus Tannenzäpfle", desc: "0,33l", descEn: "0.33l", descFr: "0,33l", price: "4,20 €" },
-      { num: "45", name: "Fürstenberg Pils", desc: "0,5l", descEn: "0.5l", descFr: "0,5l", price: "4,80 €" },
-      { num: "46", name: "Fürstenberg Pils (alkoholfrei)", desc: "0,5l", descEn: "0.5l (non-alcoholic)", descFr: "0,5l (sans alcool)", price: "4,80 €" },
-      { num: "47", name: "Hefeweizen-hell Fürstenberg", desc: "0,5l", descEn: "0.5l", descFr: "0,5l", price: "4,80 €" },
-      { num: "48", name: "Hefeweizen-dunkel Fürstenberg", desc: "0,5l", descEn: "0.5l", descFr: "0,5l", price: "4,80 €" },
-      { num: "49", name: "Hefeweizen (alkoholfrei) Erdinger", desc: "0,5l", descEn: "0.5l (non-alcoholic)", descFr: "0,5l (sans alcool)", price: "4,80 €" },
-      { num: "50", name: "Kristallweizen Fürstenberg", desc: "0,5l", descEn: "0.5l", descFr: "0,5l", price: "4,80 €" },
-      { num: "51", name: "Radler", desc: "0,5l", descEn: "0.5l", descFr: "Panaché · 0,5l", price: "4,80 €" },
-    ],
-  },
-  {
-    id: "wine",
-    title: "Offene Weine",
-    titleEn: "Open Wines",
-    titleFr: "Vins au verre",
-    subtitle: "Alle Weine vom bekannten Weingut Löffler in Staufen — Markgräflerland",
-    subtitleEn: "All wines from the renowned Löffler winery in Staufen — Markgräflerland",
-    subtitleFr: "Tous les vins du célèbre domaine Löffler à Staufen — Markgräflerland",
-    dishes: [
-      { num: "52", name: "Müller Thurgau, trocken", desc: "Weißwein · 0,2l", descEn: "White wine · 0.2l", descFr: "Vin blanc · 0,2l", price: "5,80 €" },
-      { num: "53", name: "Gutedel, trocken", desc: "Weißwein · 0,2l", descEn: "White wine · 0.2l", descFr: "Vin blanc · 0,2l", price: "5,80 €" },
-      { num: "54", name: "Weißer Burgunder, trocken", desc: "Weißwein · 0,2l", descEn: "White wine · 0.2l", descFr: "Vin blanc · 0,2l", price: "6,60 €" },
-      { num: "55", name: "Spätburgunder Weißherbst, trocken", desc: "Rosé · 0,2l", descEn: "Rosé · 0.2l", descFr: "Rosé · 0,2l", price: "6,60 €" },
-      { num: "56", name: "Weißweinschorle", desc: "0,25l", descEn: "White wine spritzer · 0.25l", descFr: "Spritzer vin blanc · 0,25l", price: "4,60 €" },
-      { num: "57", name: "Chianti DOCG", desc: "Rotwein · 0,2l", descEn: "Red wine · 0.2l", descFr: "Vin rouge · 0,2l", price: "7,40 €" },
-      { num: "58", name: "Merlot", desc: "Rotwein · 0,2l", descEn: "Red wine · 0.2l", descFr: "Vin rouge · 0,2l", price: "7,40 €" },
-      { num: "59", name: "Spätburgunder, trocken", desc: "Rotwein · Weingut Löffler · 0,2l", descEn: "Red wine · Löffler winery · 0.2l", descFr: "Vin rouge · Domaine Löffler · 0,2l", price: "6,80 €" },
-      { num: "60", name: "Spätburgunder, halbtrocken", desc: "Rotwein · Weingut Löffler · 0,2l", descEn: "Red wine · Löffler winery · 0.2l", descFr: "Vin rouge · Domaine Löffler · 0,2l", price: "6,80 €" },
-      { num: "61", name: "Rotweinschorle", desc: "0,25l", descEn: "Red wine spritzer · 0.25l", descFr: "Spritzer vin rouge · 0,25l", price: "4,60 €" },
-    ],
-  },
 ];
 
 const filterLabels = [
@@ -421,8 +257,6 @@ const filterLabels = [
   { de: "Vegetarisch", en: "Vegetarian", fr: "Végétarien" },
   { de: "Biryani", en: "Biryani", fr: "Biryani" },
   { de: "Naan", en: "Naan", fr: "Naan" },
-  { de: "Nachspeisen", en: "Desserts", fr: "Desserts" },
-  { de: "Getränke", en: "Drinks", fr: "Boissons" },
 ];
 
 const filterMap: Record<number, string[]> = {
@@ -434,13 +268,28 @@ const filterMap: Record<number, string[]> = {
   6: ["menu-ganges", "vegetarian"],
   7: ["biryani"],
   8: ["naan"],
-  9: ["desserts"],
-  10: ["aperitifs", "sekt", "lassi", "spirits", "digestifs", "softdrinks", "chai", "warmdrinks", "beer", "wine"],
 };
+
+// Inline style so the artwork URLs carry the base path (CSS modules cannot read it).
+const artVars = {
+  "--mc-paper-img": `url(${ART}/parchment.webp)`,
+  "--mc-frame-img": `url(${ART}/frame.webp)`,
+  "--mc-divider-img": `url(${ART}/divider.webp)`,
+} as CSSProperties;
+
+// The print's dividers differ in length; the short ones are their own crops so the flower keeps its size.
+function Divider({ variant }: { variant?: "mid" | "short" | "end" }) {
+  const file = variant === "short" ? "divider-short" : variant === "end" ? "divider-end" : "divider";
+  const cls = variant ? styles[`coverDivider_${variant}`] : "";
+  return <img src={`${ART}/${file}.webp`} alt="" aria-hidden="true" className={`${styles.coverDivider} ${cls}`} />;
+}
 
 export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
   const [filter, setFilter] = useState(0);
+  const [coverInView, setCoverInView] = useState(true);
   const listRef = useRef<HTMLDivElement>(null);
+  const coverRef = useRef<HTMLElement>(null);
+  const menuStartRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -459,6 +308,16 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
     }
   }, [filter]);
 
+  // The corner leaves belong to the dishes, so they rest while the cover page is on screen
+  useEffect(() => {
+    const cover = coverRef.current;
+    const root = listRef.current;
+    if (!cover || !root) return;
+    const io = new IntersectionObserver(([entry]) => setCoverInView(entry.isIntersecting), { root });
+    io.observe(cover);
+    return () => io.disconnect();
+  }, [isOpen, filter]);
+
   // Close on Escape key
   useEffect(() => {
     if (!isOpen) return;
@@ -476,12 +335,25 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
       ? menuData
       : menuData.filter((cat) => filterMap[filter]?.includes(cat.id));
 
-  // Check if we're showing drinks
-  const isDrinksFilter = filter === 10;
+  const showCover = filter === 0;
+  const showCorners = !showCover || !coverInView;
+
+  const goToMenu = () => {
+    const list = listRef.current;
+    const start = menuStartRef.current;
+    if (!list || !start) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    list.scrollTo({ top: start.offsetTop - 14, behavior: reduce ? "auto" : "smooth" });
+  };
 
   return (
     <div className={styles.overlay} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className={styles.popup}>
+      <div className={styles.popup} style={artVars}>
+        {/* ═══ CARD ARTWORK: printed frame and corner leaves ═══ */}
+        <img src={`${ART}/leaf-tl.webp`} alt="" aria-hidden="true" className={`${styles.corner} ${styles.cornerTl} ${showCorners ? styles.cornerOn : ""}`} />
+        <img src={`${ART}/leaf-br.webp`} alt="" aria-hidden="true" className={`${styles.corner} ${styles.cornerBr} ${showCorners ? styles.cornerOn : ""}`} />
+        <div aria-hidden="true" className={styles.frame} />
+
         {/* ═══ HEADER ═══ */}
         <div className={styles.popupHeader}>
           <div>
@@ -498,89 +370,140 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
           {filterLabels.map((label, i) => (
             <button
               key={i}
-              className={`${styles.filterBtn} ${filter === i ? styles.filterBtnActive : ""} ${i === 10 ? styles.filterBtnDrinks : ""}`}
+              className={`${styles.filterBtn} ${filter === i ? styles.filterBtnActive : ""}`}
               onClick={() => setFilter(i)}
             >
-              {i === 10 && <Wine size={12} style={{ marginRight: 4 }} />}
               {t(label.de, label.en, label.fr)}
             </button>
           ))}
         </div>
 
         {/* ═══ LEGEND ═══ */}
-        {!isDrinksFilter && (
-          <div className={styles.legend}>
-            <span className={styles.legendItem}>
-              <Award size={13} className={styles.legendGold} /> {t("Spezialität", "Signature", "Spécialité")}
-            </span>
-            <span className={styles.legendItem}>
-              <Leaf size={13} className={styles.legendGreen} /> {t("Vegetarisch", "Vegetarian", "Végétarien")}
-            </span>
-            <span className={styles.legendItem}>
-              <Flame size={13} className={styles.legendOrange} /> {t("Scharf", "Spicy", "Épicé")}
-            </span>
-            <span className={styles.legendItem}>
-              <Flame size={13} className={styles.legendRed} /> {t("Sehr scharf", "Very spicy", "Très épicé")}
-            </span>
-          </div>
-        )}
+        <div className={styles.legend}>
+          <span className={styles.legendItem}>
+            <Award size={13} className={styles.legendGold} /> {t("Spezialität", "Signature", "Spécialité")}
+          </span>
+          <span className={styles.legendItem}>
+            <Leaf size={13} className={styles.legendGreen} /> {t("Vegetarisch", "Vegetarian", "Végétarien")}
+          </span>
+          <span className={styles.legendItem}>
+            <Flame size={13} className={styles.legendOrange} /> {t("Scharf", "Spicy", "Épicé")}
+          </span>
+          <span className={styles.legendItem}>
+            <Flame size={13} className={styles.legendRed} /> {t("Sehr scharf", "Very spicy", "Très épicé")}
+          </span>
+        </div>
 
         {/* ═══ MENU LIST ═══ */}
         <div className={styles.menuList} ref={listRef}>
-          {filteredMenu.map((category) => (
-            <div key={category.id} className={styles.categoryBlock}>
-              <div className={styles.categoryHeader}>
-                <h3 className={styles.categoryTitle}>
-                  {t(category.title, category.titleEn, category.titleFr)}
-                </h3>
-                {category.subtitle && (
-                  <p className={styles.categorySubtitle}>
-                    {t(category.subtitle, category.subtitleEn || category.subtitle, category.subtitleFr || category.subtitleEn || category.subtitle)}
+          {/* ═══ COVER: printed page 2 as live text ═══ */}
+          {showCover && (
+            <div className={styles.coverWrap}>
+              <section ref={coverRef} className={styles.cover} aria-labelledby="menu-cover-heading">
+                <img src={`${ART}/cover-tl.webp`} alt="" aria-hidden="true" className={`${styles.coverArt} ${styles.coverTl}`} />
+                <img src={`${ART}/cover-tr.webp`} alt="" aria-hidden="true" className={`${styles.coverArt} ${styles.coverTr}`} />
+                <img src={`${ART}/cover-bottom.webp`} alt="" aria-hidden="true" className={`${styles.coverArt} ${styles.coverBottom}`} />
+                <div className={styles.coverText}>
+                  <img src={`${BASE}/images/logo-navbar.png`} alt="Jaipur Indian Heritage" className={styles.coverLogo} width={766} height={500} />
+                  <p className={styles.coverTagline}>Authentic Indian Cuisine</p>
+                  <p className={styles.coverSince}>For over 30 years</p>
+                  <h3 id="menu-cover-heading" className={styles.coverHeading}>
+                    {t("Freiburgs ältestes indisches Restaurant", "Freiburg\u2019s oldest Indian restaurant", "Le plus ancien restaurant indien de Fribourg")}
+                  </h3>
+                  <Divider />
+                  <p className={styles.coverPara}>
+                    {t("Namaste und herzlich willkommen im Jaipur!", "Namaste and a warm welcome to Jaipur!", "Namaste et bienvenue chez Jaipur\u00a0!")}
+                    <br />
+                    {t(
+                      "Seit über drei Jahrzehnten verwöhnen wir unsere Gäste mit der Vielfalt der traditionellen indischen Küche. Mit frischen Zutaten, authentischen Rezepten und aromatischen Gewürzen bereiten wir jedes Gericht mit Leidenschaft zu.",
+                      "For more than three decades we have been spoiling our guests with the variety of traditional Indian cooking. With fresh ingredients, authentic recipes and aromatic spices, we prepare every dish with passion.",
+                      "Depuis plus de trois décennies, nous régalons nos hôtes de toute la richesse de la cuisine indienne traditionnelle. Avec des ingrédients frais, des recettes authentiques et des épices aromatiques, nous préparons chaque plat avec passion."
+                    )}
                   </p>
-                )}
-              </div>
-              <div className={styles.dishList}>
-                {category.dishes.map((dish, di) => (
-                  <div key={di} className={styles.dishRow}>
-                    {dish.num && <span className={styles.dishNum}>{dish.num}</span>}
-                    <div className={styles.dishContent}>
-                      <div className={styles.dishNameRow}>
-                        <span className={styles.dishName}>{dish.name}</span>
-                        <div className={styles.badges}>
-                          {dish.signature && <Award size={13} className={styles.legendGold} />}
-                          {dish.vegetarian && <Leaf size={13} className={styles.legendGreen} />}
-                          {dish.verySpicy && <Flame size={13} className={styles.legendRed} />}
-                          {dish.spicy && !dish.verySpicy && <Flame size={13} className={styles.legendOrange} />}
-                        </div>
-                        <span className={styles.dishDots} />
-                        <span className={styles.dishPrice}>{dish.price}</span>
-                      </div>
-                      {dish.desc && (
-                        <p className={styles.dishDesc}>{t(dish.desc, dish.descEn || dish.desc, dish.descFr || dish.descEn || dish.desc)}</p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-
-          {/* ═══ CATERING ═══ */}
-          {(filter === 0 || filter <= 9) && (
-            <div className={styles.cateringBlock}>
-              <h3 className={styles.cateringTitle}>{t("Catering", "Catering", "Traiteur")}</h3>
-              <p className={styles.cateringDesc}>
-                {t(
-                  'Für Hochzeiten, Geburtstage, Firmen oder sonstige Feiern liefern wir ein "Indisches Buffet" nach Ihren Wünschen!',
-                  'For weddings, birthdays, corporate events or other celebrations we deliver an "Indian Buffet" to your wishes!',
-                  'Pour mariages, anniversaires, événements d\'entreprise ou autres célébrations, nous livrons un « Buffet Indien » selon vos souhaits !'
-                )}
-              </p>
-              <a href="tel:0761272082" className={styles.cateringPhone}>
-                <Phone size={16} /> 0761 / 27 20 82
-              </a>
+                  <Divider />
+                  <p className={styles.coverPara}>
+                    {t(
+                      "Ob würzige Currys, duftender Biryani oder frisch gebackenes Naan aus dem Tandoor-Ofen\u00a0\u2013 erleben Sie den echten Geschmack Indiens.",
+                      "Whether spicy curries, fragrant biryani or naan freshly baked in the tandoor oven, discover the true taste of India.",
+                      "Currys relevés, biryani parfumé ou naan tout juste sorti du four tandoor\u00a0: découvrez le vrai goût de l\u2019Inde."
+                    )}
+                  </p>
+                  <Divider variant="mid" />
+                  <p className={styles.coverPara}>
+                    {t(
+                      "Wir wünschen Ihnen einen angenehmen Aufenthalt und guten Appetit.",
+                      "We wish you a pleasant stay and hope you enjoy your meal.",
+                      "Nous vous souhaitons un agréable moment parmi nous et bon appétit."
+                    )}
+                  </p>
+                  <Divider variant="short" />
+                  <p className={styles.coverThanks}>
+                    {t("Vielen Dank für Ihren Besuch.", "Thank you for your visit.", "Merci de votre visite.")}
+                  </p>
+                  <Divider variant="end" />
+                </div>
+              </section>
+              <button type="button" className={styles.coverCta} onClick={goToMenu}>
+                {t("Zur Speisekarte", "View the menu", "Voir la carte")}
+                <ChevronDown size={16} aria-hidden="true" />
+              </button>
             </div>
           )}
+
+          <div ref={menuStartRef}>
+            {filteredMenu.map((category) => (
+              <div key={category.id} className={styles.categoryBlock}>
+                <div className={styles.categoryHeader}>
+                  <h3 className={styles.categoryTitle}>
+                    {t(category.title, category.titleEn, category.titleFr)}
+                  </h3>
+                  {category.subtitle && (
+                    <p className={styles.categorySubtitle}>
+                      {t(category.subtitle, category.subtitleEn || category.subtitle, category.subtitleFr || category.subtitleEn || category.subtitle)}
+                    </p>
+                  )}
+                </div>
+                <div className={styles.dishList}>
+                  {category.dishes.map((dish, di) => (
+                    <div key={di} className={styles.dishRow}>
+                      {dish.num && <span className={styles.dishNum}>{dish.num}</span>}
+                      <div className={styles.dishContent}>
+                        <div className={styles.dishNameRow}>
+                          <span className={styles.dishName}>{dish.name}</span>
+                          <div className={styles.badges}>
+                            {dish.signature && <Award size={13} className={styles.legendGold} />}
+                            {dish.vegetarian && <Leaf size={13} className={styles.legendGreen} />}
+                            {dish.verySpicy && <Flame size={13} className={styles.legendRed} />}
+                            {dish.spicy && !dish.verySpicy && <Flame size={13} className={styles.legendOrange} />}
+                          </div>
+                          <span className={styles.dishDots} />
+                          <span className={styles.dishPrice}>{dish.price}</span>
+                        </div>
+                        {dish.desc && (
+                          <p className={styles.dishDesc}>{t(dish.desc, dish.descEn || dish.desc, dish.descFr || dish.descEn || dish.desc)}</p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* ═══ CATERING ═══ */}
+          <div className={styles.cateringBlock}>
+            <h3 className={styles.cateringTitle}>{t("Catering", "Catering", "Traiteur")}</h3>
+            <p className={styles.cateringDesc}>
+              {t(
+                'Für Hochzeiten, Geburtstage, Firmen oder sonstige Feiern liefern wir ein "Indisches Buffet" nach Ihren Wünschen!',
+                'For weddings, birthdays, corporate events or other celebrations we deliver an "Indian Buffet" to your wishes!',
+                'Pour mariages, anniversaires, événements d\'entreprise ou autres célébrations, nous livrons un « Buffet Indien » selon vos souhaits !'
+              )}
+            </p>
+            <a href="tel:0761272082" className={styles.cateringPhone}>
+              <Phone size={16} /> 0761 / 27 20 82
+            </a>
+          </div>
         </div>
       </div>
     </div>

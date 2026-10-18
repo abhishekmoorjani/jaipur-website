@@ -1,6 +1,9 @@
 /* ═══════════════════════════════════════════════════════════
-   JAIPUR — Premium Menu Popup
-   Warm cream palette with gold accents, ornate details
+   JAIPUR — Menu Popup styled as the printed menu card
+   Colours are sampled from printed page 2 and page 13, see
+   design/menu-card/palette.json. Artwork is cropped from page 2
+   by design/menu-card/extract.py. Geometry in cqi follows the
+   printed page: page pixels at 300 dpi / 2504 × 100cqi.
    ═══════════════════════════════════════════════════════════ */
 
 /* Full-screen overlay */
@@ -23,25 +26,43 @@
   to { opacity: 1; }
 }
 
-/* Popup container — warm parchment with subtle gold border */
+/* Popup container: the parchment card */
 .popup {
+  /* sampled from the print */
+  --mc-paper: #F4E0BC;           /* paper at the margins */
+  --mc-ink: #32302B;             /* body text */
+  --mc-ink-soft: #5A5245;        /* descriptions and notes, 6.5:1 on the darkest paper */
+  --mc-green: #134325;           /* "Freiburgs ältestes indisches Restaurant" */
+  --mc-gold: #735B2A;            /* gold text, the print's #B18C41 darkened to 4.6:1 */
+  --mc-gold-line: #BC8A26;       /* divider gold, for lines only */
+  --mc-teal: #266868;            /* "For over 30 years", the print's #2E7D7D darkened to 4.6:1 */
+  --mc-veg: #338B2F;             /* page 13 "Veggie" green #42B23C darkened to 3.1:1 for an icon */
+
+  position: relative;
+  container-type: inline-size;
   width: 90vw;
   max-width: 780px;
   height: 90vh;
   max-height: 900px;
-  background: linear-gradient(180deg, #F8F5F0 0%, #F4F0EA 100%);
+  background-color: var(--mc-paper);
+  /* the print's vignette (palette.json paper_vignette): light centre #F5E9D1, sides #F2DDB7,
+     corners #F0DAB0, laid over the synthesised paper grain */
+  background-image:
+    radial-gradient(ellipse farthest-corner at 50% 47%,
+      rgba(246, 244, 235, 0.45) 0%, rgba(246, 244, 235, 0.31) 35%, rgba(246, 244, 235, 0) 59%,
+      rgba(230, 199, 138, 0.12) 71%, rgba(230, 199, 138, 0.25) 100%),
+    var(--mc-paper-img);
+  background-size: auto, 112px 112px;
   border-radius: 20px;
-  border: 1px solid rgba(197, 151, 44, 0.3);
+  border: 1px solid rgba(166, 124, 38, 0.45);
   box-shadow:
-    0 0 0 1px rgba(139, 105, 20, 0.08),
     0 25px 60px rgba(0, 0, 0, 0.35),
-    0 8px 20px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    0 8px 20px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  color: #0D1117;
+  color: var(--mc-ink);
 }
 
 @keyframes slideUp {
@@ -49,21 +70,63 @@
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* The printed gold frame: a 9 slice of the page's own corners and straight runs */
+.frame {
+  position: absolute;
+  inset: calc(100cqi * 20 / 2504);
+  border-style: solid;
+  border-width: calc(100cqi * 110 / 2504);
+  border-image-source: var(--mc-frame-img);
+  border-image-slice: 110;
+  border-image-repeat: stretch;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Corner leaves while reading the dishes (the cover carries its own). They sit in
+   the side margins over the frame, as on the print, and never under any text. */
+.corner {
+  position: absolute;
+  width: 34px;
+  height: auto;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 4;
+}
+
+.cornerOn {
+  opacity: 0.92;
+}
+
+.cornerTl {
+  top: 40px;
+  left: 1px;
+}
+
+.cornerBr {
+  right: 1px;
+  bottom: 10px;
+}
+
 /* ═══ HEADER ═══ */
 .popupHeader {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   padding: 32px 36px 16px;
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(139, 105, 20, 0.12);
+  border-bottom: 1px solid rgba(166, 124, 38, 0.22);
 }
 
 .popupTitle {
   font-family: var(--font-heading);
   font-size: 2rem;
-  color: #1a1a1a;
-  letter-spacing: 1px;
+  font-weight: 700;
+  color: var(--mc-green);
+  letter-spacing: 0.5px;
   margin: 0;
 }
 
@@ -71,14 +134,14 @@
   font-size: 0.7rem;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: #8B6914;
+  color: var(--mc-gold);
   margin-top: 4px;
 }
 
 .closeBtn {
-  background-color: rgba(13, 17, 23, 0.06);
-  border: 1px solid rgba(13, 17, 23, 0.12);
-  color: #0D1117;
+  background-color: rgba(255, 250, 238, 0.5);
+  border: 1px solid rgba(166, 124, 38, 0.45);
+  color: var(--mc-ink);
   cursor: pointer;
   width: 44px;
   height: 44px;
@@ -93,29 +156,21 @@
 }
 
 .closeBtn:hover {
-  color: #8B6914;
-  border-color: #8B6914;
-  background-color: rgba(139, 105, 20, 0.1);
-}
-
-/* ═══ ORNAMENTAL DIVIDER ═══ */
-.ornamentalDivider {
-  display: none;
-}
-
-.ornamentalLine {
-  display: none;
-}
-
-.ornamentalDot {
-  display: none;
+  color: var(--mc-green);
+  border-color: var(--mc-green);
+  background-color: rgba(19, 67, 37, 0.06);
 }
 
 /* ═══ FILTER BAR ═══ */
 .filterBar {
+  position: relative;
+  z-index: 1;
   display: flex;
   gap: 6px;
-  padding: 16px 36px 0;
+  padding: 16px 44px 0 36px;
+  /* buttons fade out before the gold frame instead of being cut by it */
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 52px), transparent calc(100% - 18px));
+  mask-image: linear-gradient(to right, #000 calc(100% - 52px), transparent calc(100% - 18px));
   overflow-x: auto;
   flex-shrink: 0;
   -webkit-overflow-scrolling: touch;
@@ -134,9 +189,9 @@
   letter-spacing: 1.5px;
   text-transform: uppercase;
   border-radius: 4px;
-  border: 1px solid rgba(13, 17, 23, 0.12);
-  color: rgba(13, 17, 23, 0.5);
-  background: transparent;
+  border: 1px solid rgba(166, 124, 38, 0.45);
+  color: var(--mc-ink-soft);
+  background: rgba(255, 250, 238, 0.35);
   cursor: pointer;
   transition: all 0.25s ease;
   white-space: nowrap;
@@ -146,36 +201,31 @@
 }
 
 .filterBtn:hover {
-  border-color: rgba(139, 105, 20, 0.4);
-  color: #8B6914;
-  background-color: rgba(139, 105, 20, 0.04);
+  border-color: var(--mc-green);
+  color: var(--mc-green);
+  background-color: rgba(19, 67, 37, 0.05);
 }
 
 .filterBtnActive,
 .filterBtnActive:hover {
-  background-color: #1a1a1a;
-  color: #F5E6C8;
-  border-color: #1a1a1a;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* Drinks filter button — subtle wine accent */
-.filterBtnDrinks {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
+  background-color: var(--mc-green);
+  color: #F8EED8;
+  border-color: var(--mc-green);
+  box-shadow: 0 2px 8px rgba(19, 67, 37, 0.2);
 }
 
 /* ═══ LEGEND ═══ */
 .legend {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   padding: 14px 36px;
   font-size: 0.7rem;
-  color: rgba(13, 17, 23, 0.42);
+  color: var(--mc-ink-soft);
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(139, 105, 20, 0.1);
+  border-bottom: 1px solid rgba(166, 124, 38, 0.22);
 }
 
 .legendItem {
@@ -184,16 +234,18 @@
   gap: 4px;
 }
 
-.legendGold { color: #8B6914; }
-.legendGreen { color: #16a34a; }
+.legendGold { color: var(--mc-gold); }
+.legendGreen { color: var(--mc-veg); }
 .legendOrange { color: #ea580c; }
 .legendRed { color: #dc2626; }
 
 /* ═══ MENU LIST — scrollable ═══ */
 .menuList {
+  position: relative;
+  z-index: 1;
   flex: 1;
   overflow-y: auto;
-  padding: 10px 36px 36px;
+  padding: 10px 36px 48px;
 }
 
 .menuList::-webkit-scrollbar {
@@ -203,11 +255,153 @@
   background: transparent;
 }
 .menuList::-webkit-scrollbar-thumb {
-  background: rgba(139, 105, 20, 0.18);
+  background: rgba(166, 124, 38, 0.3);
   border-radius: 4px;
 }
 .menuList::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 105, 20, 0.35);
+  background: rgba(166, 124, 38, 0.5);
+}
+
+/* ═══ COVER: printed page 2 ═══ */
+.coverWrap {
+  margin: -10px -36px 0;
+  container-type: inline-size;
+}
+
+.cover {
+  position: relative;
+  min-height: 100cqi;
+  padding: calc(100cqi * 129 / 2504) 0 calc(100cqi * 300 / 2504);
+  text-align: center;
+}
+
+.coverArt {
+  position: absolute;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.coverTl {
+  top: 0;
+  left: 0;
+  width: calc(100cqi * 660 / 2504);
+}
+
+.coverTr {
+  top: 0;
+  left: calc(100cqi * 1800 / 2504);
+  width: calc(100cqi * 704 / 2504);
+}
+
+.coverBottom {
+  bottom: 0;
+  left: 0;
+  width: 100cqi;
+}
+
+.coverText {
+  position: relative;
+  max-width: 63cqi;
+  margin: 0 auto;
+}
+
+.coverLogo {
+  display: block;
+  width: 22cqi;
+  height: auto;
+  margin: 0 auto;
+}
+
+.coverTagline {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 2.4cqi;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  color: var(--mc-gold);
+  margin: 0;
+}
+
+.coverSince {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 2.05cqi;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  color: var(--mc-teal);
+  margin: 1.6cqi 0 0;
+}
+
+.coverHeading {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 3.85cqi;
+  line-height: 1.15;
+  color: var(--mc-green);
+  margin: 1.3cqi -10cqi 0.2cqi;
+}
+
+.coverDivider {
+  display: block;
+  width: calc(100cqi * 805 / 2504);
+  height: auto;
+  margin: 0 auto;
+}
+
+.coverDivider_mid { width: calc(100cqi * 763 / 2504); }
+.coverDivider_short { width: calc(100cqi * 637 / 2504); }
+.coverDivider_end { width: calc(100cqi * 442 / 2504); }
+
+.coverPara {
+  font-family: var(--font-heading);
+  font-size: 2.2cqi;
+  text-wrap: pretty;
+  line-height: 1.33;
+  color: var(--mc-ink);
+  margin: 0.2cqi 0 0.3cqi;
+}
+
+.coverThanks {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 2.8cqi;
+  line-height: 1.2;
+  color: var(--mc-green);
+  margin: 0.9cqi 0 0;
+}
+
+/* One step from the cover into the dishes: stays in view while the cover is read */
+.coverCta {
+  position: sticky;
+  bottom: 22px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: max-content;
+  margin: 10px auto 26px;
+  padding: 11px 22px 11px 26px;
+  border-radius: 999px;
+  border: 1px solid rgba(188, 138, 38, 0.8);
+  background-color: var(--mc-green);
+  color: #F8EED8;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(19, 67, 37, 0.3), inset 0 0 0 3px rgba(248, 238, 216, 0.12);
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.coverCta:hover {
+  background-color: #1B5A33;
+  box-shadow: 0 8px 22px rgba(19, 67, 37, 0.36), inset 0 0 0 3px rgba(248, 238, 216, 0.12);
 }
 
 /* ═══ CATEGORY BLOCK ═══ */
@@ -215,27 +409,41 @@
   margin-bottom: 32px;
 }
 
+/* gold ornament between sections, cropped from the print */
+.categoryBlock + .categoryBlock::before {
+  content: "";
+  display: block;
+  width: 240px;
+  max-width: 70%;
+  aspect-ratio: 805 / 95;
+  margin: 0 auto 22px;
+  background: var(--mc-divider-img) center / contain no-repeat;
+}
+
 .categoryHeader {
-  border-bottom: 1px solid rgba(139, 105, 20, 0.2);
-  padding-bottom: 12px;
-  margin-bottom: 16px;
+  text-align: center;
+  padding-bottom: 6px;
+  margin-bottom: 14px;
   margin-top: 12px;
 }
 
 .categoryTitle {
   font-family: var(--font-heading);
-  font-size: 1.3rem;
-  color: #7A5C10;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--mc-green);
+  letter-spacing: 0.3px;
+  line-height: 1.25;
   margin: 0;
 }
 
 .categorySubtitle {
   font-size: 0.8rem;
-  color: rgba(13, 17, 23, 0.38);
-  margin-top: 4px;
+  color: var(--mc-ink-soft);
+  margin: 6px auto 0;
+  max-width: 560px;
   font-style: italic;
+  line-height: 1.5;
 }
 
 /* ═══ DISH ROWS ═══ */
@@ -257,13 +465,13 @@
 
 @media (hover: hover) {
   .dishRow:hover {
-    background-color: rgba(139, 105, 20, 0.04);
+    background-color: rgba(166, 124, 38, 0.07);
   }
 }
 
 .dishNum {
   font-size: 0.78rem;
-  color: rgba(139, 105, 20, 0.35);
+  color: var(--mc-gold);
   font-family: var(--font-body);
   width: 28px;
   flex-shrink: 0;
@@ -284,14 +492,15 @@
 .dishName {
   font-family: var(--font-heading);
   font-size: 1.05rem;
-  color: #1a1a1a;
+  font-weight: 600;
+  color: var(--mc-ink);
   white-space: nowrap;
   transition: color 0.2s ease;
 }
 
 @media (hover: hover) {
   .dishRow:hover .dishName {
-    color: #7A5C10;
+    color: var(--mc-green);
   }
 }
 
@@ -305,7 +514,7 @@
 
 .dishDots {
   flex: 1;
-  border-bottom: 1px dotted rgba(139, 105, 20, 0.18);
+  border-bottom: 1px dotted rgba(166, 124, 38, 0.55);
   margin: 0 12px;
   position: relative;
   top: -4px;
@@ -315,14 +524,14 @@
 .dishPrice {
   font-family: var(--font-body);
   font-weight: 600;
-  color: #7A5C10;
+  color: var(--mc-gold);
   white-space: nowrap;
   font-size: 0.9rem;
 }
 
 .dishDesc {
   font-size: 0.82rem;
-  color: rgba(13, 17, 23, 0.42);
+  color: var(--mc-ink-soft);
   line-height: 1.5;
   margin-top: 4px;
   font-style: italic;
@@ -332,8 +541,8 @@
 .cateringBlock {
   margin-top: 32px;
   padding: 28px;
-  background: linear-gradient(135deg, rgba(139, 105, 20, 0.04), rgba(184, 136, 42, 0.06));
-  border: 1px solid rgba(139, 105, 20, 0.18);
+  background: rgba(255, 250, 238, 0.35);
+  border: 1px solid rgba(166, 124, 38, 0.4);
   border-radius: 12px;
   text-align: center;
   position: relative;
@@ -347,7 +556,7 @@
   position: absolute;
   width: 24px;
   height: 24px;
-  border-color: rgba(139, 105, 20, 0.2);
+  border-color: rgba(166, 124, 38, 0.5);
   border-style: solid;
 }
 
@@ -366,13 +575,14 @@
 .cateringTitle {
   font-family: var(--font-heading);
   font-size: 1.4rem;
-  color: #7A5C10;
+  font-weight: 700;
+  color: var(--mc-green);
   margin-bottom: 8px;
 }
 
 .cateringDesc {
   font-size: 0.85rem;
-  color: rgba(13, 17, 23, 0.5);
+  color: var(--mc-ink-soft);
   line-height: 1.6;
   max-width: 480px;
   margin: 0 auto 16px;
@@ -382,8 +592,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #1a1a1a;
-  color: #F5E6C8;
+  background-color: var(--mc-green);
+  color: #F8EED8;
   padding: 10px 24px;
   border-radius: 6px;
   font-size: 0.85rem;
@@ -393,8 +603,8 @@
 }
 
 .cateringPhone:hover {
-  background-color: #2a2a2a;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #1B5A33;
+  box-shadow: 0 4px 12px rgba(19, 67, 37, 0.2);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -413,6 +623,7 @@
     max-height: none;
     border-radius: 0;
     border: none;
+    background-size: auto, 72px 72px;
   }
 
   .popupHeader {
@@ -436,8 +647,15 @@
   }
 
   .filterBar {
-    padding: 12px 16px 0;
+    padding: 12px 24px 0 16px;
     gap: 5px;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent calc(100% - 6px));
+    mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent calc(100% - 6px));
+  }
+
+  /* the side margins are too narrow on a phone for the corner leaves */
+  .corner {
+    display: none;
   }
 
   .filterBtn {
@@ -453,8 +671,43 @@
   }
 
   .menuList {
-    padding: 8px 16px 20px;
+    padding: 8px 16px 28px;
     -webkit-overflow-scrolling: touch;
+  }
+
+  /* the cover flows: readable text first, the palace drawing below it */
+  .coverWrap {
+    margin: -8px -16px 0;
+  }
+
+  .cover {
+    min-height: 0;
+    padding: calc(100cqi * 129 / 2504) 0 calc(100cqi * 1064 / 2504 * 0.86);
+  }
+
+  .coverText {
+    max-width: none;
+    padding: 0 7cqi;
+  }
+
+  .coverLogo {
+    width: max(20cqi, 150px);
+  }
+
+  .coverTagline { font-size: max(2.4cqi, 16px); margin-top: 6px; }
+  .coverSince { font-size: max(2.05cqi, 14px); margin-top: 6px; }
+  .coverHeading { font-size: max(3.85cqi, 23px); margin: 12px 0 4px; }
+  .coverPara { font-size: max(2.3cqi, 15.5px); line-height: 1.5; margin: 4px 0 6px; }
+  .coverThanks { font-size: max(2.8cqi, 18px); margin-top: 8px; }
+
+  .coverDivider { width: max(calc(100cqi * 805 / 2504), 210px); }
+  .coverDivider_mid { width: max(calc(100cqi * 763 / 2504), 200px); }
+  .coverDivider_short { width: max(calc(100cqi * 637 / 2504), 170px); }
+  .coverDivider_end { width: max(calc(100cqi * 442 / 2504), 120px); }
+
+  .coverCta {
+    bottom: 18px;
+    margin-bottom: 22px;
   }
 
   .dishRow {
@@ -490,8 +743,7 @@
   }
 
   .categoryTitle {
-    font-size: 1rem;
-    letter-spacing: 1.5px;
+    font-size: 1.15rem;
   }
 
   .categorySubtitle {
@@ -500,6 +752,11 @@
 
   .categoryBlock {
     margin-bottom: 24px;
+  }
+
+  .categoryBlock + .categoryBlock::before {
+    width: 180px;
+    margin-bottom: 16px;
   }
 
   .cateringBlock {
@@ -523,7 +780,7 @@
 
 @media (max-width: 480px) {
   .popupHeader {
-    padding: 14px 12px 10px;
+    padding: 14px 14px 10px;
   }
 
   .popupTitle {
@@ -542,7 +799,11 @@
   }
 
   .menuList {
-    padding: 6px 12px 16px;
+    padding: 6px 12px 24px;
+  }
+
+  .coverWrap {
+    margin: -6px -12px 0;
   }
 
   .dishName {
@@ -551,11 +812,17 @@
   }
 
   .categoryTitle {
-    font-size: 0.9rem;
+    font-size: 1.05rem;
   }
 
   .cateringBlock::before,
   .cateringBlock::after {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .corner {
+    transition: none;
   }
 }
