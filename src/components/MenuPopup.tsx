@@ -404,7 +404,7 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
                 <img src={`${ART}/cover-tr.webp`} alt="" aria-hidden="true" className={`${styles.coverArt} ${styles.coverTr}`} />
                 <img src={`${ART}/cover-bottom.webp`} alt="" aria-hidden="true" className={`${styles.coverArt} ${styles.coverBottom}`} />
                 <div className={styles.coverText}>
-                  <img src={`${BASE}/images/logo-navbar.png`} alt="Jaipur Indian Heritage" className={styles.coverLogo} width={766} height={500} />
+                  <img src={`${BASE}/images/menu-card/cover-logo.webp`} alt="Jaipur" className={styles.coverLogo} width={680} height={340} />
                   <p className={styles.coverTagline}>Authentic Indian Cuisine</p>
                   <p className={styles.coverSince}>For Over 30 years</p>
                   <h3 id="menu-cover-heading" className={styles.coverHeading}>
@@ -443,10 +443,12 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
                   <Divider variant="end" />
                 </div>
               </section>
-              <button type="button" className={styles.coverCta} onClick={goToMenu}>
-                {t("Zur Speisekarte", "View the menu", "Voir la carte")}
-                <ChevronDown size={16} aria-hidden="true" />
-              </button>
+              <div className={styles.coverCtaBar}>
+                <button type="button" className={styles.coverCta} onClick={goToMenu}>
+                  {t("Zur Speisekarte", "View the menu", "Voir la carte")}
+                  <ChevronDown size={16} aria-hidden="true" />
+                </button>
+              </div>
             </div>
           )}
 

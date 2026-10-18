@@ -246,6 +246,7 @@
   flex: 1;
   overflow-y: auto;
   padding: 10px 36px 48px;
+  --list-pad-bottom: 48px;
 }
 
 .menuList::-webkit-scrollbar {
@@ -373,15 +374,27 @@
 }
 
 /* One step from the cover into the dishes: stays in view while the cover is read */
-.coverCta {
+/* The bar, not the button, is pinned: paragraphs fade out under it instead of
+   running behind a floating pill. */
+.coverCtaBar {
   position: sticky;
-  bottom: 22px;
   z-index: 2;
+  margin-top: -36px;
+  /* Sticky stops above the list's bottom padding, which let text show below the
+     button; pin the bar that much lower and pad it back so the button stays put. */
+  bottom: calc(-1 * var(--list-pad-bottom, 0px));
+  padding: 44px 0 calc(22px + var(--list-pad-bottom, 0px));
+  background: linear-gradient(to bottom, rgba(244, 224, 188, 0) 0%, rgba(244, 224, 188, 0.96) 45%, var(--mc-paper) 70%);
+  pointer-events: none;
+}
+
+.coverCta {
+  pointer-events: auto;
   display: flex;
   align-items: center;
   gap: 6px;
   width: max-content;
-  margin: 10px auto 26px;
+  margin: 0 auto;
   padding: 11px 22px 11px 26px;
   border-radius: 999px;
   border: 1px solid rgba(188, 138, 38, 0.8);
@@ -672,6 +685,7 @@
 
   .menuList {
     padding: 8px 16px 28px;
+  --list-pad-bottom: 28px;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -705,9 +719,8 @@
   .coverDivider_short { width: max(calc(100cqi * 637 / 2504), 170px); }
   .coverDivider_end { width: max(calc(100cqi * 442 / 2504), 120px); }
 
-  .coverCta {
-    bottom: 18px;
-    margin-bottom: 22px;
+  .coverCtaBar {
+    padding-bottom: calc(18px + var(--list-pad-bottom, 0px));
   }
 
   .dishRow {
@@ -800,6 +813,7 @@
 
   .menuList {
     padding: 6px 12px 24px;
+  --list-pad-bottom: 24px;
   }
 
   .coverWrap {
