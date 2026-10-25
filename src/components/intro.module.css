@@ -2,7 +2,7 @@
    before hydration) already shows the logo centred over the picture. */
 
 .stage {
-  /* --nav-h is measured from the real navbar once JS runs. */
+  /* --nav-h is measured from the real navbar once JS runs, and kept current. */
   --nav-h: 116px;
   /* The picture covers the stage like object-fit: cover (banner 4716 x 2152, 2.1914:1). Units are
      the stage's own (container units), so it stays exact while a phone's toolbars come and go. */
@@ -18,22 +18,23 @@
   /* How far below its resting place the logo starts: centred in the stage. */
   --logo-dy: calc(50cqh - var(--brand-top) - var(--logo-w) * 0.3264);
 
-  position: fixed;
+  /* Hero slide 0: fills its slide, under the navbar like the photo slides. */
+  position: absolute;
   inset: 0;
   container-type: size;
-  z-index: 998; /* under the navbar (1000), so it stays visible and clickable */
   overflow: hidden;
   background: #f5e0c4; /* the plate's paper, shown only until the plate has loaded */
-  /* No JS: never leave the stage over the page. Removed by the component once it runs. */
-  animation: introFailsafe 0.4s ease 6s forwards;
 }
 
-@keyframes introFailsafe {
-  to { opacity: 0; visibility: hidden; }
+/* The finished banner without the build: a return to the homepage, or reduced motion. */
+.built .piece,
+.built .tagline {
+  opacity: 1;
+  transform: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .stage { display: none; }
+.built .brand {
+  transform: none;
 }
 
 /* Behind the navbar: its links are light and would vanish on the cream paper. Same tint and blur
@@ -88,11 +89,15 @@
   }
 }
 
+/* Centred by auto margins, not translate: GSAP folds a CSS translate into its transform as fixed
+   pixels, which leaves the logo off centre after a resize or a language switch. */
 .brand {
   position: absolute;
-  left: 50%;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: max-content;
   top: var(--brand-top);
-  translate: -50% 0;
   transform: translateY(var(--logo-dy)); /* starts with the logo centred in the stage */
   z-index: 1;
   display: flex;
@@ -147,5 +152,39 @@
     text-wrap: balance;
     width: 88cqw;
     text-align: center;
+  }
+}
+
+/* Reduced motion: the finished banner from the first paint, not only once hydration adds .built. */
+@media (prefers-reduced-motion: reduce) {
+  .piece,
+  .tagline {
+    opacity: 1;
+    transform: none;
+  }
+
+  .brand {
+    transform: none;
+  }
+}
+
+/* Failsafe: if JS is on but the bundle never hydrates, finish the banner after 5 s. HomeIntro adds
+   .live first thing, which switches this off before GSAP writes its inline styles. */
+.piece,
+.tagline,
+.brand {
+  animation: failsafe 0.6s ease-out 5s forwards;
+}
+
+.live .piece,
+.live .tagline,
+.live .brand {
+  animation: none;
+}
+
+@keyframes failsafe {
+  to {
+    opacity: 1;
+    transform: none;
   }
 }

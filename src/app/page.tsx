@@ -39,6 +39,7 @@ const heroImages = [
   `${BASE}/images/food/hero-6.jpg`,
   `${BASE}/images/food/hero-7.jpg`,
 ];
+const HERO_SLIDES = heroImages.length + 1; // the banner first
 
 /**
  * A star row that can show a fraction of a star.
@@ -106,14 +107,15 @@ export default function Home() {
     window.scrollTo(0, 0);
   }, []);
 
-  // Hero slideshow cycle every 5 seconds, from the moment the intro has finished
+  // Hero slideshow: slide 0 is the banner (owner, 2026-10-25), then the photos. It starts once the
+  // banner has assembled; the banner holds 7 seconds, each photo 5.
   useEffect(() => {
     if (!introDone) return;
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [introDone]);
+    const timer = setTimeout(() => {
+      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES);
+    }, currentSlide === 0 ? 7000 : 5000);
+    return () => clearTimeout(timer);
+  }, [introDone, currentSlide]);
 
   // Listen for "openMenu" event from Navbar's Speisekarte link
   useEffect(() => {
@@ -298,24 +300,24 @@ export default function Home() {
 
   return (
     <main ref={containerRef} className={styles.main}>
-      {!introDone && <HomeIntro onDone={() => setIntroDone(true)} />}
-
       {/* ═══════════════════════════════════════
           1) HERO — Full-screen slideshow
          ═══════════════════════════════════════ */}
-      <section className={styles.hero} id="home">
+      <section className={`${styles.hero} ${currentSlide === 0 ? styles.heroOnBanner : ""}`} id="home">
         <div className={styles.heroSlideshow}>
+          <div className={`${styles.heroSlide} ${currentSlide === 0 ? styles.heroSlideActive : ""}`}>
+            <HomeIntro onDone={() => setIntroDone(true)} />
+          </div>
           {heroImages.map((img, i) => (
             <div
               key={i}
-              className={`${styles.heroSlide} ${i === currentSlide ? styles.heroSlideActive : ""}`}
+              className={`${styles.heroSlide} ${i + 1 === currentSlide ? styles.heroSlideActive : ""}`}
             >
               <Image
                 src={img}
                 alt={`Jaipur Indian cuisine ${i + 1}`}
                 fill
                 className={styles.heroSlideImg}
-                priority={i === 0}
                 sizes="100vw"
                 quality={85}
               />
@@ -372,7 +374,7 @@ export default function Home() {
 
           {/* Slide indicators */}
           <div className={styles.slideIndicators}>
-            {heroImages.map((_, i) => (
+            {Array.from({ length: HERO_SLIDES }, (_, i) => (
               <button
                 key={i}
                 className={`${styles.slideIndicator} ${i === currentSlide ? styles.slideIndicatorActive : ""}`}
