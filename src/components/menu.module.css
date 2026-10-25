@@ -35,7 +35,7 @@
   --mc-green: #134325;           /* "Freiburgs ältestes indisches Restaurant" */
   --mc-gold: #735B2A;            /* gold text, the print's #B18C41 darkened to 4.6:1 */
   --mc-gold-line: #BC8A26;       /* divider gold, for lines only */
-  --mc-teal: #266868;            /* "For over 30 years", the print's #2E7D7D darkened to 4.6:1 */
+  --mc-saffron: #9A4A0C;         /* "For over 30 years", the cover logo's saffron #E07A1F darkened to 4.8:1 */
   --mc-veg: #338B2F;             /* page 13 "Veggie" green #42B23C darkened to 3.1:1 for an icon */
 
   position: relative;
@@ -314,9 +314,11 @@
   margin: 0 auto;
 }
 
+/* The green and gold logo from the print file, with a saffron outer line (owner pick, 2026-10-25).
+   About a third of the page wide, as the print placed it. */
 .coverLogo {
   display: block;
-  width: 22cqi;
+  width: 34cqi;
   height: auto;
   margin: 0 auto;
 }
@@ -338,7 +340,7 @@
   font-size: 2.05cqi;
   line-height: 1.2;
   letter-spacing: 0.03em;
-  color: var(--mc-teal);
+  color: var(--mc-saffron);
   margin: 1.6cqi 0 0;
 }
 

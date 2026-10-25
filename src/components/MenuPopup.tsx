@@ -404,7 +404,7 @@ export default function MenuPopup({ isOpen, onClose }: MenuPopupProps) {
                 <img src={`${ART}/cover-tr.webp`} alt="" aria-hidden="true" className={`${styles.coverArt} ${styles.coverTr}`} />
                 <img src={`${ART}/cover-bottom.webp`} alt="" aria-hidden="true" className={`${styles.coverArt} ${styles.coverBottom}`} />
                 <div className={styles.coverText}>
-                  <img src={`${BASE}/images/menu-card/cover-logo.webp`} alt="Jaipur" className={styles.coverLogo} width={680} height={340} />
+                  <img src={`${BASE}/images/menu-card/cover-logo.webp`} alt="Jaipur" className={styles.coverLogo} width={800} height={451} />
                   <p className={styles.coverTagline}>Authentic Indian Cuisine</p>
                   <p className={styles.coverSince}>For Over 30 years</p>
                   <h3 id="menu-cover-heading" className={styles.coverHeading}>
