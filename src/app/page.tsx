@@ -401,11 +401,13 @@ export default function Home() {
           <p>{t("Entdecken Sie die Vielfalt unserer authentischen indischen Küche.", "Discover the diversity of our authentic Indian cuisine.", "Découvrez la diversité de notre cuisine indienne authentique.")}</p>
         </div>
         <div className={styles.dishGrid}>
+          {/* Photos of 2026-10-25 (hammered copper set). The previous ones stay in images/food/
+              (jaipur-thali, tandoori-mixed-grill, chicken-tikka-masala, lamb-biryani .jpg) to roll back. */}
           {[
-            { name: "Thali", desc: t("Mittags, Montag bis Freitag: Vorspeise, Hauptgericht und Dessert", "Lunch, Monday to Friday: starter, main course and dessert", "Le midi, du lundi au vendredi\u00a0: entrée, plat et dessert"), img: `${BASE}/images/food/jaipur-thali.jpg` },
-            { name: "Mixed-Grill-Teller", desc: t("Spezialitäten aus dem original Lehmofen", "Specialties from the original clay oven", "Spécialités du four tandoor traditionnel"), img: `${BASE}/images/food/tandoori-mixed-grill.jpg` },
-            { name: "Chicken Tikka Masala", desc: t("Zartes Huhn in cremiger Tomaten-Curry-Soße", "Tender chicken in creamy tomato curry sauce", "Poulet tendre dans une sauce crémeuse au curry et tomates"), img: `${BASE}/images/food/chicken-tikka-masala.jpg` },
-            { name: "Bombay Lamm-Biryani", desc: t("Basmatireis mit Lammfleisch, Mandeln und Rosinen", "Basmati rice with lamb, almonds and raisins", "Riz basmati avec agneau, amandes et raisins secs"), img: `${BASE}/images/food/lamb-biryani.jpg` },
+            { name: "Thali", desc: t("Mittags, Montag bis Freitag: Vorspeise, Hauptgericht und Dessert", "Lunch, Monday to Friday: starter, main course and dessert", "Le midi, du lundi au vendredi\u00a0: entrée, plat et dessert"), img: `${BASE}/images/food/signature-2026-10/thali.jpg` },
+            { name: "Mixed-Grill-Teller", desc: t("Spezialitäten aus dem original Lehmofen", "Specialties from the original clay oven", "Spécialités du four tandoor traditionnel"), img: `${BASE}/images/food/signature-2026-10/mixed-grill.jpg` },
+            { name: "Chicken Tikka Masala", desc: t("Zartes Huhn in cremiger Tomaten-Curry-Soße", "Tender chicken in creamy tomato curry sauce", "Poulet tendre dans une sauce crémeuse au curry et tomates"), img: `${BASE}/images/food/signature-2026-10/chicken-tikka-masala.jpg` },
+            { name: "Bombay Lamm-Biryani", desc: t("Basmatireis mit Lammfleisch, Mandeln und Rosinen", "Basmati rice with lamb, almonds and raisins", "Riz basmati avec agneau, amandes et raisins secs"), img: `${BASE}/images/food/signature-2026-10/lamb-biryani.jpg` },
           ].map((dish, i) => (
             <div key={i} className={styles.dishCard}>
               <div className={styles.dishImgWrapper}>
